@@ -1,0 +1,13 @@
+module Example {
+    def myFunc() {
+        hi;
+    }
+
+    def myFunc2(var: Type) {
+        bye;
+    }
+
+    def myFunc3(var1: Type, var2: Type2) {
+        skip;
+    }
+}

@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'antlr'
+}
+
+group 'lambda.rodeo'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task runGrun(type: JavaExec) {
+    workingDir = "build/generated-src/antlr/main"
+    group = "Execution"
+    description = "Open grun"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.antlr.v4.gui.TestRig"
+    args("Module", "module", "-tree", "../../../../examples/example.jp")
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation('org.hamcrest:hamcrest-library:2.2')
+}

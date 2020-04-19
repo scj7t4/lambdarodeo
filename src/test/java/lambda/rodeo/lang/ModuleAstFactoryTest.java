@@ -2,22 +2,30 @@ package lambda.rodeo.lang;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 import java.io.IOException;
-import java.io.InputStream;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import org.junit.jupiter.api.Test;
 
 class ModuleAstFactoryTest {
 
   @Test
   public void testEmptyModule() throws IOException {
-    InputStream resource = this.getClass().getResourceAsStream("/test_cases/modules/empty.rdo");
-    CharStream cs = CharStreams.fromStream(resource);
-    ModuleAstFactory factory = new ModuleAstFactory(cs);
+    String resource = "/test_cases/modules/empty.rdo";
+    ModuleContext module = TestUtils.parseModule(resource);
 
-    assertThat(factory.toAst().getName(), equalTo("example"));
+    ModuleAstFactory factory = new ModuleAstFactory(module);
+
+    assertThat(factory.toAst().getName(), equalTo("EmptyModule"));
   }
+
+  @Test
+  public void testEmptyScopedModule() throws IOException {
+    String resource = "/test_cases/modules/scopedempty.rdo";
+    ModuleContext module = TestUtils.parseModule(resource);
+    ModuleAstFactory factory = new ModuleAstFactory(module);
+
+    assertThat(factory.toAst().getName(), equalTo("scope.is.cool.EmptyModule"));
+  }
+
 }

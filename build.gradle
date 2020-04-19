@@ -25,6 +25,10 @@ task runGrun(type: JavaExec) {
     args("Module", "module", "-tree", "../../../../examples/example.jp")
 }
 
+generateGrammarSource {
+    arguments << "-lib" << "src/main/antlr/lambda/rodeo/lang/antlr"
+}
+
 dependencies {
     antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
 

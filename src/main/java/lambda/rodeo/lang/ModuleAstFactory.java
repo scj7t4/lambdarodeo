@@ -1,23 +1,31 @@
 package lambda.rodeo.lang;
 
 import lambda.rodeo.lang.ModuleAst.ModuleAstBuilder;
-import lambda.rodeo.lang.antlr.module.ModuleLexer;
-import java.util.List;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.Token;
+import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleIdentifierContext;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class ModuleAstFactory {
+public class ModuleAstFactory extends LambdaRodeoBaseListener {
 
-  private final ModuleLexer moduleLexer;
+  private ModuleAstBuilder builder = ModuleAst.builder();
 
-  public ModuleAstFactory(CharStream inp) {
-    this.moduleLexer = new ModuleLexer(inp);
+  public ModuleAstFactory(ModuleContext module) {
+    ParseTreeWalker.DEFAULT.walk(this, module);
   }
 
   public ModuleAst toAst() {
-    ModuleAstBuilder builder = ModuleAst.builder();
-
-    Token token = this.moduleLexer.getToken();
     return builder.build();
+  }
+
+  @Override
+  public void enterModuleIdentifier(ModuleIdentifierContext ctx) {
+    builder = builder.name(ctx.getText());
+  }
+
+  @Override
+  public void enterFunctionDef(FunctionDefContext ctx) {
+    FunctionAstFactory functionAstFactory = new FunctionAstFactory(ctx);
   }
 }

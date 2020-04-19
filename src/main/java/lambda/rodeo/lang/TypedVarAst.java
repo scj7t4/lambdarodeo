@@ -1,13 +1,12 @@
 package lambda.rodeo.lang;
 
+import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 @Builder
-public class ModuleAst {
-
-  @NonNull
+public class TypedVarAst {
   private final String name;
+  private final Type type;
 }

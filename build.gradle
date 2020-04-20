@@ -34,8 +34,11 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testCompile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'

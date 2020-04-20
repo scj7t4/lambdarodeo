@@ -4,7 +4,9 @@ import java.math.BigInteger;
 import lambda.rodeo.lang.exception.TypeException;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.ValueHolder;
+import lombok.ToString;
 
+@ToString
 public class MultiplyAst implements ExpressionAst {
 
   private final Type type;

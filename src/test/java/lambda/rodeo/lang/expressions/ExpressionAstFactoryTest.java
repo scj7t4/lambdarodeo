@@ -80,4 +80,20 @@ class ExpressionAstFactoryTest {
     assertThat(expressionAst.getValueHolder().getValue(),
         equalTo(BigInteger.valueOf(1 + 2 * 3)));
   }
+
+  @Test
+  public void testOrderOfOperations2() {
+    String expr = "(1 + 2) * (3 + 4) * 5 + 6";
+    LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
+
+    ExprContext exprContext = lambdaRodeoParser.expr();
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAst expressionAst = expressionAstFactory.toAst();
+
+    System.out.println(expressionAst.getValueHolder().toString());
+
+    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getValueHolder().getValue(),
+        equalTo(BigInteger.valueOf((1 + 2) * (3 + 4) * 5 + 6)));
+  }
 }

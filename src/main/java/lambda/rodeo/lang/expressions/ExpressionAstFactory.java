@@ -10,8 +10,10 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiplyContext;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.values.Constant;
+import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+@Slf4j
 public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
   private ExpressionAst ast;
@@ -29,16 +31,19 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void exitAdd(AddContext ctx) {
-    ExpressionAst rhs = expressionStack.pollLast();
     ExpressionAst lhs = expressionStack.pollLast();
-    expressionStack.push(new AddAst(lhs, rhs));
+    ExpressionAst rhs = expressionStack.pollLast();
+    expressionStack.addLast(new AddAst(lhs, rhs));
+    log.info("Exit add");
   }
 
   @Override
   public void exitMultiply(MultiplyContext ctx) {
-    ExpressionAst rhs = expressionStack.pollLast();
+    log.info("Exit multiply stack, {}", expressionStack);
     ExpressionAst lhs = expressionStack.pollLast();
-    expressionStack.push(new MultiplyAst(lhs, rhs));
+    ExpressionAst rhs = expressionStack.pollLast();
+    expressionStack.addLast(new MultiplyAst(lhs, rhs));
+    log.info("Exit multiply {}, {}", lhs, rhs);
   }
 
   @Override
@@ -48,6 +53,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
         .type(IntType.INSTANCE)
         .valueHolder(Constant.<BigInteger>builder().value(value).build())
         .build();
-    expressionStack.push(expr);
+    log.info("Encountered intLiteral {}", value);
+    expressionStack.addLast(expr);
   }
 }

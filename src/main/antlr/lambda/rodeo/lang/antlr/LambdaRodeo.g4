@@ -26,21 +26,22 @@ statement: expr ';';
 atom: ':'IDENTIFIER;
 expr
   : '(' expr ')' #parenthetical
-  | <assoc=right> expr '*' expr #multiply
-  | <assoc=right> expr '/' expr #divide
-  | <assoc=right> expr '+' expr #add
-  | <assoc=right> expr '-' expr #subtract
+  | ('-') expr #unaryMinus
+  | <assoc=right> expr multiDivOp expr #multiDiv
+  | expr addSubOp expr #addSub
   | literal #literalExpr
   | identifier #identifierExpr;
 literal: atom
        | intLiteral;
 intLiteral: INT_LITERAL;
 identifier: IDENTIFIER;
+addSubOp: ('+'|'-');
+multiDivOp: ('*'|'\\');
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';
 
-INT_LITERAL: '-'?[0-9]+;
+INT_LITERAL: [0-9]+;
 STATEMENT: [^;]* ';';
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 SCOPED_IDENTIFIER: IDENTIFIER(('.'IDENTIFIER)*);

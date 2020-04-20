@@ -3,23 +3,23 @@ package lambda.rodeo.lang.expressions;
 import java.math.BigInteger;
 import lambda.rodeo.lang.exception.TypeException;
 import lambda.rodeo.lang.types.Type;
-import lambda.rodeo.lang.values.ValueHolder;
+import lambda.rodeo.lang.values.Computable;
 import lombok.ToString;
 
 @ToString
 public class MultiplyAst implements ExpressionAst {
 
   private final Type type;
-  private final ValueHolder<?> valueHolder;
+  private final Computable<?> computable;
 
   public MultiplyAst(ExpressionAst lhs, ExpressionAst rhs) {
     if(AstUtils.bothIntType(lhs, rhs)) {
       type = lhs.getType();
       @SuppressWarnings("unchecked")
-      ValueHolder<BigInteger> lhsVh = (ValueHolder<BigInteger>) lhs.getValueHolder();
+      Computable<BigInteger> lhsVh = (Computable<BigInteger>) lhs.getComputable();
       @SuppressWarnings("unchecked")
-      ValueHolder<BigInteger> rhsVh = (ValueHolder<BigInteger>) rhs.getValueHolder();
-      valueHolder = new BigIntegerMultiplyValueHolder(lhsVh, rhsVh);
+      Computable<BigInteger> rhsVh = (Computable<BigInteger>) rhs.getComputable();
+      computable = new BigIntegerMultiplyComputable(lhsVh, rhsVh);
     } else {
       throw new TypeException("Cannot multiply types " + lhs.getType() + " and " + rhs.getType());
     }
@@ -31,23 +31,23 @@ public class MultiplyAst implements ExpressionAst {
   }
 
   @Override
-  public ValueHolder<?> getValueHolder() {
-    return valueHolder;
+  public Computable<?> getComputable() {
+    return computable;
   }
 
-  public static class BigIntegerMultiplyValueHolder implements ValueHolder<BigInteger> {
-    private final ValueHolder<BigInteger> lhs;
-    private final ValueHolder<BigInteger> rhs;
+  public static class BigIntegerMultiplyComputable implements Computable<BigInteger> {
+    private final Computable<BigInteger> lhs;
+    private final Computable<BigInteger> rhs;
 
-    public BigIntegerMultiplyValueHolder(ValueHolder<BigInteger> lhs,
-        ValueHolder<BigInteger> rhs) {
+    public BigIntegerMultiplyComputable(Computable<BigInteger> lhs,
+        Computable<BigInteger> rhs) {
       this.lhs = lhs;
       this.rhs = rhs;
     }
 
     @Override
-    public BigInteger getValue() {
-      return lhs.getValue().multiply(rhs.getValue());
+    public BigInteger compute(Scope scope) {
+      return lhs.compute(scope).multiply(rhs.compute(scope));
     }
 
     @Override

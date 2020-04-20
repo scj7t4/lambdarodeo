@@ -1,15 +1,15 @@
 package lambda.rodeo.lang.values;
 
-import lambda.rodeo.lang.types.Type;
+import lambda.rodeo.lang.expressions.Scope;
 import lombok.Builder;
 
 @Builder
-public class Constant<T> implements ValueHolder<T> {
+public class Constant<T> implements Computable<T> {
 
   private final T value;
 
   @Override
-  public T getValue() {
+  public T compute(Scope scope) {
     return value;
   }
 

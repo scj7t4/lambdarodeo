@@ -4,10 +4,11 @@ import java.math.BigInteger;
 import java.util.Deque;
 import java.util.LinkedList;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiplyContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.values.Constant;
 import lombok.extern.slf4j.Slf4j;
@@ -27,23 +28,32 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     return expressionStack.getLast();
   }
 
-
-
   @Override
-  public void exitAdd(AddContext ctx) {
-    ExpressionAst lhs = expressionStack.pollLast();
+  public void exitAddSub(AddSubContext ctx) {
     ExpressionAst rhs = expressionStack.pollLast();
-    expressionStack.addLast(new AddAst(lhs, rhs));
-    log.info("Exit add");
+    ExpressionAst lhs = expressionStack.pollLast();
+    String op = ctx.addSubOp().getText();
+
+    if ("+".equals(op)) {
+      expressionStack.addLast(new AddAst(lhs, rhs));
+    } else if ("-".equals(op)) {
+      expressionStack.addLast(new SubtractAst(lhs, rhs));
+    } else {
+      throw new UnsupportedOperationException("Unrecognized add/sub operation '" + op + "'");
+    }
   }
 
   @Override
-  public void exitMultiply(MultiplyContext ctx) {
-    log.info("Exit multiply stack, {}", expressionStack);
-    ExpressionAst lhs = expressionStack.pollLast();
+  public void exitMultiDiv(MultiDivContext ctx) {
     ExpressionAst rhs = expressionStack.pollLast();
+    ExpressionAst lhs = expressionStack.pollLast();
     expressionStack.addLast(new MultiplyAst(lhs, rhs));
-    log.info("Exit multiply {}, {}", lhs, rhs);
+  }
+
+  @Override
+  public void exitUnaryMinus(UnaryMinusContext ctx) {
+    ExpressionAst op = expressionStack.pollLast();
+    expressionStack.addLast(new UnaryMinusAst(op));
   }
 
   @Override
@@ -51,9 +61,8 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     BigInteger value = new BigInteger(ctx.getText());
     ConstantExpr<BigInteger> expr = ConstantExpr.<BigInteger>builder()
         .type(IntType.INSTANCE)
-        .valueHolder(Constant.<BigInteger>builder().value(value).build())
+        .computable(Constant.<BigInteger>builder().value(value).build())
         .build();
-    log.info("Encountered intLiteral {}", value);
     expressionStack.addLast(expr);
   }
 }

@@ -23,23 +23,17 @@ typeExpression: intType | atom;
 intType: 'int';
 
 statement: expr ';';
-expr
-  : '(' expr ')'
-  | atom
-  | mathExpression
-  | intLiteral
-  | identifier
-  ;
 atom: ':'IDENTIFIER;
-mathExpression
-  : addition
-  | subtraction
-  | division
-  | multiplication;
-addition: (INT_LITERAL | IDENTIFIER) '+' expr;
-subtraction: (INT_LITERAL | IDENTIFIER) '-' expr;
-division: (INT_LITERAL | IDENTIFIER) '/' expr;
-multiplication: (INT_LITERAL | IDENTIFIER) '*' expr;
+expr
+  : '(' expr ')' #parenthetical
+  | <assoc=right> expr '*' expr #multiply
+  | <assoc=right> expr '/' expr #divide
+  | <assoc=right> expr '+' expr #add
+  | <assoc=right> expr '-' expr #subtract
+  | literal #literalExpr
+  | identifier #identifierExpr;
+literal: atom
+       | intLiteral;
 intLiteral: INT_LITERAL;
 identifier: IDENTIFIER;
 

@@ -183,6 +183,45 @@ class ExpressionAstFactoryTest {
     }
   }
 
+  @Test
+  public void testOrderOfOperations4() {
+    {
+      String expr = "(1 + 2) / 1";
+      long javaVal = (1 + 2) / 1;
+      testExpression(expr, javaVal);
+    }
+
+    {
+      String expr = "(1 + 2) - 1 / 2";
+      long javaVal = (1 + 2) - 1 / 2;
+      testExpression(expr, javaVal);
+    }
+
+    {
+      String expr = "(1 + 2) - 1 + 2 * (3 / 4)";
+      long javaVal = (1 + 2) - 1 + 2 * (3 / 4);
+      testExpression(expr, javaVal);
+    }
+
+    {
+      String expr = "(1 + 2) - 1 + 2 * (3 + 4) / 2";
+      long javaVal = (1 + 2) - 1 + 2 * (3 + 4) / 2;
+      testExpression(expr, javaVal);
+    }
+
+    {
+      String expr = "(1 + 2) - 1 + 2 * (3 + 4) - 2 * 5 / 6";
+      long javaVal = (1 + 2) - 1 + 2 * (3 + 4) - 2 * 5 / 6;
+      testExpression(expr, javaVal);
+    }
+
+    {
+      String expr = "(1 + 2) - 1 / 2 * (3 + 4) - 2 * 5 + 6";
+      long javaVal = (1 + 2) - 1 / 2 * (3 + 4) - 2 * 5 + 6;
+      testExpression(expr, javaVal);
+    }
+  }
+
   private void testExpression(String expr, long javaVal) {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 

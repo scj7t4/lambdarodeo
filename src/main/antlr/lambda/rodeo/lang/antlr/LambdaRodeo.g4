@@ -27,7 +27,7 @@ atom: ':'IDENTIFIER;
 expr
   : '(' expr ')' #parenthetical
   | ('-') expr #unaryMinus
-  | <assoc=right> expr multiDivOp expr #multiDiv
+  | expr multiDivOp expr #multiDiv
   | expr addSubOp expr #addSub
   | literal #literalExpr
   | identifier #identifierExpr;
@@ -36,7 +36,7 @@ literal: atom
 intLiteral: INT_LITERAL;
 identifier: IDENTIFIER;
 addSubOp: ('+'|'-');
-multiDivOp: ('*'|'\\');
+multiDivOp: ('*'|'/');
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

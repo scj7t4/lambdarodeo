@@ -47,7 +47,15 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   public void exitMultiDiv(MultiDivContext ctx) {
     ExpressionAst rhs = expressionStack.pollLast();
     ExpressionAst lhs = expressionStack.pollLast();
-    expressionStack.addLast(new MultiplyAst(lhs, rhs));
+    String op = ctx.multiDivOp().getText();
+
+    if ("*".equals(op)) {
+      expressionStack.addLast(new MultiplyAst(lhs, rhs));
+    } else if("/".equals(op)) {
+      expressionStack.addLast(new DivisionAst(lhs, rhs));
+    } else {
+      throw new UnsupportedOperationException("Unrecognized multiply/divide operation '" + op + "'");
+    }
   }
 
   @Override

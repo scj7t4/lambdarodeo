@@ -22,7 +22,7 @@ varType: typeExpression;
 typeExpression: intType | atom;
 intType: 'int';
 
-statement: expr ';';
+statement: assignment? expr ';';
 atom: ':'IDENTIFIER;
 expr
   : '(' expr ')' #parenthetical
@@ -37,6 +37,8 @@ intLiteral: INT_LITERAL;
 identifier: IDENTIFIER;
 addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
+
+assignment: 'let' IDENTIFIER '=';
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

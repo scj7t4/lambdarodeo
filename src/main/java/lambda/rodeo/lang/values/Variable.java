@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.values;
 
-import lambda.rodeo.lang.expressions.Scope;
+import lambda.rodeo.lang.statement.Scope;
+import lambda.rodeo.lang.statement.TypedValue;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +17,10 @@ public class Variable<T> implements Computable<T> {
 
   @Override
   public T compute(Scope scope) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    TypedValue typedValue = scope.get(name)
+        .orElseThrow(() -> new UnsupportedOperationException("TODO: Better error for illegal"));
+    @SuppressWarnings("unchecked")
+    T value = (T) typedValue.getValue();
+    return value;
   }
 }

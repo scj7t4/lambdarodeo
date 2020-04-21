@@ -17,7 +17,6 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 @Slf4j
 public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
-  private ExpressionAst ast;
   private Deque<ExpressionAst> expressionStack = new LinkedList<>();
 
   public ExpressionAstFactory(ExprContext ctx) {
@@ -51,10 +50,11 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
     if ("*".equals(op)) {
       expressionStack.addLast(new MultiplyAst(lhs, rhs));
-    } else if("/".equals(op)) {
+    } else if ("/".equals(op)) {
       expressionStack.addLast(new DivisionAst(lhs, rhs));
     } else {
-      throw new UnsupportedOperationException("Unrecognized multiply/divide operation '" + op + "'");
+      throw new UnsupportedOperationException(
+          "Unrecognized multiply/divide operation '" + op + "'");
     }
   }
 

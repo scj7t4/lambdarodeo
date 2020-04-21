@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.values;
 
-import lambda.rodeo.lang.expressions.Scope;
+import lambda.rodeo.lang.statement.Scope;
 import lombok.Builder;
 
 @Builder

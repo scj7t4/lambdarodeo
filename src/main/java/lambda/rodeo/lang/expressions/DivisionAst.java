@@ -2,6 +2,7 @@ package lambda.rodeo.lang.expressions;
 
 import java.math.BigInteger;
 import lambda.rodeo.lang.exception.TypeException;
+import lambda.rodeo.lang.statement.Scope;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Computable;
 import lombok.ToString;

@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import lambda.rodeo.lang.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
+import lambda.rodeo.lang.statement.Scope;
 import lambda.rodeo.lang.types.IntType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

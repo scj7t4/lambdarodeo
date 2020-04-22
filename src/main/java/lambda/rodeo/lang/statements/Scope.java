@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.statement;
+package lambda.rodeo.lang.statements;
 
 import java.util.HashMap;
 import java.util.Map;

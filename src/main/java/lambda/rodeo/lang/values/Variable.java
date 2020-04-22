@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.values;
 
-import lambda.rodeo.lang.statement.Scope;
-import lambda.rodeo.lang.statement.TypedValue;
+import lambda.rodeo.lang.statements.Scope;
+import lambda.rodeo.lang.statements.TypedValue;
 import lombok.Builder;
 import lombok.Getter;
 

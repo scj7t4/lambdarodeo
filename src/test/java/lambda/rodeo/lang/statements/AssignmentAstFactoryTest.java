@@ -1,14 +1,11 @@
-package lambda.rodeo.lang.statement;
+package lambda.rodeo.lang.statements;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 
 import lambda.rodeo.lang.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AssignmentContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
-import lambda.rodeo.lang.expressions.ExpressionAstFactory;
 import org.junit.jupiter.api.Test;
 
 class AssignmentAstFactoryTest {

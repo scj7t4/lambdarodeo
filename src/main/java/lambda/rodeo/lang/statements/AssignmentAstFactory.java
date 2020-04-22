@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.statement;
+package lambda.rodeo.lang.statements;
 
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;

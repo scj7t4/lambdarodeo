@@ -1,4 +1,4 @@
-package lambda.rodeo.lang;
+package lambda.rodeo.lang.functions;
 
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;

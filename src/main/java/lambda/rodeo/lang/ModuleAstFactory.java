@@ -5,6 +5,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleIdentifierContext;
+import lambda.rodeo.lang.functions.FunctionAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class ModuleAstFactory extends LambdaRodeoBaseListener {

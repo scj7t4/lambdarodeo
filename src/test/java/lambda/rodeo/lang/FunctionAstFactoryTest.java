@@ -7,6 +7,8 @@ import static org.hamcrest.Matchers.hasSize;
 
 import java.io.IOException;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
+import lambda.rodeo.lang.functions.FunctionAst;
+import lambda.rodeo.lang.functions.FunctionAstFactory;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.IntType;
 import org.junit.jupiter.api.Test;

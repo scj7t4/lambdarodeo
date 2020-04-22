@@ -1,6 +1,5 @@
-package lambda.rodeo.lang.statement;
+package lambda.rodeo.lang.statements;
 
-import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
 

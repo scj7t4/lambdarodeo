@@ -1,6 +1,7 @@
-package lambda.rodeo.lang.statement;
+package lambda.rodeo.lang.statements;
 
 import lambda.rodeo.lang.expressions.ExpressionAst;
+import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ public class StatementAst {
   private final ExpressionAst expression;
   private final SimpleAssignmentAst assignment;
 
-  Scope compute(Scope scope) {
+  public Scope compute(Scope scope) {
     Object computed = expression.getComputable().compute(scope);
     TypedValue value = TypedValue.builder()
         .type(expression.getType())
@@ -21,5 +22,9 @@ public class StatementAst {
       return assignment.assign(result, value);
     }
     return result;
+  }
+
+  public Type getType() {
+    return getExpression().getType();
   }
 }

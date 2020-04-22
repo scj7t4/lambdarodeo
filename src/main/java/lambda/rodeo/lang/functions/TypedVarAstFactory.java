@@ -1,4 +1,4 @@
-package lambda.rodeo.lang;
+package lambda.rodeo.lang.functions;
 
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+//TODO: Will I need to carry typed values in the scope or can I just do values??
 public class Scope {
 
   public static final Scope EMPTY = new Scope();

@@ -1,4 +1,4 @@
-package lambda.rodeo.lang;
+package lambda.rodeo.lang.functions;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.io.IOException;
+import lambda.rodeo.lang.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.functions.FunctionAst;
 import lambda.rodeo.lang.functions.FunctionAstFactory;

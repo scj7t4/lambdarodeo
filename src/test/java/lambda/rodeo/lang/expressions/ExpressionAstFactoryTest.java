@@ -8,6 +8,7 @@ import lambda.rodeo.lang.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.statements.Scope;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.IntType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -35,7 +36,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -49,7 +50,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -63,7 +64,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     log.info(expressionAst.getComputable().toString());
@@ -79,7 +80,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     log.info(expressionAst.getComputable().toString());
@@ -95,7 +96,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -109,7 +110,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -123,7 +124,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -137,7 +138,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
@@ -227,7 +228,7 @@ class ExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     log.info(expressionAst.getComputable().toString());

@@ -10,9 +10,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class StatementAstFactory extends LambdaRodeoBaseListener {
 
   private StatementAst.StatementAstBuilder builder = StatementAst.builder();
+  private final TypeScope typeScope;
 
-  public StatementAstFactory(StatementContext ctx) {
+  public StatementAstFactory(StatementContext ctx, TypeScope typeScope) {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
+    this.typeScope = typeScope;
   }
 
   public StatementAst toAst() {
@@ -29,7 +31,7 @@ public class StatementAstFactory extends LambdaRodeoBaseListener {
       simpleAssignmentAst = assignmentAstFactory.toAst();
     }
 
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(ctx.expr());
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(ctx.expr(), typeScope);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     builder = builder

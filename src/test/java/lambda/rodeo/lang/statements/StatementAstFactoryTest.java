@@ -19,7 +19,7 @@ class StatementAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     StatementContext exprContext = lambdaRodeoParser.statement();
-    StatementAstFactory astFactory = new StatementAstFactory(exprContext);
+    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY);
 
     StatementAst ast = astFactory.toAst();
     assertThat(ast.getAssignment(), nullValue());
@@ -38,7 +38,7 @@ class StatementAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     StatementContext exprContext = lambdaRodeoParser.statement();
-    StatementAstFactory astFactory = new StatementAstFactory(exprContext);
+    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY);
 
     StatementAst ast = astFactory.toAst();
     assertThat(ast.getAssignment().getIdentifier(), equalTo("cheetos"));

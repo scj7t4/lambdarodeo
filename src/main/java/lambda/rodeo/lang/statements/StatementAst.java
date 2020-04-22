@@ -24,6 +24,15 @@ public class StatementAst {
     return result;
   }
 
+  public TypeScope preCompute(TypeScope typeScope) {
+    Type type = expression.getType();
+    TypeScope result = typeScope.put("$last", type);
+    if(assignment != null) {
+      return assignment.preAssign(result, type);
+    }
+    return result;
+  }
+
   public Type getType() {
     return getExpression().getType();
   }

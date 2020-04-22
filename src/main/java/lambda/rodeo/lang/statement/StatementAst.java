@@ -1,23 +1,24 @@
 package lambda.rodeo.lang.statement;
 
 import lambda.rodeo.lang.expressions.ExpressionAst;
-import lambda.rodeo.lang.values.Computable;
-import lambda.rodeo.lang.values.Variable;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class StatementAst {
   private final ExpressionAst expression;
-  private final AssignmentAst assignment;
+  private final SimpleAssignmentAst assignment;
 
   Scope compute(Scope scope) {
     Object computed = expression.getComputable().compute(scope);
-    Scope result = scope.put("$last", TypedValue.builder()
+    TypedValue value = TypedValue.builder()
         .type(expression.getType())
         .value(computed)
-        .build());
+        .build();
+    Scope result = scope.put("$last", value);
     if(assignment != null) {
-      return assignment.assign(result, expression.getType(), computed);
+      return assignment.assign(result, value);
     }
     return result;
   }

@@ -27,9 +27,9 @@ class StatementAstFactoryTest {
     Scope scope = Scope.EMPTY;
     Scope after = ast.compute(scope);
     assertThat(after.get("cheetos").isPresent(), equalTo(false));
-    TypedValue $last = after.get("$last").orElseThrow(OptionalShouldNotBeEmpty::new);
-    assertThat($last.getValue(), equalTo(BigInteger.valueOf(5)));
-    assertThat($last.getValue(), equalTo(BigInteger.valueOf(5)));
+    Object $last = after.get("$last").orElseThrow(OptionalShouldNotBeEmpty::new);
+    assertThat($last, equalTo(BigInteger.valueOf(5)));
+    assertThat($last, equalTo(BigInteger.valueOf(5)));
   }
 
   @Test
@@ -45,10 +45,10 @@ class StatementAstFactoryTest {
 
     Scope scope = Scope.EMPTY;
     Scope after = ast.compute(scope);
-    TypedValue $last = after.get("$last").orElseThrow(OptionalShouldNotBeEmpty::new);
-    assertThat($last.getValue(), equalTo(BigInteger.valueOf(5)));
-    assertThat($last.getValue(), equalTo(BigInteger.valueOf(5)));
-    TypedValue cheetos = after.get("cheetos").orElseThrow(OptionalShouldNotBeEmpty::new);
+    Object $last = after.get("$last").orElseThrow(OptionalShouldNotBeEmpty::new);
+    assertThat($last, equalTo(BigInteger.valueOf(5)));
+    assertThat($last, equalTo(BigInteger.valueOf(5)));
+    Object cheetos = after.get("cheetos").orElseThrow(OptionalShouldNotBeEmpty::new);
     assertThat(cheetos == $last, equalTo(true));
   }
 }

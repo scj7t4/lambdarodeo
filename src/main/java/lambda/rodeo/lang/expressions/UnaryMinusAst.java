@@ -3,6 +3,7 @@ package lambda.rodeo.lang.expressions;
 import java.math.BigInteger;
 import lambda.rodeo.lang.exception.TypeException;
 import lambda.rodeo.lang.statements.Scope;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Computable;
 import lombok.ToString;
@@ -13,19 +14,19 @@ public class UnaryMinusAst implements ExpressionAst {
   private final Type type;
   private final Computable<?> computable;
 
-  public UnaryMinusAst(ExpressionAst operand) {
-    if (AstUtils.isIntType(operand)) {
-      type = operand.getType();
+  public UnaryMinusAst(ExpressionAst operand, TypeScope typeScope) {
+    if (AstUtils.isIntType(operand, typeScope)) {
+      type = operand.getType(typeScope);
       @SuppressWarnings("unchecked")
       Computable<BigInteger> opVh = (Computable<BigInteger>) operand.getComputable();
       computable = new BigIntegerUnaryMinusComputable(opVh);
     } else {
-      throw new TypeException("Cannot negate type " + operand.getType());
+      throw new TypeException("Cannot negate type " + operand.getType(typeScope));
     }
   }
 
   @Override
-  public Type getType() {
+  public Type getType(TypeScope typeScope) {
     return type;
   }
 

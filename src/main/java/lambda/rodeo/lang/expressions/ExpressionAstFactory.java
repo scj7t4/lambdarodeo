@@ -40,9 +40,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     String op = ctx.addSubOp().getText();
 
     if ("+".equals(op)) {
-      expressionStack.addLast(new AddAst(lhs, rhs));
+      expressionStack.addLast(new AddAst(lhs, rhs, typeScope));
     } else if ("-".equals(op)) {
-      expressionStack.addLast(new SubtractAst(lhs, rhs));
+      expressionStack.addLast(new SubtractAst(lhs, rhs, typeScope));
     } else {
       throw new UnsupportedOperationException("Unrecognized add/sub operation '" + op + "'");
     }
@@ -55,9 +55,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     String op = ctx.multiDivOp().getText();
 
     if ("*".equals(op)) {
-      expressionStack.addLast(new MultiplyAst(lhs, rhs));
+      expressionStack.addLast(new MultiplyAst(lhs, rhs, typeScope));
     } else if ("/".equals(op)) {
-      expressionStack.addLast(new DivisionAst(lhs, rhs));
+      expressionStack.addLast(new DivisionAst(lhs, rhs, typeScope));
     } else {
       throw new UnsupportedOperationException(
           "Unrecognized multiply/divide operation '" + op + "'");
@@ -67,7 +67,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void exitUnaryMinus(UnaryMinusContext ctx) {
     ExpressionAst op = expressionStack.pollLast();
-    expressionStack.addLast(new UnaryMinusAst(op));
+    expressionStack.addLast(new UnaryMinusAst(op, typeScope));
   }
 
   @Override

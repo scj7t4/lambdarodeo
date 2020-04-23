@@ -13,27 +13,23 @@ public class StatementAst {
 
   public Scope compute(Scope scope) {
     Object computed = expression.getComputable().compute(scope);
-    TypedValue value = TypedValue.builder()
-        .type(expression.getType())
-        .value(computed)
-        .build();
-    Scope result = scope.put("$last", value);
+    Scope result = scope.put("$last", computed);
     if(assignment != null) {
-      return assignment.assign(result, value);
+      return assignment.assign(result, computed);
     }
     return result;
   }
 
-  public TypeScope preCompute(TypeScope typeScope) {
-    Type type = expression.getType();
+  public TypeScope typeScope(TypeScope typeScope) {
+    Type type = getType(typeScope);
     TypeScope result = typeScope.put("$last", type);
     if(assignment != null) {
-      return assignment.preAssign(result, type);
+      return assignment.type(result, type);
     }
     return result;
   }
 
-  public Type getType() {
-    return getExpression().getType();
+  public Type getType(TypeScope typeScope) {
+    return getExpression().getType(typeScope);
   }
 }

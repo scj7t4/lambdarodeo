@@ -3,6 +3,7 @@ package lambda.rodeo.lang.expressions;
 import java.math.BigInteger;
 import lambda.rodeo.lang.exception.TypeException;
 import lambda.rodeo.lang.statements.Scope;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Computable;
 import lombok.ToString;
@@ -13,21 +14,22 @@ public class AddAst implements ExpressionAst {
   private final Type type;
   private final Computable<?> computable;
 
-  public AddAst(ExpressionAst lhs, ExpressionAst rhs) {
-    if(AstUtils.bothIntType(lhs, rhs)) {
-      type = lhs.getType();
+  public AddAst(ExpressionAst lhs, ExpressionAst rhs, TypeScope typeScope) {
+    if (AstUtils.bothIntType(lhs, rhs, typeScope)) {
+      type = lhs.getType(typeScope);
       @SuppressWarnings("unchecked")
       Computable<BigInteger> lhsVh = (Computable<BigInteger>) lhs.getComputable();
       @SuppressWarnings("unchecked")
       Computable<BigInteger> rhsVh = (Computable<BigInteger>) rhs.getComputable();
       computable = new BigIntegerAddComputable(lhsVh, rhsVh);
     } else {
-      throw new TypeException("Cannot add types " + lhs.getType() + " and " + rhs.getType());
+      throw new TypeException("Cannot add types " + lhs.getType(typeScope)
+          + " and " + rhs.getType(typeScope));
     }
   }
 
   @Override
-  public Type getType() {
+  public Type getType(TypeScope typeScope) {
     return type;
   }
 

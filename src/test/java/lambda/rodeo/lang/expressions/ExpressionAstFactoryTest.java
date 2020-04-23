@@ -25,7 +25,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(6)));
   }
@@ -39,7 +39,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(15)));
   }
@@ -53,7 +53,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(0)));
   }
@@ -69,7 +69,7 @@ class ExpressionAstFactoryTest {
 
     log.info(expressionAst.getComputable().toString());
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(1 - 2 - 3 - 4 - 5)));
   }
@@ -85,7 +85,7 @@ class ExpressionAstFactoryTest {
 
     log.info(expressionAst.getComputable().toString());
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(1 - -3)));
   }
@@ -99,7 +99,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(9)));
   }
@@ -113,7 +113,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(2 * 3 * 4 * 5)));
   }
@@ -127,7 +127,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(1 + 2 * 3)));
   }
@@ -141,7 +141,7 @@ class ExpressionAstFactoryTest {
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext, TypeScope.EMPTY);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf((1 + 2) * (3 + 4) * 5 + 6)));
   }
@@ -233,7 +233,7 @@ class ExpressionAstFactoryTest {
 
     log.info(expressionAst.getComputable().toString());
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.getType(TypeScope.EMPTY), equalTo(IntType.INSTANCE));
     assertThat(expressionAst.getComputable().compute(Scope.EMPTY),
         equalTo(BigInteger.valueOf(javaVal)));
   }

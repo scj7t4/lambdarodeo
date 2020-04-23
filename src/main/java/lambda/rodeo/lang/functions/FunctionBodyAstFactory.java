@@ -5,9 +5,9 @@ import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
-import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.StatementAstFactory;
+import lambda.rodeo.lang.statements.TypeScope;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 //TODO: TEST
@@ -30,7 +30,7 @@ public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
   public void enterStatement(StatementContext ctx) {
     StatementAstFactory statementAstFactory = new StatementAstFactory(ctx, typeScope);
     StatementAst statementAst = statementAstFactory.toAst();
-    this.typeScope = statementAst.preCompute(this.typeScope);
+    this.typeScope = statementAst.typeScope(this.typeScope);
     statements.add(statementAst);
   }
 }

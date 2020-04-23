@@ -1,5 +1,7 @@
 package lambda.rodeo.lang.expressions;
 
+import static lambda.rodeo.lang.types.Atom.UNDEFINED_VAR;
+
 import java.math.BigInteger;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -10,10 +12,12 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
+import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.functions.TypedVarAst;
 import lambda.rodeo.lang.statements.TypeScope;
-import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -23,10 +27,14 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
   private Deque<ExpressionAst> expressionStack = new LinkedList<>();
   private final TypeScope typeScope;
+  private final CompileContext compileContext;
 
-  public ExpressionAstFactory(ExprContext ctx, TypeScope typeScope) {
+  public ExpressionAstFactory(ExprContext ctx,
+      TypeScope typeScope,
+      CompileContext compileContext) {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
     this.typeScope = typeScope;
+    this.compileContext = compileContext;
   }
 
   public ExpressionAst toAst() {
@@ -83,9 +91,17 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void enterIdentifier(IdentifierContext ctx) {
     String name = ctx.getText();
+    Type type = typeScope.get(name)
+        .orElse(UNDEFINED_VAR);
+
+    if (type == UNDEFINED_VAR) {
+      compileContext.getCompileErrorCollector()
+          .collect(CompileError.undefinedVariableError(name, ctx));
+    }
+
     TypedVarAst typedVarAst = TypedVarAst.builder()
         .name(name)
-        .type(typeScope.get(name).orElse(new Atom("UNDEFINED_VAR")))
+        .type(type)
         .build();
     expressionStack.addLast(typedVarAst);
   }

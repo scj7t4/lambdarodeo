@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class Atom implements Type {
 
+  public static final Atom UNDEFINED_VAR = new Atom("$UNDEFINED");
+
   private final String atom;
 
   public Atom(String atom) {

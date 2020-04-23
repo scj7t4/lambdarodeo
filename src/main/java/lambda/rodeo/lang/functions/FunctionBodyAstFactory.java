@@ -5,6 +5,7 @@ import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.StatementAstFactory;
 import lambda.rodeo.lang.statements.TypeScope;
@@ -14,8 +15,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
   private final List<StatementAst> statements = new ArrayList<>();
   private TypeScope typeScope;
+  private final CompileContext compileContext;
 
-  public FunctionBodyAstFactory(FunctionBodyContext ctx, TypeScope typeScope) {
+  public FunctionBodyAstFactory(FunctionBodyContext ctx, TypeScope typeScope,
+      CompileContext compileContext) {
+    this.compileContext = compileContext;
     ParseTreeWalker.DEFAULT.walk(this, ctx);
     this.typeScope = typeScope;
   }
@@ -28,7 +32,8 @@ public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterStatement(StatementContext ctx) {
-    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx, typeScope);
+    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx, typeScope,
+        compileContext);
     StatementAst statementAst = statementAstFactory.toAst();
     this.typeScope = statementAst.typeScope(this.typeScope);
     statements.add(statementAst);

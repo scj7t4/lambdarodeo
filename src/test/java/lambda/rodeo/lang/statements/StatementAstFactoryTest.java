@@ -8,10 +8,20 @@ import java.math.BigInteger;
 import lambda.rodeo.lang.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
+import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.OptionalShouldNotBeEmpty;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class StatementAstFactoryTest {
+
+  private CompileContext compileContext;
+
+  @BeforeEach
+  public void beforeEach() {
+    compileContext = CompileContextUtils.testCompileContext();
+  }
 
   @Test
   public void testWithoutAssignment() {
@@ -19,7 +29,8 @@ class StatementAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     StatementContext exprContext = lambdaRodeoParser.statement();
-    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY);
+    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY,
+        compileContext);
 
     StatementAst ast = astFactory.toAst();
     assertThat(ast.getAssignment(), nullValue());
@@ -30,6 +41,8 @@ class StatementAstFactoryTest {
     Object $last = after.get("$last").orElseThrow(OptionalShouldNotBeEmpty::new);
     assertThat($last, equalTo(BigInteger.valueOf(5)));
     assertThat($last, equalTo(BigInteger.valueOf(5)));
+
+    CompileContextUtils.assertNoCompileErrors(compileContext);
   }
 
   @Test
@@ -38,7 +51,8 @@ class StatementAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     StatementContext exprContext = lambdaRodeoParser.statement();
-    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY);
+    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY,
+        compileContext);
 
     StatementAst ast = astFactory.toAst();
     assertThat(ast.getAssignment().getIdentifier(), equalTo("cheetos"));
@@ -50,5 +64,7 @@ class StatementAstFactoryTest {
     assertThat($last, equalTo(BigInteger.valueOf(5)));
     Object cheetos = after.get("cheetos").orElseThrow(OptionalShouldNotBeEmpty::new);
     assertThat(cheetos == $last, equalTo(true));
+
+    CompileContextUtils.assertNoCompileErrors(compileContext);
   }
 }

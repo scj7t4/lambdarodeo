@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.values;
 
+import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.statements.Scope;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +17,11 @@ public class Variable<T> implements Computable<T> {
   }
 
   @Override
-  //TODO better error here
   public T compute(Scope scope) {
     @SuppressWarnings("unchecked")
     T value = (T) scope.get(name)
-        .orElseThrow(() -> new UnsupportedOperationException("TODO: Better error for illegal"));
+        .orElseThrow(() -> new CriticalLanguageException("Variable '" + name + "' is not defined"
+            + "in scope"));
     return value;
   }
 }

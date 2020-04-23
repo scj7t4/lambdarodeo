@@ -1,9 +1,9 @@
 package lambda.rodeo.lang.functions;
 
+import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.expressions.ExpressionAst;
 import lambda.rodeo.lang.statements.Scope;
 import lambda.rodeo.lang.statements.TypeScope;
-import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Computable;
 import lombok.Builder;
@@ -28,6 +28,8 @@ public class TypedVarAst implements ExpressionAst, Computable<Object> {
 
   @Override
   public Object compute(Scope scope) {
-    return scope.get(this.name).orElse(new Atom("ERROR")); //TODO this should throw
+    return scope.get(this.name)
+        .orElseThrow(() -> new CriticalLanguageException("Function argument was not defined in"
+            + "scope"));
   }
 }

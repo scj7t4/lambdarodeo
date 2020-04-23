@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.functions;
 
 import java.util.List;
+import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.statements.Scope;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.TypeScope;
@@ -17,7 +18,8 @@ public class FunctionBodyAst {
     for (StatementAst statement : statements) {
       current = statement.compute(current);
     }
-    return current.get("$last").orElse(null); //TODO this should throw or something
+    return current.get("$last")
+        .orElseThrow(() -> new CriticalLanguageException("$last was not defined in scope"));
   }
 
   public Type getType(TypeScope typeScope) {

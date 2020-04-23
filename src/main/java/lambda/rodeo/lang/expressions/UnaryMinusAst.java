@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.expressions;
 
 import java.math.BigInteger;
-import lambda.rodeo.lang.exception.TypeException;
+import lambda.rodeo.lang.exceptions.TypeException;
 import lambda.rodeo.lang.statements.Scope;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;

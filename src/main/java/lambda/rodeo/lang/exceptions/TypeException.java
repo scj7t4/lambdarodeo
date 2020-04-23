@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.exception;
+package lambda.rodeo.lang.exceptions;
 
 public class TypeException extends RuntimeException {
 

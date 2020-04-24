@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.hasSize;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.function.Supplier;
 import lambda.rodeo.lang.utils.CompileUtils;
@@ -44,6 +45,7 @@ public class FunctionAstFactoryTest {
   }
 
   @Test
+  @SneakyThrows
   public void testOneArgFunction() throws IOException {
     String resource = "/test_cases/functions/one_arg_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
@@ -53,9 +55,22 @@ public class FunctionAstFactoryTest {
     assertThat(functionAst.getArguments(), hasSize(1));
     assertThat(functionAst.getArguments().get(0).getName(), equalTo("inp"));
     assertThat(functionAst.getArguments().get(0).getType(), equalTo(new Atom("nil")));
+
+    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+        .functionAsts(Collections.singletonList(functionAst))
+        .build());
+
+    Method noArgs = compiledModule.getMethod("nillify", Atom.class);
+    Object invokeResult = noArgs.invoke(null, Atom.NULL);
+
+    assertThat(invokeResult, instanceOf(Result.class));
+
+    Object result = ((Result) invokeResult).get();
+    assertThat(result, equalTo(Atom.NULL));
   }
 
   @Test
+  @SneakyThrows
   public void testTwoArgFunction() throws IOException {
     String resource = "/test_cases/functions/two_arg_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
@@ -67,5 +82,17 @@ public class FunctionAstFactoryTest {
     assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
     assertThat(functionAst.getArguments().get(1).getName(), equalTo("v2"));
     assertThat(functionAst.getArguments().get(1).getType(), equalTo(IntType.INSTANCE));
+
+    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+        .functionAsts(Collections.singletonList(functionAst))
+        .build());
+
+    Method noArgs = compiledModule.getMethod("add", BigInteger.class, BigInteger.class);
+    Object invokeResult = noArgs.invoke(null, BigInteger.valueOf(2), BigInteger.valueOf(2));
+
+    assertThat(invokeResult, instanceOf(Result.class));
+
+    Object result = ((Result) invokeResult).get();
+    assertThat(result, equalTo(Atom.NULL));
   }
 }

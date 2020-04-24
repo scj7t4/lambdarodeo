@@ -37,4 +37,9 @@ public class Atom implements Type, Result {
   public Atom get() {
     return this;
   }
+
+  @Override
+  public Class<?> javaType() {
+    return Atom.class;
+  }
 }

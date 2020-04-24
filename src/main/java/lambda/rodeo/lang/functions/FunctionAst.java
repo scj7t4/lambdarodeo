@@ -5,8 +5,10 @@ import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ARETURN;
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 
+import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.ModuleAst;
+import lambda.rodeo.lang.expressions.ExpressionAst;
 import lambda.rodeo.lang.types.Atom;
 import lombok.Builder;
 import lombok.Data;
@@ -21,15 +23,27 @@ public class FunctionAst {
 
   private String name;
   private List<TypedVarAst> arguments;
-  Runnable runnable;
+
+  @Builder.Default()
+  private final List<ExpressionAst> expressions = new ArrayList<>();
+
+  public String generateFunctionDescriptor() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
+    for (TypedVarAst var : arguments) {
+      String descriptor = Type.getDescriptor(var.getType().javaType());
+      sb.append(descriptor);
+    }
+    sb.append(")").append(Type.getDescriptor(Result.class));
+    return sb.toString();
+  }
 
   public void compile(ModuleAst module, ClassWriter cw) {
-    //TODO define better signature? ASM says I can leave null if I don't have generics info
     MethodVisitor methodVisitor = cw
         .visitMethod(
             ACC_PUBLIC | ACC_STATIC,
             name,
-            "()" + Type.getDescriptor(Result.class),
+            generateFunctionDescriptor(),
             null,
             null);
 

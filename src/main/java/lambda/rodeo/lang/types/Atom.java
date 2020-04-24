@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 public class Atom implements Type {
 
   public static final Atom UNDEFINED_VAR = new Atom("$UNDEFINED");
+  public static final Atom NULL = new Atom("null");
 
   private final String atom;
 

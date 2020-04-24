@@ -18,11 +18,19 @@ test {
 
 task runGrun(type: JavaExec) {
     workingDir = "build/generated-src/antlr/main"
-    group = "Execution"
+    group = "Debug"
     description = "Open grun"
     classpath = sourceSets.main.runtimeClasspath
     main = "org.antlr.v4.gui.TestRig"
     args("Module", "module", "-tree", "../../../../examples/example.jp")
+}
+
+task runAsmifier(type: JavaExec) {
+    group = "Debug"
+    description = "Have ASM tell me what to do"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.objectweb.asm.util.ASMifier"
+    args("build/classes/java/main/lambda/rodeo/lang/asmmodels/BasicModule1.class")
 }
 
 generateGrammarSource {
@@ -36,6 +44,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     implementation group: 'org.ow2.asm', name: 'asm', version: '8.0.1'
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: '8.0.1'
 
 
     testCompileOnly 'org.projectlombok:lombok:1.18.12'

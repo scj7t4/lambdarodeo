@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.IOException;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
+import lambda.rodeo.lang.utils.CompileUtils;
 import org.junit.jupiter.api.Test;
 
 class ModuleAstFactoryTest {
@@ -17,6 +18,9 @@ class ModuleAstFactoryTest {
     ModuleAstFactory factory = new ModuleAstFactory(module);
 
     assertThat(factory.toAst().getName(), equalTo("EmptyModule"));
+
+    Class<?> compiledModule = CompileUtils.createClass(factory.toAst());
+    assertThat(compiledModule.getCanonicalName(), equalTo("EmptyModule"));
   }
 
   @Test
@@ -26,6 +30,9 @@ class ModuleAstFactoryTest {
     ModuleAstFactory factory = new ModuleAstFactory(module);
 
     assertThat(factory.toAst().getName(), equalTo("scope.is.cool.EmptyModule"));
+
+    Class<?> compiledModule = CompileUtils.createClass(factory.toAst());
+    assertThat(compiledModule.getCanonicalName(), equalTo("scope.is.cool.EmptyModule"));
   }
 
 }

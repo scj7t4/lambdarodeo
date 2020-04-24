@@ -3,7 +3,7 @@ package lambda.rodeo.lang.statements;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import lambda.rodeo.lang.TestUtils;
+import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AssignmentContext;
 import org.junit.jupiter.api.Test;

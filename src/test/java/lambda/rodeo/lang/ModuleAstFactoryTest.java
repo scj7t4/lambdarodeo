@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.io.IOException;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
 class ModuleAstFactoryTest {

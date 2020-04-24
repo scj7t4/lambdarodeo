@@ -1,11 +1,12 @@
 package lambda.rodeo.lang.types;
 
 import lambda.rodeo.lang.expressions.ConstantExpr;
+import lambda.rodeo.lang.functions.Result;
 import lambda.rodeo.lang.values.Computable;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class Atom implements Type {
+public class Atom implements Type, Result {
 
   public static final Atom UNDEFINED_VAR = new Atom("$UNDEFINED");
   public static final Atom NULL = new Atom("null");
@@ -30,5 +31,10 @@ public class Atom implements Type {
 
   public Computable<Atom> toComputable() {
     return (typeScope) -> this;
+  }
+
+  @Override
+  public Atom get() {
+    return this;
   }
 }

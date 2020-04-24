@@ -1,7 +1,8 @@
-package lambda.rodeo.lang;
+package lambda.rodeo.lang.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import lambda.rodeo.lang.ModuleAst;
 import lambda.rodeo.lang.antlr.LambdaRodeoLexer;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
@@ -11,6 +12,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class TestUtils {
+
   private TestUtils() {
     // Util class
   }
@@ -41,7 +43,12 @@ public class TestUtils {
   }
 
   public static CharStream openSourceFile(String resource) throws IOException {
-    InputStream is = ModuleAstFactoryTest.class.getResourceAsStream(resource);
+    InputStream is = TestUtils.class.getResourceAsStream(resource);
     return CharStreams.fromStream(is);
+  }
+
+  public static ModuleAst.ModuleAstBuilder testModule() {
+    return ModuleAst.builder()
+        .name("lambda.rodeo.TestModule");
   }
 }

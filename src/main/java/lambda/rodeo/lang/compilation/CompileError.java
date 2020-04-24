@@ -10,19 +10,20 @@ public class CompileError {
 
   public static final String UNDEFINED_VAR = "UNDEFINED_VARIABLE";
 
-  private final int line;
+  private final int startLine;
+  private final int endLine;
   private final int characterStart;
-  private final int characterStop;
   private final String errorType;
   private final String errorMsg;
 
   public static CompileError undefinedVariableError(String variableName,
       ParserRuleContext ruleContext) {
     return CompileError.builder()
+        .errorType(UNDEFINED_VAR)
         .errorMsg("Variable '" + variableName + "' is not defined in the current scope")
-        .line(ruleContext.getStart().getLine())
+        .startLine(ruleContext.getStart().getLine())
+        .endLine(ruleContext.getStop().getLine())
         .characterStart(ruleContext.getStart().getCharPositionInLine())
-        .characterStop(ruleContext.getStop().getCharPositionInLine())
         .build();
   }
 }

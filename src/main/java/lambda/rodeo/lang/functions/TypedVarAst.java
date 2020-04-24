@@ -29,7 +29,8 @@ public class TypedVarAst implements ExpressionAst, Computable<Object> {
   @Override
   public Object compute(Scope scope) {
     return scope.get(this.name)
-        .orElseThrow(() -> new CriticalLanguageException("Function argument was not defined in"
-            + "scope"));
+        .orElseThrow(
+            () -> new CriticalLanguageException("Variable '" + name + "' was not defined in"
+                + "scope"));
   }
 }

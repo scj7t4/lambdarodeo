@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-class ExpressionAstFactoryTest {
+class MathExpressionAstFactoryTest {
 
   private CompileContext compileContext;
 

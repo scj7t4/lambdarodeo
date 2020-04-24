@@ -32,9 +32,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   public ExpressionAstFactory(ExprContext ctx,
       TypeScope typeScope,
       CompileContext compileContext) {
-    ParseTreeWalker.DEFAULT.walk(this, ctx);
     this.typeScope = typeScope;
     this.compileContext = compileContext;
+    ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
   public ExpressionAst toAst() {
@@ -48,9 +48,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     String op = ctx.addSubOp().getText();
 
     if ("+".equals(op)) {
-      expressionStack.addLast(new AddAst(lhs, rhs, typeScope));
+      expressionStack.addLast(new AddAst(lhs, rhs, typeScope, compileContext));
     } else if ("-".equals(op)) {
-      expressionStack.addLast(new SubtractAst(lhs, rhs, typeScope));
+      expressionStack.addLast(new SubtractAst(lhs, rhs, typeScope, compileContext));
     } else {
       throw new UnsupportedOperationException("Unrecognized add/sub operation '" + op + "'");
     }
@@ -63,9 +63,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     String op = ctx.multiDivOp().getText();
 
     if ("*".equals(op)) {
-      expressionStack.addLast(new MultiplyAst(lhs, rhs, typeScope));
+      expressionStack.addLast(new MultiplyAst(lhs, rhs, typeScope, compileContext));
     } else if ("/".equals(op)) {
-      expressionStack.addLast(new DivisionAst(lhs, rhs, typeScope));
+      expressionStack.addLast(new DivisionAst(lhs, rhs, typeScope, compileContext));
     } else {
       throw new UnsupportedOperationException(
           "Unrecognized multiply/divide operation '" + op + "'");
@@ -75,7 +75,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void exitUnaryMinus(UnaryMinusContext ctx) {
     ExpressionAst op = expressionStack.pollLast();
-    expressionStack.addLast(new UnaryMinusAst(op, typeScope));
+    expressionStack.addLast(new UnaryMinusAst(op, typeScope, compileContext));
   }
 
   @Override
@@ -97,12 +97,13 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     if (type == UNDEFINED_VAR) {
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedVariableError(name, ctx));
+      expressionStack.addLast(UNDEFINED_VAR.toConstantExpr());
+    } else {
+      TypedVarAst typedVarAst = TypedVarAst.builder()
+          .name(name)
+          .type(type)
+          .build();
+      expressionStack.addLast(typedVarAst);
     }
-
-    TypedVarAst typedVarAst = TypedVarAst.builder()
-        .name(name)
-        .type(type)
-        .build();
-    expressionStack.addLast(typedVarAst);
   }
 }

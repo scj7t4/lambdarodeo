@@ -1,17 +1,19 @@
 package lambda.rodeo.lang.functions;
 
+import static org.objectweb.asm.Opcodes.ALOAD;
+
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.expressions.ExpressionAst;
-import lambda.rodeo.lang.statements.Scope;
 import lambda.rodeo.lang.statements.TypeScope;
+import lambda.rodeo.lang.statements.TypeScope.Entry;
 import lambda.rodeo.lang.types.Type;
-import lambda.rodeo.lang.values.Computable;
 import lombok.Builder;
 import lombok.Data;
+import org.objectweb.asm.MethodVisitor;
 
 @Data
 @Builder
-public class TypedVarAst implements ExpressionAst, Computable<Object> {
+public class TypedVarAst implements ExpressionAst {
 
   private final String name;
   private final Type type;
@@ -22,15 +24,10 @@ public class TypedVarAst implements ExpressionAst, Computable<Object> {
   }
 
   @Override
-  public Computable<?> getComputable() {
-    return this;
-  }
-
-  @Override
-  public Object compute(Scope scope) {
-    return scope.get(this.name)
+  public void compile(MethodVisitor methodVisitor, TypeScope scope) {
+    Entry entry = scope.get(name)
         .orElseThrow(
-            () -> new CriticalLanguageException("Variable '" + name + "' was not defined in"
-                + "scope"));
+            () -> new CriticalLanguageException("Variable '" + name + "' is not defined in scope"));
+    methodVisitor.visitVarInsn(ALOAD, entry.getIndex());
   }
 }

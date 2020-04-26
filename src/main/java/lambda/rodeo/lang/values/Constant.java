@@ -1,17 +1,11 @@
 package lambda.rodeo.lang.values;
 
-import lambda.rodeo.lang.statements.Scope;
 import lombok.Builder;
 
 @Builder
-public class Constant<T> implements Computable<T> {
+public class Constant<T> {
 
   private final T value;
-
-  @Override
-  public T compute(Scope scope) {
-    return value;
-  }
 
   @Override
   public String toString() {

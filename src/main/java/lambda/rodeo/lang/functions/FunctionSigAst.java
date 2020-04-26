@@ -25,15 +25,4 @@ public class FunctionSigAst implements AstNode {
     }
     return typeScope;
   }
-
-  public String generateFunctionDescriptor() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("(");
-    for (TypedVarAst var : arguments) {
-      String descriptor = Type.getDescriptor(var.getType().javaType());
-      sb.append(descriptor);
-    }
-    sb.append(")").append(Type.getDescriptor(Result.class));
-    return sb.toString();
-  }
 }

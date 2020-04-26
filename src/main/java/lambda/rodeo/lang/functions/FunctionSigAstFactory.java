@@ -18,6 +18,7 @@ public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
 
   public FunctionSigAstFactory(FunctionSigContext ctx, CompileContext compileContext) {
     this.compileContext = compileContext;
+    builder.arguments(arguments);
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 

@@ -15,17 +15,8 @@ public class FunctionBodyAst {
   private final List<StatementAst> statements;
   private final TypeScope finalTypeScope;
 
-  public Object compute(Scope initScope) {
-    Scope current = initScope;
-    for (StatementAst statement : statements) {
-      current = statement.compute(current);
-    }
-    return current.get("$last")
-        .orElseThrow(() -> new CriticalLanguageException("$last was not defined in scope"));
-  }
-
-  public Type getType(TypeScope typeScope) {
-    return statements.get(statements.size() - 1).getType(typeScope);
+  public Type getReturnType() {
+    return statements.get(statements.size() - 1).getType(finalTypeScope);
   }
 
   public TypeScope compile(MethodVisitor methodVisitor, TypeScope initialTypeScope) {

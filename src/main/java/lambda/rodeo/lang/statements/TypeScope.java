@@ -14,13 +14,10 @@ import org.objectweb.asm.MethodVisitor;
 @Getter
 public class TypeScope {
   public static final TypeScope EMPTY = new TypeScope();
-
-  private final int indexOfLast;
   private final List<Entry> scope;
 
   public TypeScope() {
     scope = new ArrayList<>();
-    indexOfLast = -1;
   }
 
   public TypeScope declare(String varName, Type type) {

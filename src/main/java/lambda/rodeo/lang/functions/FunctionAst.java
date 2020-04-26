@@ -12,6 +12,7 @@ import lombok.Data;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 /*
  * Function is composed of multiple statements A -> B -> C -> D
@@ -26,12 +27,23 @@ public class FunctionAst {
   private final FunctionSigAst functionSignature;
   private final FunctionBodyAst functionBodyAst;
 
+  public String generateFunctionDescriptor() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
+    for (TypedVarAst var : functionSignature.getArguments()) {
+      String descriptor = Type.getDescriptor(var.getType().javaType());
+      sb.append(descriptor);
+    }
+    sb.append(")").append(Type.getDescriptor(functionBodyAst.getReturnType().javaType()));
+    return sb.toString();
+  }
+
   public void compile(ModuleAst module, ClassWriter cw) {
     MethodVisitor methodVisitor = cw
         .visitMethod(
             ACC_PUBLIC | ACC_STATIC,
             functionSignature.getName(),
-            functionSignature.generateFunctionDescriptor(),
+            generateFunctionDescriptor(),
             null,
             null);
 

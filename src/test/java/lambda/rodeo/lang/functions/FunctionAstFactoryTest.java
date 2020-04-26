@@ -94,9 +94,8 @@ public class FunctionAstFactoryTest {
     Method noArgs = compiledModule.getMethod("add", BigInteger.class, BigInteger.class);
     Object invokeResult = noArgs.invoke(null, BigInteger.valueOf(2), BigInteger.valueOf(2));
 
-    assertThat(invokeResult, instanceOf(Result.class));
+    assertThat(invokeResult, instanceOf(BigInteger.class));
 
-    Object result = ((Result) invokeResult).get();
-    assertThat(result, equalTo(Atom.NULL));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(4)));
   }
 }

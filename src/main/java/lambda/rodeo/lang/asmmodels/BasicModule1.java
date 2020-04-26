@@ -9,7 +9,7 @@ public class BasicModule1 {
   private BasicModule1() {
   }
 
-  public static void someFunc(BigInteger a, BigInteger b) {
-    new Atom("cheesy");
+  public static BigInteger someFunc(BigInteger a, BigInteger b) {
+    return a;
   }
 }

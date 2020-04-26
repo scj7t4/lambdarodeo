@@ -2,7 +2,6 @@ package lambda.rodeo.lang.expressions;
 
 import static lambda.rodeo.lang.types.Atom.UNDEFINED_VAR;
 
-import java.math.BigInteger;
 import java.util.Deque;
 import java.util.LinkedList;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
@@ -19,9 +18,7 @@ import lambda.rodeo.lang.functions.TypedVarAst;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.statements.TypeScope.Entry;
 import lambda.rodeo.lang.types.Atom;
-import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.types.Type;
-import lambda.rodeo.lang.values.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -108,7 +105,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     if (type == UNDEFINED_VAR) {
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedVariableError(name, ctx));
-      expressionStack.addLast(UNDEFINED_VAR.toConstantExpr());
+      expressionStack.addLast(AtomAst.builder()
+          .atom(UNDEFINED_VAR)
+          .build());
     } else {
       TypedVarAst typedVarAst = TypedVarAst.builder()
           .name(name)

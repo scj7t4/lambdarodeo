@@ -7,7 +7,6 @@ import static org.objectweb.asm.Opcodes.NEW;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
-import lambda.rodeo.lang.values.Computable;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
@@ -24,12 +23,7 @@ public class AtomAst implements ExpressionAst {
   }
 
   @Override
-  public Computable<?> getComputable() {
-    return (scope) -> atom;
-  }
-
-  @Override
-  public void compile(MethodVisitor methodVisitor) {
+  public void compile(MethodVisitor methodVisitor, TypeScope typeScope) {
     methodVisitor.visitTypeInsn(NEW, "lambda/rodeo/lang/types/Atom");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(atom.getNameLiteral());

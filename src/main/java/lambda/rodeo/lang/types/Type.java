@@ -1,5 +1,10 @@
 package lambda.rodeo.lang.types;
 
 public interface Type {
-  public Class<?> javaType();
+
+  Class<?> javaType();
+
+  default String descriptor() {
+    return org.objectweb.asm.Type.getDescriptor(javaType());
+  }
 }

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.statements.TypeScope;
+import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
-import org.objectweb.asm.Type;
 
 @Builder
 @Getter
@@ -17,6 +17,7 @@ public class FunctionSigAst implements AstNode {
   private final int startLine;
   private final int endLine;
   private final int characterStart;
+  private final Type declaredReturnType;
 
   public TypeScope getInitialTypeScope() {
     TypeScope typeScope = new TypeScope();

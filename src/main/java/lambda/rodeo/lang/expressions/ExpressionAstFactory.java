@@ -26,7 +26,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 @Slf4j
 public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
-  private Deque<ExpressionAst> expressionStack = new LinkedList<>();
+  private final Deque<ExpressionAst> expressionStack = new LinkedList<>();
   private final TypeScope typeScope;
   private final CompileContext compileContext;
 
@@ -76,7 +76,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void exitUnaryMinus(UnaryMinusContext ctx) {
     ExpressionAst op = expressionStack.pollLast();
-    expressionStack.addLast(new UnaryMinusAst(op, typeScope, compileContext));
+    expressionStack.addLast(new UnaryMinusAst(op, compileContext));
   }
 
   @Override

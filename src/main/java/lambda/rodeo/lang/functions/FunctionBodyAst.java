@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.functions;
 
 import java.util.List;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;
@@ -19,9 +20,10 @@ public class FunctionBodyAst {
     return statements.get(statements.size() - 1).getType();
   }
 
-  public void compile(MethodVisitor methodVisitor) {
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
     for (StatementAst statement : statements) {
-      statement.compile(methodVisitor);
+      statement.compile(methodVisitor, compileContext);
     }
   }
 

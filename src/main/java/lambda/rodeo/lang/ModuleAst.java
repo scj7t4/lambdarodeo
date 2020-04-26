@@ -8,6 +8,9 @@ import static org.objectweb.asm.Opcodes.V1_8;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.functions.FunctionAst;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +39,7 @@ public class ModuleAst implements AstNode {
     return name.replace(".", "/");
   }
 
-  public byte[] compile() {
+  public byte[] compile(CompileContext compileContext) {
     // Tell ASM we want it to compute max stack and frames.
     ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
     cw.visit(
@@ -81,7 +84,7 @@ public class ModuleAst implements AstNode {
     }
 
     for (FunctionAst func : functionAsts) {
-      func.compile(this, cw);
+      func.compile(this, cw, compileContext);
     }
 
     cw.visitEnd();
@@ -90,5 +93,11 @@ public class ModuleAst implements AstNode {
 
   public String getModuleJVMDescriptor() {
     return "L" + getInternalJavaName() + ";";
+  }
+
+  public Optional<FunctionAst> getFunction(String funcName) {
+    return functionAsts.stream()
+        .filter(x -> Objects.equals(funcName, x.getName()))
+        .findAny();
   }
 }

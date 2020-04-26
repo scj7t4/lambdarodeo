@@ -3,9 +3,7 @@ package lambda.rodeo.lang.expressions;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 
-import lambda.rodeo.lang.exceptions.CriticalLanguageException;
-import lambda.rodeo.lang.statements.TypeScope;
-import lambda.rodeo.lang.statements.TypeScope.Entry;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import org.objectweb.asm.MethodVisitor;
@@ -18,12 +16,13 @@ public class VariableAst implements ExpressionAst {
   private final int index;
 
   @Override
-  public Type getType(TypeScope typeScope) {
+  public Type getType() {
     return type;
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor) {
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
     methodVisitor.visitVarInsn(ALOAD, index);
   }
 }

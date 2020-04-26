@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.statements;
 
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.expressions.ExpressionAst;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -16,13 +17,15 @@ public class StatementAst {
   private final AssigmentAst assignment;
 
   public Type getType() {
-    return getExpression().getType(scopeBefore);
+    return getExpression().getType();
   }
 
-  public void compile(MethodVisitor methodVisitor) {
-    expression.compile(methodVisitor); // So this should hopefully mean that the result of the
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
+    expression.compile(methodVisitor,
+        compileContext); // So this should hopefully mean that the result of the
     // computation is on the top of the stack...
-    if(assignment != null) {
+    if (assignment != null) {
       assignment.compile(methodVisitor);
     }
   }

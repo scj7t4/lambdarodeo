@@ -4,7 +4,7 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
-import lambda.rodeo.lang.statements.TypeScope;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -18,12 +18,13 @@ public class AtomAst implements ExpressionAst {
   private final Atom atom;
 
   @Override
-  public Type getType(TypeScope typeScope) {
+  public Type getType() {
     return atom;
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor) {
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
     methodVisitor.visitTypeInsn(NEW, "lambda/rodeo/lang/types/Atom");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(atom.getNameLiteral());

@@ -2,7 +2,6 @@ package lambda.rodeo.lang.expressions;
 
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
-import java.math.BigInteger;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.exceptions.TypeException;
 import lambda.rodeo.lang.statements.TypeScope;
@@ -22,25 +21,26 @@ public class SubtractAst implements ExpressionAst {
       CompileContext compileContext) {
     this.lhs = lhs;
     this.rhs = rhs;
-    if (AstUtils.isAnyUndefined(typeScope, lhs, rhs)) {
+    if (AstUtils.isAnyUndefined(lhs, rhs)) {
       type = Atom.UNDEFINED_VAR;
     } else if (AstUtils.bothIntType(lhs, rhs, typeScope)) {
-      type = lhs.getType(typeScope);
+      type = lhs.getType();
     } else {
       throw new TypeException(
-          "Cannot add types " + lhs.getType(typeScope) + " and " + rhs.getType(typeScope));
+          "Cannot add types " + lhs.getType() + " and " + rhs.getType());
     }
   }
 
   @Override
-  public Type getType(TypeScope typeScope) {
+  public Type getType() {
     return type;
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor) {
-    lhs.compile(methodVisitor);
-    rhs.compile(methodVisitor);
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
+    lhs.compile(methodVisitor, compileContext);
+    rhs.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
         "java/math/BigInteger",

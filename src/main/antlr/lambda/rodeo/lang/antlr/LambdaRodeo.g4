@@ -10,7 +10,7 @@ moduleBody: '{' moduleEntry*'}';
 moduleEntry: functionDef | interfaceDef;
 
 functionDef: 'def' functionSig functionBody;
-functionSig: functionName functionArgs;
+functionSig: functionName functionArgs '=>' returnType;
 functionBody: '{' statement+ '}';
 functionName: IDENTIFIER;
 functionArgs:
@@ -19,6 +19,7 @@ functionArgs:
 typedVar: varName ':' varType;
 varName: IDENTIFIER;
 varType: typeExpression;
+returnType: typeExpression;
 typeExpression: intType | atom;
 intType: 'int';
 
@@ -30,6 +31,7 @@ expr
   | expr multiDivOp expr #multiDiv
   | expr addSubOp expr #addSub
   | literal #literalExpr
+  | functionCall #functionCallExpr
   | identifier #identifierExpr;
 literal: atom
        | intLiteral;
@@ -39,6 +41,7 @@ addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
 
 assignment: 'let' IDENTIFIER '=';
+functionCall: SCOPED_IDENTIFIER '(' expr (',' expr)* ')';
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

@@ -6,6 +6,7 @@ import static org.objectweb.asm.Opcodes.ARETURN;
 
 import java.util.List;
 import lambda.rodeo.lang.ModuleAst;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.statements.TypeScope;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ import org.objectweb.asm.Type;
  */
 @Data
 @Builder
+//TODO: Compile error when types don't agree
 public class FunctionAst {
 
   private final FunctionSigAst functionSignature;
@@ -38,7 +40,8 @@ public class FunctionAst {
     return sb.toString();
   }
 
-  public void compile(ModuleAst module, ClassWriter cw) {
+  public void compile(ModuleAst module, ClassWriter cw,
+      CompileContext compileContext) {
     MethodVisitor methodVisitor = cw
         .visitMethod(
             ACC_PUBLIC | ACC_STATIC,
@@ -52,7 +55,7 @@ public class FunctionAst {
     methodVisitor.visitLabel(startFunc);
 
     // The function body should emit a typescope which is all the variables it uses.
-    functionBodyAst.compile(methodVisitor);
+    functionBodyAst.compile(methodVisitor, compileContext);
 
     // After compiling all the statements, the final statement should be on the stack:
     // An assigment in the last statement should be illegal, so we don't allow it:

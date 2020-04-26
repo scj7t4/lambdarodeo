@@ -21,20 +21,21 @@ public class AddAst implements ExpressionAst {
       TypeScope typeScope, CompileContext compileContext) {
     this.lhs = lhs;
     this.rhs = rhs;
-    if (AstUtils.isAnyUndefined(typeScope, lhs, rhs)) {
+    if (AstUtils.isAnyUndefined(lhs, rhs)) {
       type = Atom.UNDEFINED_VAR;
     } else if (AstUtils.bothIntType(lhs, rhs, typeScope)) {
-      type = lhs.getType(typeScope);
+      type = lhs.getType();
     } else {
-      throw new TypeException("Cannot add types " + lhs.getType(typeScope)
-          + " and " + rhs.getType(typeScope));
+      throw new TypeException("Cannot add types " + lhs.getType()
+          + " and " + rhs.getType());
     }
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor) {
-    lhs.compile(methodVisitor);
-    rhs.compile(methodVisitor);
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
+    lhs.compile(methodVisitor, compileContext);
+    rhs.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
         "java/math/BigInteger",
@@ -44,7 +45,7 @@ public class AddAst implements ExpressionAst {
   }
 
   @Override
-  public Type getType(TypeScope typeScope) {
+  public Type getType() {
     return type;
   }
 }

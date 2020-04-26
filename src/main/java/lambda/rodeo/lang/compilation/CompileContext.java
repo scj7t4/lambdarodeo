@@ -9,4 +9,5 @@ public class CompileContext {
 
   private final String source;
   private final CompileErrorCollector compileErrorCollector = new CompileErrorCollector();
+  private final CompiledModules compiledModules = new CompiledModules();
 }

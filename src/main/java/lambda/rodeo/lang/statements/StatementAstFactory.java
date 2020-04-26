@@ -48,7 +48,7 @@ public class StatementAstFactory extends LambdaRodeoBaseListener {
     AssigmentAst assignmentAst = null;
     TypeScope scopeAfter = typeScope;
     if (simpleAssignmentAst != null) {
-      Type type = expressionAst.getType(typeScope);
+      Type type = expressionAst.getType();
       scopeAfter = simpleAssignmentAst.scopeAfter(typeScope, type);
       String identifier = simpleAssignmentAst.getIdentifier();
       int index = scopeAfter.get(identifier)

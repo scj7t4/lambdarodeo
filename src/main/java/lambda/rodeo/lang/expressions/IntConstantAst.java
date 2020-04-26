@@ -3,7 +3,7 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
-import lambda.rodeo.lang.statements.TypeScope;
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -15,12 +15,13 @@ public class IntConstantAst implements ExpressionAst {
   private final String literal;
 
   @Override
-  public Type getType(TypeScope typeScope) {
+  public Type getType() {
     return IntType.INSTANCE;
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor) {
+  public void compile(MethodVisitor methodVisitor,
+      CompileContext compileContext) {
     methodVisitor.visitTypeInsn(NEW, "java/math/BigInteger"); // Start creating the new type
     methodVisitor.visitInsn(DUP); // Duplicate the new object on the stack
     methodVisitor.visitLdcInsn(literal); // Initialize a string constant for the the value...

@@ -15,6 +15,6 @@ public class SimpleAssignmentAst {
   }
 
   public TypeScope type(TypeScope scopeBefore, Type type) {
-    return scopeBefore.put(identifier, type);
+    return scopeBefore.declare(identifier, type);
   }
 }

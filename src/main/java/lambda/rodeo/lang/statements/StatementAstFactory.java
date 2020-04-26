@@ -17,8 +17,8 @@ public class StatementAstFactory extends LambdaRodeoBaseListener {
   public StatementAstFactory(StatementContext ctx, TypeScope typeScope,
       CompileContext compileContext) {
     this.compileContext = compileContext;
-    ParseTreeWalker.DEFAULT.walk(this, ctx);
     this.typeScope = typeScope;
+    ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
   public StatementAst toAst() {

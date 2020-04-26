@@ -1,5 +1,8 @@
 package lambda.rodeo.lang.expressions;
 
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+
 import java.math.BigInteger;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.exceptions.TypeException;
@@ -9,6 +12,8 @@ import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Computable;
 import lombok.ToString;
+import org.objectweb.asm.MethodVisitor;
+import sun.jvm.hotspot.tools.jcore.ClassWriter;
 
 @ToString
 public class AddAst implements ExpressionAst {
@@ -32,6 +37,16 @@ public class AddAst implements ExpressionAst {
       throw new TypeException("Cannot add types " + lhs.getType(typeScope)
           + " and " + rhs.getType(typeScope));
     }
+  }
+
+  @Override
+  public void compile(MethodVisitor methodVisitor) {
+    methodVisitor.visitMethodInsn(
+        INVOKEVIRTUAL,
+        "java/math/BigInteger",
+        "add",
+        "(Ljava/math/BigInteger;)Ljava/math/BigInteger;",
+        false);
   }
 
   @Override

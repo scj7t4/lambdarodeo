@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.function.Supplier;
+import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
@@ -26,7 +27,8 @@ public class FunctionAstFactoryTest {
   public void testNoArgsFunction() throws IOException {
     String resource = "/test_cases/functions/no_args_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
-    FunctionAstFactory factory = new FunctionAstFactory(functionDef);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("noArgs"));
     assertThat(functionAst.getArguments(), empty());
@@ -49,7 +51,8 @@ public class FunctionAstFactoryTest {
   public void testOneArgFunction() throws IOException {
     String resource = "/test_cases/functions/one_arg_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
-    FunctionAstFactory factory = new FunctionAstFactory(functionDef);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("nillify"));
     assertThat(functionAst.getArguments(), hasSize(1));
@@ -74,7 +77,8 @@ public class FunctionAstFactoryTest {
   public void testTwoArgFunction() throws IOException {
     String resource = "/test_cases/functions/two_arg_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
-    FunctionAstFactory factory = new FunctionAstFactory(functionDef);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("add"));
     assertThat(functionAst.getArguments(), hasSize(2));

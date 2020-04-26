@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
@@ -16,6 +17,8 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.functions.TypedVarAst;
 import lambda.rodeo.lang.statements.TypeScope;
+import lambda.rodeo.lang.statements.TypeScope.Entry;
+import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.values.Constant;
@@ -80,10 +83,17 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterIntLiteral(IntLiteralContext ctx) {
-    BigInteger value = new BigInteger(ctx.getText());
-    ConstantExpr<BigInteger> expr = ConstantExpr.<BigInteger>builder()
-        .type(IntType.INSTANCE)
-        .computable(Constant.<BigInteger>builder().value(value).build())
+    IntConstantAst expr = IntConstantAst.builder()
+        .literal(ctx.getText())
+        .build();
+    expressionStack.addLast(expr);
+  }
+
+  @Override
+  public void enterAtom(AtomContext ctx) {
+    Atom value = new Atom(ctx.IDENTIFIER().getText());
+    AtomAst expr = AtomAst.builder()
+        .atom(value)
         .build();
     expressionStack.addLast(expr);
   }
@@ -92,6 +102,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   public void enterIdentifier(IdentifierContext ctx) {
     String name = ctx.getText();
     Type type = typeScope.get(name)
+        .map(Entry::getType)
         .orElse(UNDEFINED_VAR);
 
     if (type == UNDEFINED_VAR) {

@@ -20,13 +20,17 @@ import org.objectweb.asm.Type;
 
 @Data
 @Builder
-public class ModuleAst {
+public class ModuleAst implements AstNode {
 
   @NonNull
   private final String name;
 
   @Builder.Default
   private final List<FunctionAst> functionAsts = new ArrayList<>();
+
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   public String getInternalJavaName() {
     return name.replace(".", "/");

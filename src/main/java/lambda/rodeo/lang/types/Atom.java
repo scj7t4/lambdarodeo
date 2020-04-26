@@ -33,6 +33,10 @@ public class Atom implements Type, Result {
     return (typeScope) -> this;
   }
 
+  public String getNameLiteral() {
+    return this.atom;
+  }
+
   @Override
   public Atom get() {
     return this;

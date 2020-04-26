@@ -10,10 +10,6 @@ public class SimpleAssignmentAst {
 
   private final String identifier;
 
-  public Scope assign(Scope scopeBefore, Object value) {
-    return scopeBefore.put(identifier, value);
-  }
-
   public TypeScope type(TypeScope scopeBefore, Type type) {
     return scopeBefore.declare(identifier, type);
   }

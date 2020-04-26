@@ -1,8 +1,6 @@
 package lambda.rodeo.lang.functions;
 
 import java.util.List;
-import lambda.rodeo.lang.exceptions.CriticalLanguageException;
-import lambda.rodeo.lang.statements.Scope;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;

@@ -8,7 +8,6 @@ import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.statements.Scope;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;

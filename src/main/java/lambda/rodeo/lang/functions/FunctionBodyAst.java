@@ -5,23 +5,34 @@ import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
+@Getter
 @Builder
 public class FunctionBodyAst {
 
   private final List<StatementAst> statements;
-  private final TypeScope finalTypeScope;
+  private final TypeScope initialTypeScope;
 
   public Type getReturnType() {
-    return statements.get(statements.size() - 1).getType(finalTypeScope);
+    return statements.get(statements.size() - 1).getType();
   }
 
-  public TypeScope compile(MethodVisitor methodVisitor, TypeScope initialTypeScope) {
-    TypeScope typeScope = initialTypeScope;
+  public void compile(MethodVisitor methodVisitor) {
     for (StatementAst statement : statements) {
-      typeScope = statement.compile(methodVisitor, typeScope);
+      statement.compile(methodVisitor);
     }
-    return typeScope;
+  }
+
+  public TypeScope getFinalTypeScope() {
+    return statements.get(statements.size() - 1).getScopeAfter();
+  }
+
+  public static FunctionBodyAst of(List<StatementAst> statements, TypeScope initialTypeScope) {
+    return builder()
+        .initialTypeScope(initialTypeScope)
+        .statements(statements)
+        .build();
   }
 }

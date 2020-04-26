@@ -20,7 +20,7 @@ public class IntConstantAst implements ExpressionAst {
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, TypeScope typeScope) {
+  public void compile(MethodVisitor methodVisitor) {
     methodVisitor.visitTypeInsn(NEW, "java/math/BigInteger"); // Start creating the new type
     methodVisitor.visitInsn(DUP); // Duplicate the new object on the stack
     methodVisitor.visitLdcInsn(literal); // Initialize a string constant for the the value...

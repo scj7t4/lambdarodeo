@@ -23,7 +23,7 @@ public class AtomAst implements ExpressionAst {
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, TypeScope typeScope) {
+  public void compile(MethodVisitor methodVisitor) {
     methodVisitor.visitTypeInsn(NEW, "lambda/rodeo/lang/types/Atom");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(atom.getNameLiteral());

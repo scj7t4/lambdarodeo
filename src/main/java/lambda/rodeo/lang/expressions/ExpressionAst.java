@@ -8,8 +8,6 @@ public interface ExpressionAst {
 
   Type getType(TypeScope typeScope);
 
-  default void compile(MethodVisitor methodVisitor,
-      TypeScope typeScope) {
-  }
+  void compile(MethodVisitor methodVisitor);
 
 }

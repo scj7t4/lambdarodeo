@@ -10,42 +10,40 @@ import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.StatementAstFactory;
 import lambda.rodeo.lang.statements.TypeScope;
-import lambda.rodeo.lang.types.Type;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 //TODO: TEST
 public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
+
   private final List<StatementAst> statements = new ArrayList<>();
   private final CompileContext compileContext;
-  private TypeScope typeScope;
+  private TypeScope initialTypeScope;
 
   public FunctionBodyAstFactory(
       FunctionBodyContext ctx,
       FunctionSigAst functionSigAst,
       CompileContext compileContext) {
     this.compileContext = compileContext;
-    typeScope = functionSigAst.getInitialTypeScope();
+    initialTypeScope = functionSigAst.getInitialTypeScope();
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
   FunctionBodyAst toAst() {
     StatementAst statementAst = statements.get(statements.size() - 1);
-    if(statementAst.getAssignment() != null) {
+    if (statementAst.getAssignment() != null) {
       compileContext.getCompileErrorCollector().collect(
           CompileError.builder().build());
     }
-    return FunctionBodyAst.builder()
-        .finalTypeScope(this.typeScope)
-        .statements(statements)
-        .build();
+    return FunctionBodyAst.of(statements, initialTypeScope);
   }
 
   @Override
   public void enterStatement(StatementContext ctx) {
-    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx, typeScope,
+    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx, initialTypeScope,
         compileContext);
     StatementAst statementAst = statementAstFactory.toAst();
-    this.typeScope = statementAst.typeScope(this.typeScope);
     statements.add(statementAst);
   }
+
+
 }

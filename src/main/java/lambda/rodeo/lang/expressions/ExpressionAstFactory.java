@@ -4,6 +4,7 @@ import static lambda.rodeo.lang.types.Atom.UNDEFINED_VAR;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Optional;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
@@ -14,7 +15,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.lang.functions.TypedVarAst;
+import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.statements.TypeScope.Entry;
 import lambda.rodeo.lang.types.Atom;
@@ -98,7 +99,8 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void enterIdentifier(IdentifierContext ctx) {
     String name = ctx.getText();
-    Type type = typeScope.get(name)
+    Optional<Entry> entry = typeScope.get(name);
+    Type type = entry
         .map(Entry::getType)
         .orElse(UNDEFINED_VAR);
 
@@ -109,9 +111,12 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
           .atom(UNDEFINED_VAR)
           .build());
     } else {
-      TypedVarAst typedVarAst = TypedVarAst.builder()
+      VariableAst typedVarAst = VariableAst.builder()
           .name(name)
           .type(type)
+          .index(entry.orElseThrow(
+              () -> new CriticalLanguageException("Can't get ALOAD index for undefined var"))
+              .getIndex())
           .build();
       expressionStack.addLast(typedVarAst);
     }

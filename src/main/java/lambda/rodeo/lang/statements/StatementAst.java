@@ -10,25 +10,20 @@ import org.objectweb.asm.MethodVisitor;
 @Getter
 public class StatementAst {
 
+  private final TypeScope scopeBefore;
+  private final TypeScope scopeAfter;
   private final ExpressionAst expression;
-  private final SimpleAssignmentAst assignment;
+  private final AssigmentAst assignment;
 
-  public TypeScope typeScope(TypeScope typeScope) {
-    Type type = getType(typeScope);
-    TypeScope result = typeScope.declare("$last", type);
-    if (assignment != null) {
-      return assignment.type(result, type);
-    }
-    return result;
+  public Type getType() {
+    return getExpression().getType(scopeBefore);
   }
 
-  public Type getType(TypeScope typeScope) {
-    return getExpression().getType(typeScope);
-  }
-
-  public TypeScope compile(MethodVisitor methodVisitor, TypeScope typeScope) {
-    expression.compile(methodVisitor, typeScope); // So this should hopefully mean that the result of the
+  public void compile(MethodVisitor methodVisitor) {
+    expression.compile(methodVisitor); // So this should hopefully mean that the result of the
     // computation is on the top of the stack...
-    return typeScope;
+    if(assignment != null) {
+      assignment.compile(methodVisitor);
+    }
   }
 }

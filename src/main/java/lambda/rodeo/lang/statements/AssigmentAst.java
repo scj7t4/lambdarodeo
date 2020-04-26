@@ -2,7 +2,6 @@ package lambda.rodeo.lang.statements;
 
 import static org.objectweb.asm.Opcodes.ASTORE;
 
-import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,11 +9,13 @@ import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
-public class SimpleAssignmentAst {
+public class AssigmentAst {
 
+  private final int index;
   private final String identifier;
+  private final Type type;
 
-  public TypeScope scopeAfter(TypeScope scopeBefore, Type type) {
-    return scopeBefore.declare(identifier, type);
+  public void compile(MethodVisitor methodVisitor) {
+    methodVisitor.visitVarInsn(ASTORE, index);
   }
 }

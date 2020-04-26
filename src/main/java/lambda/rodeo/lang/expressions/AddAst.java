@@ -32,9 +32,9 @@ public class AddAst implements ExpressionAst {
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, TypeScope typeScope) {
-    lhs.compile(methodVisitor, typeScope);
-    rhs.compile(methodVisitor, typeScope);
+  public void compile(MethodVisitor methodVisitor) {
+    lhs.compile(methodVisitor);
+    rhs.compile(methodVisitor);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
         "java/math/BigInteger",

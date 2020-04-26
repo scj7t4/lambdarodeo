@@ -52,8 +52,7 @@ public class FunctionAst {
     methodVisitor.visitLabel(startFunc);
 
     // The function body should emit a typescope which is all the variables it uses.
-    TypeScope typeScope = functionBodyAst.compile(methodVisitor,
-        functionSignature.getInitialTypeScope());
+    functionBodyAst.compile(methodVisitor);
 
     // After compiling all the statements, the final statement should be on the stack:
     // An assigment in the last statement should be illegal, so we don't allow it:
@@ -61,7 +60,8 @@ public class FunctionAst {
     Label endFunc = new Label();
     methodVisitor.visitLabel(endFunc);
 
-    typeScope.compile(methodVisitor, startFunc, endFunc);
+    TypeScope finalTypeScope = functionBodyAst.getFinalTypeScope();
+    finalTypeScope.compile(methodVisitor, startFunc, endFunc);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
   }

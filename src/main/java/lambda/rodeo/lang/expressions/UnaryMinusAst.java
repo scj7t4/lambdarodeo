@@ -35,8 +35,8 @@ public class UnaryMinusAst implements ExpressionAst {
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, TypeScope typeScope) {
-    operand.compile(methodVisitor, typeScope);
+  public void compile(MethodVisitor methodVisitor) {
+    operand.compile(methodVisitor);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
         "java/math/BigInteger",

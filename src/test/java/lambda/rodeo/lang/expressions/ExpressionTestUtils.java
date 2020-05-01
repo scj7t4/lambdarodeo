@@ -8,7 +8,6 @@ import lambda.rodeo.lang.functions.FunctionAst;
 import lambda.rodeo.lang.functions.FunctionBodyAst;
 import lambda.rodeo.lang.functions.FunctionSigAst;
 import lambda.rodeo.lang.statements.StatementAst;
-import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lombok.SneakyThrows;
 
@@ -40,7 +39,9 @@ public class ExpressionTestUtils {
             .startLine(0)
             .endLine(0)
             .build())
-        .functionBodyAst(FunctionBodyAst.of(statements, TypeScope.EMPTY))
+        .functionBodyAst(FunctionBodyAst.builder()
+            .statements(statements)
+            .build())
         .build();
   }
 
@@ -48,8 +49,6 @@ public class ExpressionTestUtils {
     return Collections.singletonList(StatementAst.builder()
         .assignment(null)
         .expression(expr)
-        .scopeBefore(TypeScope.EMPTY)
-        .scopeAfter(TypeScope.EMPTY)
         .build());
   }
 

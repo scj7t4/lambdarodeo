@@ -4,36 +4,50 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.exceptions.TypeException;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
 
 @ToString
+@Builder
+@Getter
 public class UnaryMinusAst implements ExpressionAst {
 
-  private final Type type;
   private final ExpressionAst operand;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
-  public UnaryMinusAst(ExpressionAst operand,
+  @Override
+  public SimpleTypedExpressionAst toTypedExpressionAst(TypeScope typeScope,
       CompileContext compileContext) {
-    this.operand = operand;
-    if (AstUtils.isAnyUndefined(operand)) {
-      type = Atom.UNDEFINED_VAR;
-    } else if (AstUtils.isIntType(operand)) {
-      type = operand.getType();
+    TypedExpressionAst typedOperand = operand
+        .toTypedExpressionAst(typeScope, compileContext);
+    Type type = typedOperand.getType();
+
+    if (AstUtils.isAnyUndefined(type)) {
+      return SimpleTypedExpressionAst.builder()
+          .type(Atom.UNDEFINED_VAR)
+          .expr(this)
+          .compileableExpr((mv, cc) -> compile(typedOperand, mv, cc))
+          .build();
+    } else if (AstUtils.isIntType(type)) {
+      return SimpleTypedExpressionAst.builder()
+          .type(type)
+          .build();
     } else {
-      throw new TypeException("Cannot negate type " + operand.getType());
+      //TODO Compile error instead.
+      throw new TypeException("Cannot negate type " + type);
     }
   }
 
-  @Override
-  public Type getType() {
-    return type;
-  }
-
-  @Override
-  public void compile(MethodVisitor methodVisitor,
+  public void compile(
+      TypedExpressionAst operand,
+      MethodVisitor methodVisitor,
       CompileContext compileContext) {
     operand.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(

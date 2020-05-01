@@ -26,7 +26,8 @@ public class CompileUtils {
   public static Class<?> createClass(ModuleAst moduleAst) {
     CompileContext compileContext = CompileContext.builder().build();
     Class<?> compiledClass = new TestClassLoader(CompileUtils.class.getClassLoader())
-        .defineClass(moduleAst.getName(), moduleAst.compile(compileContext));
+        .defineClass(moduleAst.getName(),
+            moduleAst.toTypedModuleAst(compileContext).compile(compileContext));
     assertThat(compileContext.getCompileErrorCollector().getCompileErrors(),
         IsEmptyCollection.empty());
     return compiledClass;
@@ -35,7 +36,8 @@ public class CompileUtils {
   public static void asmifyModule(ModuleAst moduleAst) {
     CompileContext compileContext = CompileContext.builder().build();
     ASMifier asMifier = new ASMifier();
-    ClassReader classReader = new ClassReader(moduleAst.compile(compileContext));
+    ClassReader classReader = new ClassReader(
+        moduleAst.toTypedModuleAst(compileContext).compile(compileContext));
     PrintWriter printWriter = new PrintWriter(System.out);
     TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, asMifier, printWriter);
     classReader.accept(traceClassVisitor, 0);

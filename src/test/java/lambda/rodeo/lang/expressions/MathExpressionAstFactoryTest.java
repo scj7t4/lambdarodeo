@@ -31,11 +31,14 @@ class MathExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        TypeScope.EMPTY, compileContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(
+        expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+            CompileContextUtils.testCompileContext()).getType(),
+        equalTo(IntType.INSTANCE));
 
 
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
@@ -51,10 +54,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(15)));
 
@@ -68,10 +72,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(0)));
 
@@ -85,10 +90,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(1 - 2 - 3 - 4 - 5)));
 
@@ -102,10 +108,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(1 - -3)));
 
@@ -119,10 +126,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(9)));
 
@@ -136,10 +144,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(2 * 3 * 4 * 5)));
 
@@ -153,10 +162,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(1 + 2 * 3)));
 
@@ -170,10 +180,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf((1 + 2) * (3 + 4) * 5 + 6)));
 
@@ -267,10 +278,11 @@ class MathExpressionAstFactoryTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, TypeScope.EMPTY, compileContext);
+        exprContext);
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(IntType.INSTANCE));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(javaVal)));
 

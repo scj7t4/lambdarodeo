@@ -5,21 +5,28 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Atom;
-import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
-public class AtomAst implements ExpressionAst {
+public class AtomAst implements ExpressionAst, CompileableExpr {
 
   private final Atom atom;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   @Override
-  public Type getType() {
-    return atom;
+  public SimpleTypedExpressionAst toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+    return SimpleTypedExpressionAst.builder()
+        .compileableExpr(this::compile)
+        .type(atom)
+        .expr(this)
+        .build();
   }
 
   @Override

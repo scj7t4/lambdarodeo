@@ -1,5 +1,7 @@
 package lambda.rodeo.lang.types;
 
+import lambda.rodeo.lang.expressions.AtomAst;
+import lambda.rodeo.lang.expressions.SimpleTypedExpressionAst;
 import lambda.rodeo.lang.functions.Result;
 import lombok.EqualsAndHashCode;
 
@@ -32,5 +34,14 @@ public class Atom implements Type, Result {
   @Override
   public Class<?> javaType() {
     return Atom.class;
+  }
+
+  public SimpleTypedExpressionAst toTypedExpressionAst() {
+    return SimpleTypedExpressionAst.builder()
+        .type(this)
+        .expr(AtomAst.builder()
+            .atom(this)
+            .build())
+        .build();
   }
 }

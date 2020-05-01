@@ -1,9 +1,11 @@
 package lambda.rodeo.lang.functions;
 
+import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.TypeScope;
+import lambda.rodeo.lang.statements.TypedStatementAst;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,27 +16,22 @@ import org.objectweb.asm.MethodVisitor;
 public class FunctionBodyAst {
 
   private final List<StatementAst> statements;
-  private final TypeScope initialTypeScope;
 
-  public Type getReturnType() {
-    return statements.get(statements.size() - 1).getType();
-  }
-
-  public void compile(MethodVisitor methodVisitor,
+  public TypedFunctionBodyAst toTypedFunctionBodyAst(
+      TypeScope initialTypeScope,
       CompileContext compileContext) {
-    for (StatementAst statement : statements) {
-      statement.compile(methodVisitor, compileContext);
+    TypeScope current = initialTypeScope;
+    List<TypedStatementAst> typedStatementAsts = new ArrayList<>();
+    for(StatementAst statement : statements) {
+      TypedStatementAst typedStatementAst = statement.toTypedStatementAst(current, compileContext);
+      current = typedStatementAst.getAfterTypeScope();
+      typedStatementAsts.add(typedStatementAst);
     }
-  }
 
-  public TypeScope getFinalTypeScope() {
-    return statements.get(statements.size() - 1).getScopeAfter();
-  }
-
-  public static FunctionBodyAst of(List<StatementAst> statements, TypeScope initialTypeScope) {
-    return builder()
+    return TypedFunctionBodyAst.builder()
+        .functionBodyAst(this)
         .initialTypeScope(initialTypeScope)
-        .statements(statements)
+        .statements(typedStatementAsts)
         .build();
   }
 }

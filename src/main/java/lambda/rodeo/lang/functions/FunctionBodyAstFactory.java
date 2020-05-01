@@ -6,7 +6,6 @@ import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.statements.StatementAst;
 import lambda.rodeo.lang.statements.StatementAstFactory;
 import lambda.rodeo.lang.statements.TypeScope;
@@ -31,16 +30,17 @@ public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
   FunctionBodyAst toAst() {
     StatementAst statementAst = statements.get(statements.size() - 1);
     if (statementAst.getAssignment() != null) {
-      compileContext.getCompileErrorCollector().collect(
-          CompileError.builder().build());
+      // TODO: Compiler error here
     }
-    return FunctionBodyAst.of(statements, initialTypeScope);
+    return FunctionBodyAst.builder()
+        .statements(statements)
+        .build();
   }
 
   @Override
   public void enterStatement(StatementContext ctx) {
-    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx, initialTypeScope,
-        compileContext);
+    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx
+    );
     StatementAst statementAst = statementAstFactory.toAst();
     statements.add(statementAst);
   }

@@ -4,19 +4,28 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.IntType;
-import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
-public class IntConstantAst implements ExpressionAst {
+@Getter
+public class IntConstantAst implements ExpressionAst, CompileableExpr {
 
   private final String literal;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   @Override
-  public Type getType() {
-    return IntType.INSTANCE;
+  public SimpleTypedExpressionAst toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+    return SimpleTypedExpressionAst
+        .builder()
+        .type(IntType.INSTANCE)
+        .compileableExpr(this::compile)
+        .build();
   }
 
   @Override

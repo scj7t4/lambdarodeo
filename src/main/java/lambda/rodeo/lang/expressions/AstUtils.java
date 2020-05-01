@@ -10,18 +10,17 @@ import lombok.Getter;
 @Getter
 public class AstUtils {
 
-  public static boolean bothIntType(ExpressionAst lhs, ExpressionAst rhs, TypeScope typeScope) {
+  public static boolean bothIntType(Type lhs, Type rhs) {
     return isIntType(lhs)
         && isIntType(rhs);
   }
 
-  public static boolean isIntType(ExpressionAst operand) {
-    return Objects.equals(operand.getType(), IntType.INSTANCE);
+  public static boolean isIntType(Type type) {
+    return Objects.equals(type, IntType.INSTANCE);
   }
 
-  public static boolean isAnyUndefined(ExpressionAst... expressionAsts) {
-    for (ExpressionAst expr : expressionAsts) {
-      Type type = expr.getType();
+  public static boolean isAnyUndefined(Type... types) {
+    for (Type type : types) {
       if (Objects.equals(Atom.UNDEFINED_VAR, type)) {
         return true;
       }

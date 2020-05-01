@@ -1,21 +1,12 @@
 package lambda.rodeo.lang.statements;
 
-import static org.objectweb.asm.Opcodes.ASTORE;
-
+import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.Type;
-import lombok.Builder;
-import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
-@Builder
-@Getter
-public class AssigmentAst {
+public interface AssigmentAst {
 
-  private final int index;
-  private final String identifier;
-  private final Type type;
+  TypeScope scopeAfter(TypeScope before, CompileContext compileContext, Type typeAssignFrom);
 
-  public void compile(MethodVisitor methodVisitor) {
-    methodVisitor.visitVarInsn(ASTORE, index);
-  }
+  TypedAssignmentAst toTypedAssignmentAst(TypeScope after);
 }

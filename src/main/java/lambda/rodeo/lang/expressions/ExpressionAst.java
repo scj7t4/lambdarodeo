@@ -1,14 +1,11 @@
 package lambda.rodeo.lang.expressions;
 
+import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.types.Type;
-import org.objectweb.asm.MethodVisitor;
+import lambda.rodeo.lang.statements.TypeScope;
 
-public interface ExpressionAst {
+public interface ExpressionAst extends AstNode {
 
-  Type getType();
-
-  void compile(MethodVisitor methodVisitor,
-      CompileContext compileContext);
+  TypedExpressionAst toTypedExpressionAst(TypeScope scope, CompileContext compileContext);
 
 }

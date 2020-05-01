@@ -32,11 +32,12 @@ public class VariableExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        TypeScope.EMPTY, compileContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(Atom.UNDEFINED_VAR));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(Atom.UNDEFINED_VAR));
     List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 
@@ -54,11 +55,12 @@ public class VariableExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        TypeScope.EMPTY, compileContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(Atom.UNDEFINED_VAR));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(Atom.UNDEFINED_VAR));
     List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 
@@ -76,11 +78,12 @@ public class VariableExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        TypeScope.EMPTY, compileContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(Atom.UNDEFINED_VAR));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(Atom.UNDEFINED_VAR));
     List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 
@@ -98,11 +101,12 @@ public class VariableExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        TypeScope.EMPTY, compileContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(Atom.UNDEFINED_VAR));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(Atom.UNDEFINED_VAR));
     List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 
@@ -120,11 +124,12 @@ public class VariableExpressionAstFactoryTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        TypeScope.EMPTY, compileContext);
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    assertThat(expressionAst.getType(), equalTo(Atom.UNDEFINED_VAR));
+    assertThat(expressionAst.toTypedExpressionAst(TypeScope.EMPTY,
+        CompileContextUtils.testCompileContext()).getType(), equalTo(Atom.UNDEFINED_VAR));
     List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 

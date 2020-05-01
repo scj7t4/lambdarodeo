@@ -1,10 +1,7 @@
 package lambda.rodeo.lang.expressions;
 
-import static lambda.rodeo.lang.types.Atom.UNDEFINED_VAR;
-
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Optional;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
@@ -13,13 +10,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
-import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.lang.exceptions.CriticalLanguageException;
-import lambda.rodeo.lang.statements.TypeScope;
-import lambda.rodeo.lang.statements.TypeScope.Entry;
 import lambda.rodeo.lang.types.Atom;
-import lambda.rodeo.lang.types.Type;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -27,14 +18,8 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class ExpressionAstFactory extends LambdaRodeoBaseListener {
 
   private final Deque<ExpressionAst> expressionStack = new LinkedList<>();
-  private final TypeScope typeScope;
-  private final CompileContext compileContext;
 
-  public ExpressionAstFactory(ExprContext ctx,
-      TypeScope typeScope,
-      CompileContext compileContext) {
-    this.typeScope = typeScope;
-    this.compileContext = compileContext;
+  public ExpressionAstFactory(ExprContext ctx) {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
@@ -49,9 +34,21 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     String op = ctx.addSubOp().getText();
 
     if ("+".equals(op)) {
-      expressionStack.addLast(new AddAst(lhs, rhs, typeScope, compileContext));
+      expressionStack.addLast(AddAst.builder()
+          .lhs(lhs)
+          .rhs(rhs)
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .endLine(ctx.getStop().getLine())
+          .startLine(ctx.getStart().getLine())
+          .build());
     } else if ("-".equals(op)) {
-      expressionStack.addLast(new SubtractAst(lhs, rhs, typeScope, compileContext));
+      expressionStack.addLast(SubtractAst.builder()
+          .lhs(lhs)
+          .rhs(rhs)
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .endLine(ctx.getStop().getLine())
+          .startLine(ctx.getStart().getLine())
+          .build());
     } else {
       throw new UnsupportedOperationException("Unrecognized add/sub operation '" + op + "'");
     }
@@ -64,9 +61,15 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     String op = ctx.multiDivOp().getText();
 
     if ("*".equals(op)) {
-      expressionStack.addLast(new MultiplyAst(lhs, rhs, typeScope, compileContext));
+      expressionStack.addLast(MultiplyAst.builder()
+          .lhs(lhs)
+          .rhs(rhs)
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .endLine(ctx.getStop().getLine())
+          .startLine(ctx.getStart().getLine())
+          .build());
     } else if ("/".equals(op)) {
-      expressionStack.addLast(new DivisionAst(lhs, rhs, typeScope, compileContext));
+      expressionStack.addLast(DivisionAst.builder().lhs(lhs).rhs(rhs).build());
     } else {
       throw new UnsupportedOperationException(
           "Unrecognized multiply/divide operation '" + op + "'");
@@ -76,13 +79,16 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void exitUnaryMinus(UnaryMinusContext ctx) {
     ExpressionAst op = expressionStack.pollLast();
-    expressionStack.addLast(new UnaryMinusAst(op, compileContext));
+    expressionStack.addLast(UnaryMinusAst.builder().operand(op).build());
   }
 
   @Override
   public void enterIntLiteral(IntLiteralContext ctx) {
     IntConstantAst expr = IntConstantAst.builder()
         .literal(ctx.getText())
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .endLine(ctx.getStop().getLine())
+        .startLine(ctx.getStart().getLine())
         .build();
     expressionStack.addLast(expr);
   }
@@ -92,6 +98,9 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     Atom value = new Atom(ctx.IDENTIFIER().getText());
     AtomAst expr = AtomAst.builder()
         .atom(value)
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .endLine(ctx.getStop().getLine())
+        .startLine(ctx.getStart().getLine())
         .build();
     expressionStack.addLast(expr);
   }
@@ -99,26 +108,12 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void enterIdentifier(IdentifierContext ctx) {
     String name = ctx.getText();
-    Optional<Entry> entry = typeScope.get(name);
-    Type type = entry
-        .map(Entry::getType)
-        .orElse(UNDEFINED_VAR);
-
-    if (type == UNDEFINED_VAR) {
-      compileContext.getCompileErrorCollector()
-          .collect(CompileError.undefinedVariableError(name, ctx));
-      expressionStack.addLast(AtomAst.builder()
-          .atom(UNDEFINED_VAR)
-          .build());
-    } else {
-      VariableAst typedVarAst = VariableAst.builder()
-          .name(name)
-          .type(type)
-          .index(entry.orElseThrow(
-              () -> new CriticalLanguageException("Can't get ALOAD index for undefined var"))
-              .getIndex())
-          .build();
-      expressionStack.addLast(typedVarAst);
-    }
+    VariableAst typedVarAst = VariableAst.builder()
+        .name(name)
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .endLine(ctx.getStop().getLine())
+        .startLine(ctx.getStart().getLine())
+        .build();
+    expressionStack.addLast(typedVarAst);
   }
 }

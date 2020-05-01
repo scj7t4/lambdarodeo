@@ -4,6 +4,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.statements.TypeScope;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,14 +12,17 @@ import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
-public class FunctionCallAst implements ExpressionAst {
-
+public class FunctionCallAst {
+/*
   private final String callTarget;
   private final List<ExpressionAst> args;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   @Override
-  public Type getType() {
-    return null;
+  public SimpleTypedExpressionAst toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+    return null; //TODO determine type
   }
 
   public String getModule() {
@@ -56,7 +60,7 @@ public class FunctionCallAst implements ExpressionAst {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     for (ExpressionAst arg : args) {
-      Type type = arg.getType();
+      Type type = arg.toTypedExpressionAst();
       sb.append(type.descriptor());
     }
     sb.append(")");
@@ -84,4 +88,5 @@ public class FunctionCallAst implements ExpressionAst {
         getCallDescriptor(compileContext),
         false);
   }
+ */
 }

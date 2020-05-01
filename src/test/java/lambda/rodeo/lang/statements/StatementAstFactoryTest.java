@@ -15,7 +15,6 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.utils.CompileContextUtils;
-import lambda.rodeo.lang.utils.OptionalShouldNotBeEmpty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,15 +35,13 @@ class StatementAstFactoryTest {
 
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(statement1);
     StatementContext exprContext = lambdaRodeoParser.statement();
-    StatementAstFactory astFactory = new StatementAstFactory(exprContext, TypeScope.EMPTY,
-        compileContext);
+    StatementAstFactory astFactory = new StatementAstFactory(exprContext
+    );
     StatementAst ast1 = astFactory.toAst();
 
     lambdaRodeoParser = TestUtils.parseString(statement2);
     exprContext = lambdaRodeoParser.statement();
-    astFactory = new StatementAstFactory(exprContext,
-        ast1.getScopeAfter(),
-        compileContext);
+    astFactory = new StatementAstFactory(exprContext);
     StatementAst ast2 = astFactory.toAst();
 
     List<StatementAst> statements = new ArrayList<>();

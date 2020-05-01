@@ -3,41 +3,27 @@ package lambda.rodeo.lang.expressions;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.exceptions.TypeException;
-import lambda.rodeo.lang.statements.TypeScope;
-import lambda.rodeo.lang.types.Atom;
-import lambda.rodeo.lang.types.Type;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
 
 @ToString
-public class SubtractAst implements ExpressionAst {
+@Builder
+@Getter
+public class SubtractAst implements BiNumericExpressionAst {
 
-  private final Type type;
   private final ExpressionAst lhs;
   private final ExpressionAst rhs;
-
-  public SubtractAst(ExpressionAst lhs, ExpressionAst rhs, TypeScope typeScope,
-      CompileContext compileContext) {
-    this.lhs = lhs;
-    this.rhs = rhs;
-    if (AstUtils.isAnyUndefined(lhs, rhs)) {
-      type = Atom.UNDEFINED_VAR;
-    } else if (AstUtils.bothIntType(lhs, rhs, typeScope)) {
-      type = lhs.getType();
-    } else {
-      throw new TypeException(
-          "Cannot add types " + lhs.getType() + " and " + rhs.getType());
-    }
-  }
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   @Override
-  public Type getType() {
-    return type;
-  }
-
-  @Override
-  public void compile(MethodVisitor methodVisitor,
+  public void compile(
+      TypedExpressionAst lhs,
+      TypedExpressionAst rhs,
+      MethodVisitor methodVisitor,
       CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);
     rhs.compile(methodVisitor, compileContext);

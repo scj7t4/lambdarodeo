@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.compilation;
 
+import lambda.rodeo.lang.AstNode;
 import lombok.Builder;
 import lombok.Getter;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -18,13 +19,13 @@ public class CompileError {
   private final String errorMsg;
 
   public static CompileError undefinedVariableError(String variableName,
-      ParserRuleContext ruleContext) {
+     AstNode astNode) {
     return CompileError.builder()
         .errorType(UNDEFINED_VAR)
         .errorMsg("Variable '" + variableName + "' is not defined in the current scope")
-        .startLine(ruleContext.getStart().getLine())
-        .endLine(ruleContext.getStop().getLine())
-        .characterStart(ruleContext.getStart().getCharPositionInLine())
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
         .build();
   }
 

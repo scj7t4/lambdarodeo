@@ -37,6 +37,7 @@ public class UnaryMinusAst implements ExpressionAst {
           .build();
     } else if (AstUtils.isIntType(type)) {
       return SimpleTypedExpressionAst.builder()
+          .compileableExpr((mv, cc) -> this.compile(typedOperand, mv, cc))
           .type(type)
           .build();
     } else {

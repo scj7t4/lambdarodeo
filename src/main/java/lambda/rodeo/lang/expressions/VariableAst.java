@@ -35,7 +35,7 @@ public class VariableAst implements ExpressionAst {
     //TODO: Fix context...
     if (Objects.equals(UNDEFINED_VAR, type)) {
       compileContext.getCompileErrorCollector()
-          .collect(CompileError.undefinedVariableError(name, null));
+          .collect(CompileError.undefinedVariableError(name, this));
       return AtomAst.builder()
           .atom(UNDEFINED_VAR)
           .build()

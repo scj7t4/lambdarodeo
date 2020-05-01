@@ -32,4 +32,12 @@ public class ModuleAst implements AstNode {
             .collect(Collectors.toList()))
         .build();
   }
+
+  public String getInternalJavaName() {
+    return getName().replace(".", "/");
+  }
+
+  public String getModuleJVMDescriptor() {
+    return "L" + getInternalJavaName() + ";";
+  }
 }

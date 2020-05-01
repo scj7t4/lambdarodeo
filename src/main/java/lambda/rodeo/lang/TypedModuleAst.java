@@ -26,9 +26,7 @@ public class TypedModuleAst {
   private final ModuleAst moduleAst;
   private final List<TypedFunctionAst> functionAsts;
 
-  public String getInternalJavaName() {
-    return moduleAst.getName().replace(".", "/");
-  }
+
 
   public byte[] compile(CompileContext compileContext) {
     // Tell ASM we want it to compute max stack and frames.
@@ -82,13 +80,17 @@ public class TypedModuleAst {
     return cw.toByteArray();
   }
 
-  public String getModuleJVMDescriptor() {
-    return "L" + getInternalJavaName() + ";";
-  }
-
   public Optional<TypedFunctionAst> getFunction(String funcName) {
     return functionAsts.stream()
         .filter(x -> Objects.equals(funcName, x.getName()))
         .findAny();
+  }
+
+  public String getInternalJavaName() {
+    return getModuleAst().getInternalJavaName();
+  }
+
+  public String getModuleJVMDescriptor() {
+    return getModuleAst().getModuleJVMDescriptor();
   }
 }

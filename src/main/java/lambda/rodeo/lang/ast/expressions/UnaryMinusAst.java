@@ -4,7 +4,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.exceptions.TypeException;
-import lambda.rodeo.lang.ast.statements.TypeScope;
+import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpressionAst;
 import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
 import lambda.rodeo.lang.types.Atom;

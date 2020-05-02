@@ -1,7 +1,9 @@
-package lambda.rodeo.lang.ast.statements;
+package lambda.rodeo.lang.typed.statements;
 
+import lambda.rodeo.lang.ast.statements.StatementAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
+import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;

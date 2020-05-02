@@ -8,7 +8,7 @@ import java.util.List;
 import lambda.rodeo.lang.ast.functions.FunctionAst;
 import lambda.rodeo.lang.ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.ast.statements.TypeScope;
+import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;

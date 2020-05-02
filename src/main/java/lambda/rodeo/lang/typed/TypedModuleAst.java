@@ -12,6 +12,7 @@ import java.util.Optional;
 import lambda.rodeo.lang.ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.typed.functions.TypedFunctionAst;
+import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
@@ -26,7 +27,7 @@ public class TypedModuleAst {
 
   private final ModuleAst moduleAst;
   private final List<TypedFunctionAst> functionAsts;
-
+  private final TypeScope moduleScope;
 
 
   public byte[] compile(CompileContext compileContext) {

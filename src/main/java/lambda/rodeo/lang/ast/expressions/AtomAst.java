@@ -5,7 +5,7 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.ast.statements.TypeScope;
+import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpressionAst;
 import lambda.rodeo.lang.types.Atom;
 import lombok.Builder;

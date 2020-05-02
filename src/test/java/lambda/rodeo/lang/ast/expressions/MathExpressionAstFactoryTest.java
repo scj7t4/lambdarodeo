@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.ast.statements.TypeScope;
+import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.TestUtils;

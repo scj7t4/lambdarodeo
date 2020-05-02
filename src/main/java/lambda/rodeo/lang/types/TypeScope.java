@@ -1,10 +1,9 @@
-package lambda.rodeo.lang.ast.statements;
+package lambda.rodeo.lang.types;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.Label;

@@ -3,7 +3,7 @@ package lambda.rodeo.lang.ast.expressions;
 import static org.objectweb.asm.Opcodes.ALOAD;
 
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.ast.statements.TypeScope.Entry;
+import lambda.rodeo.lang.types.TypeScope.Entry;
 import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;

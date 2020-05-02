@@ -1,11 +1,13 @@
-package lambda.rodeo.lang.ast.statements;
+package lambda.rodeo.lang.typed.statements;
 
 
 import static org.objectweb.asm.Opcodes.ASTORE;
 
+import lambda.rodeo.lang.ast.statements.SimpleAssignmentAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
-import lambda.rodeo.lang.ast.statements.TypeScope.Entry;
+import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.types.TypeScope.Entry;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;

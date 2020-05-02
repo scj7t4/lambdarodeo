@@ -3,6 +3,9 @@ package lambda.rodeo.lang.ast.statements;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
+import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.typed.statements.TypedAssignmentAst;
+import lambda.rodeo.lang.typed.statements.TypedStatementAst;
 import lombok.Builder;
 import lombok.Getter;
 

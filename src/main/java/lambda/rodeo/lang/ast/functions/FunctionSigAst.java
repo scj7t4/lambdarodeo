@@ -3,7 +3,7 @@ package lambda.rodeo.lang.ast.functions;
 import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.ast.statements.TypeScope;
+import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.functions.TypedVarAst;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;

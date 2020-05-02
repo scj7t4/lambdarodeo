@@ -8,10 +8,12 @@ import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.statements.TypedStatement;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class TypedFunctionBody {
 
   private final TypeScope initialTypeScope;
@@ -19,8 +21,7 @@ public class TypedFunctionBody {
   private final FunctionBodyAst functionBodyAst;
 
 
-  public CompileableFunctionBody toCompileableFunctionBody(
-      List<TypedModule> modules) {
+  public CompileableFunctionBody toCompileableFunctionBody(List<TypedModule> modules) {
     return CompileableFunctionBody.builder()
         .initialTypeScope(initialTypeScope.toCompileableTypeScope(modules))
         .typedFunctionBody(this)

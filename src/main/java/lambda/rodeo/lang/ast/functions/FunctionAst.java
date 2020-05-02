@@ -3,8 +3,10 @@ package lambda.rodeo.lang.ast.functions;
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
+import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /*
  * Function is composed of multiple statements A -> B -> C -> D
@@ -14,17 +16,19 @@ import lombok.Data;
  */
 @Data
 @Builder
+@EqualsAndHashCode
 //TODO: Compile error when types don't agree
 public class FunctionAst {
 
   private final FunctionSigAst functionSignature;
   private final FunctionBodyAst functionBodyAst;
 
-  public TypedFunction toTypedFunctionAst(CompileContext compileContext) {
+  public TypedFunction toTypedFunctionAst(TypeScope moduleScope, CompileContext compileContext) {
     return TypedFunction.builder()
         .functionAst(this)
-        .typedFunctionBody(functionBodyAst.toTypedFunctionBodyAst(
-            functionSignature.getInitialTypeScope(),
+        .typedFunctionBody(
+            functionBodyAst.toTypedFunctionBodyAst(
+            functionSignature.getInitialTypeScope(moduleScope),
             compileContext))
         .functionSigAst(functionSignature)
         .build();

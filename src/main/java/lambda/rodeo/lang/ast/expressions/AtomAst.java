@@ -12,11 +12,13 @@ import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.types.Atom;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class AtomAst implements ExpressionAst, Compileable {
 
   private final Atom atom;

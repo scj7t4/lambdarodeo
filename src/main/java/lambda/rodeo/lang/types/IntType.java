@@ -2,7 +2,9 @@ package lambda.rodeo.lang.types;
 
 import java.math.BigInteger;
 import lambda.rodeo.lang.typed.TypedModule;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class IntType implements Type, CompileableType {
 
   public static final IntType INSTANCE = new IntType();

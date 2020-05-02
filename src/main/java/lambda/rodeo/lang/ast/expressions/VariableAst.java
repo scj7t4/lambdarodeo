@@ -13,10 +13,12 @@ import lambda.rodeo.lang.types.TypeScope.Entry;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class VariableAst implements ExpressionAst {
 
   private final String name;

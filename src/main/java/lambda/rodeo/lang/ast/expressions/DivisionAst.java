@@ -5,6 +5,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
@@ -12,6 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 @ToString
 @Builder
 @Getter
+@EqualsAndHashCode
 public class DivisionAst implements BiNumericExpressionAst {
 
   private final ExpressionAst lhs;

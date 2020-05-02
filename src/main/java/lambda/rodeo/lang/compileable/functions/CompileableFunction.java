@@ -12,6 +12,7 @@ import lambda.rodeo.lang.typed.functions.TypedFunction;
 import lambda.rodeo.lang.types.CompileableTypeScope;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -20,6 +21,7 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileableFunction {
   private final TypedFunction typedFunction;
   private final CompileableFunctionBody functionBodyAst;

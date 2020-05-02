@@ -8,10 +8,12 @@ import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.statements.TypedStatement;
 import lambda.rodeo.lang.typed.functions.TypedFunctionBody;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 public class FunctionBodyAst {
 
   private final List<StatementAst> statements;

@@ -7,18 +7,19 @@ import lambda.rodeo.lang.compileable.CompileableModule;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class TypedModule {
 
   private final ModuleAst moduleAst;
   private final List<TypedFunction> functionAsts;
   private final TypeScope moduleScope;
 
-  public CompileableModule toCompileableModule(
-      List<TypedModule> modules) {
+  public CompileableModule toCompileableModule(List<TypedModule> modules) {
     return CompileableModule.builder()
         .compileableFunctions(functionAsts.stream()
             .map(fn -> fn.toCompileableFunction(modules))

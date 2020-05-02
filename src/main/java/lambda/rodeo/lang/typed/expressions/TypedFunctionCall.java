@@ -7,10 +7,12 @@ import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class TypedFunctionCall implements TypedExpression {
 
   private final TypeScope typeScope;

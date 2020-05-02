@@ -6,10 +6,12 @@ import lambda.rodeo.lang.typed.statements.TypedAssignment;
 import lambda.rodeo.lang.typed.statements.TypedSimpleAssignment;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class SimpleAssignmentAst implements AssigmentAst {
 
   private final String identifier;

@@ -7,6 +7,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compileable.expression.SimpleCompilableExpr;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
@@ -14,6 +15,7 @@ import org.objectweb.asm.MethodVisitor;
 @Builder
 @Getter
 @ToString
+@EqualsAndHashCode
 public class SimpleTypedExpression implements TypedExpression, Compileable {
   private final ExpressionAst expr;
   private final Type type;

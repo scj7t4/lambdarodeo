@@ -31,13 +31,13 @@ public class CompileError {
         .build();
   }
 
-  public static CompileError lastStatementCannotBeAssignment(ParserRuleContext ruleContext) {
+  public static CompileError lastStatementCannotBeAssignment(AstNode astNode) {
     return CompileError.builder()
         .errorType(POINTLESS_ASSIGNMENT)
         .errorMsg("Assigning to a variable as the last statement of a function body is pointless")
-        .startLine(ruleContext.getStart().getLine())
-        .endLine(ruleContext.getStop().getLine())
-        .characterStart(ruleContext.getStart().getCharPositionInLine())
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
         .build();
   }
 

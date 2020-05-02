@@ -13,10 +13,12 @@ import lambda.rodeo.lang.types.ModuleType;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 @Data
 @Builder
+@EqualsAndHashCode
 public class ModuleAst implements AstNode {
 
   public static final String THIS_MODULE = "$this";
@@ -31,14 +33,15 @@ public class ModuleAst implements AstNode {
   private final int characterStart;
 
   public TypedModule toTypedModuleAst(CompileContext compileContext) {
-    TypeScope moduleScope = TypeScope.EMPTY.declare(
+    final TypeScope initialModuleScope = TypeScope.EMPTY.declare(
         THIS_MODULE, ModuleType.builder().moduleAst(this).build());
 
     List<TypedFunction> typedFunctions = functionAsts
         .stream()
-        .map(fn -> fn.toTypedFunctionAst(compileContext))
+        .map(fn -> fn.toTypedFunctionAst(initialModuleScope, compileContext))
         .collect(Collectors.toList());
 
+    TypeScope moduleScope = initialModuleScope;
     for(TypedFunction functionAst : typedFunctions) {
       moduleScope = moduleScope.declare(
           functionAst.getName(),

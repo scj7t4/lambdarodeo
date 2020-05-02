@@ -6,8 +6,10 @@ import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionSigContext;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.functions.FunctionAst.FunctionAstBuilder;
+import lambda.rodeo.lang.ast.statements.StatementAst;
+import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionAstFactory extends LambdaRodeoBaseListener {
@@ -33,8 +35,15 @@ public class FunctionAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterFunctionBody(FunctionBodyContext ctx) {
-    this.functionBodyAst = new FunctionBodyAstFactory(ctx, functionSigAst, compileContext)
+    this.functionBodyAst = new FunctionBodyAstFactory(ctx, compileContext)
         .toAst();
+    List<StatementAst> statements = functionBodyAst.getStatements();
+    StatementAst lastStatement = statements.get(statements.size() - 1);
+    if (lastStatement.getAssignment() != null) {
+      compileContext.getCompileErrorCollector().collect(
+          CompileError.lastStatementCannotBeAssignment(lastStatement)
+      );
+    }
   }
 
   public FunctionAst toAst() {

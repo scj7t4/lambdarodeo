@@ -10,11 +10,13 @@ import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.types.IntType;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class IntConstantAst implements ExpressionAst, Compileable {
 
   private final String literal;

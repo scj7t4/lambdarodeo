@@ -3,9 +3,11 @@ package lambda.rodeo.lang.types;
 import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 @Builder
+@EqualsAndHashCode
 public class FunctionType implements Type, CompileableType {
   @NonNull
   private final TypedFunction functionAst;

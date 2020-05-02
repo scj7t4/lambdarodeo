@@ -6,11 +6,13 @@ import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.typed.statements.TypedStatement;
 import lambda.rodeo.lang.types.CompileableTypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileableStatement implements Compileable {
 
   private final TypedStatement typedStatement;

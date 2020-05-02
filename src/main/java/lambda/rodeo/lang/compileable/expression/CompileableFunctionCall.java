@@ -4,11 +4,13 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.typed.expressions.TypedFunctionCall;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileableFunctionCall implements CompileableExpr {
   private final TypedFunctionCall typedExpression;
 

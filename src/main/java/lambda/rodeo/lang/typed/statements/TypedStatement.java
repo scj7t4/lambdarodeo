@@ -8,10 +8,12 @@ import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class TypedStatement {
 
   private final StatementAst statementAst;

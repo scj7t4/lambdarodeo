@@ -14,6 +14,7 @@ import lambda.rodeo.lang.compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.types.CompileableTypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -23,6 +24,7 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileableModule {
 
   private final TypedModule typedModule;

@@ -11,11 +11,13 @@ import lambda.rodeo.lang.compileable.expression.SimpleCompilableExpr;
 import lambda.rodeo.lang.types.TypeScope.Entry;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 public class TypedVariable implements TypedExpression, Compileable {
 
   private final VariableAst variableAst;

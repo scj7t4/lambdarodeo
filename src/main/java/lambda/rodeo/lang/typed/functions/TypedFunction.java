@@ -7,10 +7,12 @@ import lambda.rodeo.lang.ast.functions.TypedVar;
 import lambda.rodeo.lang.compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.typed.TypedModule;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class TypedFunction {
   private final FunctionAst functionAst;
   private final TypedFunctionBody typedFunctionBody;

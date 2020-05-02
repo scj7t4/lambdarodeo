@@ -11,6 +11,7 @@ import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
@@ -18,6 +19,7 @@ import org.objectweb.asm.MethodVisitor;
 @ToString
 @Builder
 @Getter
+@EqualsAndHashCode
 public class UnaryMinusAst implements ExpressionAst {
 
   private final ExpressionAst operand;

@@ -10,11 +10,13 @@ import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.types.TypeScope.Entry;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class TypedSimpleAssignment implements TypedAssignment, CompileableAssignment {
   private final SimpleAssignmentAst assignmentAst;
   private final TypeScope typeScope;

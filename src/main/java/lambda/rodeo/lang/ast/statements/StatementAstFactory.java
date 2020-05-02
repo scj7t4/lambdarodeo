@@ -30,14 +30,14 @@ public class StatementAstFactory extends LambdaRodeoBaseListener {
       simpleAssignmentAst = assignmentAstFactory.toAst();
     }
 
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(ctx.expr()
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(ctx.expr());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
-
-
 
     builder = builder
         .assignment(simpleAssignmentAst)
-        .expression(expressionAst);
+        .expression(expressionAst)
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine());
   }
 }

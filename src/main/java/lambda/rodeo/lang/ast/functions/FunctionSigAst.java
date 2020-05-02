@@ -6,10 +6,12 @@ import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class FunctionSigAst implements AstNode {
   private final String name;
   @Builder.Default
@@ -19,8 +21,8 @@ public class FunctionSigAst implements AstNode {
   private final int characterStart;
   private final Type declaredReturnType;
 
-  public TypeScope getInitialTypeScope() {
-    TypeScope typeScope = new TypeScope();
+  public TypeScope getInitialTypeScope(TypeScope moduleScope) {
+    TypeScope typeScope = moduleScope;
     for (TypedVar arg : arguments) {
       typeScope = typeScope.declare(arg.getName(), arg.getType());
     }

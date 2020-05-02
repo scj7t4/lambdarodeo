@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.types.TypeScope.Entry;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 public class CompileableTypeScope {
 
+  @NonNull
   private final List<Entry> scope;
 
   @Builder

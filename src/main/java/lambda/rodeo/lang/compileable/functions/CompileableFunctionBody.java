@@ -8,11 +8,13 @@ import lambda.rodeo.lang.types.CompileableTypeScope;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileableFunctionBody {
 
   private final CompileableTypeScope initialTypeScope;

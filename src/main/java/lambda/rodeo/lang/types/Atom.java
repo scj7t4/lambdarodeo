@@ -1,8 +1,8 @@
 package lambda.rodeo.lang.types;
 
-import lambda.rodeo.lang.expressions.AtomAst;
-import lambda.rodeo.lang.expressions.SimpleTypedExpressionAst;
-import lambda.rodeo.lang.functions.Result;
+import lambda.rodeo.lang.ast.expressions.AtomAst;
+import lambda.rodeo.lang.typed.expressions.SimpleTypedExpressionAst;
+import lambda.rodeo.lang.ast.functions.Result;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode

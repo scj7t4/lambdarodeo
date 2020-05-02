@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.types;
 
-import lambda.rodeo.lang.functions.FunctionAst;
+import lambda.rodeo.lang.ast.functions.FunctionAst;
 import lombok.Builder;
 import lombok.NonNull;
 

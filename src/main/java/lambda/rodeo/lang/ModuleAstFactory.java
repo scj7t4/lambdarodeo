@@ -2,14 +2,15 @@ package lambda.rodeo.lang;
 
 import java.util.ArrayList;
 import java.util.List;
-import lambda.rodeo.lang.ModuleAst.ModuleAstBuilder;
+import lambda.rodeo.lang.ast.ModuleAst;
+import lambda.rodeo.lang.ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleIdentifierContext;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.functions.FunctionAst;
-import lambda.rodeo.lang.functions.FunctionAstFactory;
+import lambda.rodeo.lang.ast.functions.FunctionAst;
+import lambda.rodeo.lang.ast.functions.FunctionAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class ModuleAstFactory extends LambdaRodeoBaseListener {

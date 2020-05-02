@@ -3,7 +3,7 @@ package lambda.rodeo.lang.utils;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.PrintWriter;
-import lambda.rodeo.lang.ModuleAst;
+import lambda.rodeo.lang.ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.objectweb.asm.ClassReader;

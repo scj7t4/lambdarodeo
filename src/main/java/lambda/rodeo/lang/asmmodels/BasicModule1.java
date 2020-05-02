@@ -1,8 +1,6 @@
 package lambda.rodeo.lang.asmmodels;
 
 import java.math.BigInteger;
-import lambda.rodeo.lang.functions.Result;
-import lambda.rodeo.lang.types.Atom;
 
 public class BasicModule1 {
 

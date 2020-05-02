@@ -3,7 +3,7 @@ package lambda.rodeo.lang.compilation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import lambda.rodeo.lang.ModuleAst;
+import lambda.rodeo.lang.ast.ModuleAst;
 
 public class CompiledModules {
 

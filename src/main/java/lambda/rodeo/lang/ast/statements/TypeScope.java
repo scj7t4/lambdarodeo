@@ -60,7 +60,7 @@ public class TypeScope {
           start,
           end,
           scopeEntry.getIndex());
-
+ZZ
        */
     }
   }

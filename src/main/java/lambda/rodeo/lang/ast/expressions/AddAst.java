@@ -22,6 +22,11 @@ public class AddAst implements BiNumericExpressionAst {
   private final int endLine;
   private final int characterStart;
 
+  @Override
+  public String operationName() {
+    return "addition (+)";
+  }
+
   public void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
       CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);

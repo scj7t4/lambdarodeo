@@ -21,6 +21,11 @@ public class DivisionAst implements BiNumericExpressionAst {
   private final int characterStart;
 
   @Override
+  public String operationName() {
+    return "division (/)";
+  }
+
+  @Override
   public void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
       CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);

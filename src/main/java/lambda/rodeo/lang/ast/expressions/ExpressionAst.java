@@ -5,8 +5,12 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 
+/**
+ * Type representing an expression. Expressions are segments of the language the represent
+ * manipulating data.
+ */
 public interface ExpressionAst extends AstNode {
 
-  TypedExpression toTypedExpressionAst(TypeScope scope, CompileContext compileContext);
+  TypedExpression toTypedExpression(TypeScope scope, CompileContext compileContext);
 
 }

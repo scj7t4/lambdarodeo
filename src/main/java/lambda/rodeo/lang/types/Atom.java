@@ -1,15 +1,15 @@
 package lambda.rodeo.lang.types;
 
 import lambda.rodeo.lang.ast.expressions.AtomAst;
+import lambda.rodeo.lang.ast.functions.Result;
 import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
-import lambda.rodeo.lang.ast.functions.Result;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class Atom implements Type, Result, CompileableType {
 
-  public static final Atom UNDEFINED_VAR = new Atom("$UNDEFINED");
+  public static final Atom UNDEFINED = new Atom("$UNDEFINED");
   public static final Atom NULL = new Atom("null");
 
   private final String atom;

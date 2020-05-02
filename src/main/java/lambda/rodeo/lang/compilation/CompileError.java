@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.compilation;
 
 import lambda.rodeo.lang.AstNode;
+import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -11,6 +12,7 @@ public class CompileError {
 
   public static final String UNDEFINED_VAR = "UNDEFINED_VARIABLE";
   public static final String POINTLESS_ASSIGNMENT = "POINTLESS_ASSIGNMENT";
+  public static final String ILLEGAL_MATH_OPERATION = "ILLEGAL_MATH_OPERATION";
 
   private final int startLine;
   private final int endLine;
@@ -36,6 +38,17 @@ public class CompileError {
         .startLine(ruleContext.getStart().getLine())
         .endLine(ruleContext.getStop().getLine())
         .characterStart(ruleContext.getStart().getCharPositionInLine())
+        .build();
+  }
+
+  public static CompileError mathOperationWithNonNumeric(AstNode astNode,
+      String operation, Type lhsType, Type rhsType) {
+    return CompileError.builder()
+        .errorType(ILLEGAL_MATH_OPERATION)
+        .errorMsg("Cannot do " + operation + " with '" + lhsType + "' and '" + rhsType + "'")
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
         .build();
   }
 }

@@ -18,7 +18,7 @@ public class StatementAst {
 
 
   public TypedStatement toTypedStatementAst(TypeScope before, CompileContext compileContext) {
-    TypedExpression typedExpr = getExpression().toTypedExpressionAst(before, compileContext);
+    TypedExpression typedExpr = getExpression().toTypedExpression(before, compileContext);
     TypeScope after = before;
     TypedAssignment typedAssignment = null;
     if (assignment != null) {

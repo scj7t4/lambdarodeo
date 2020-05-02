@@ -18,7 +18,7 @@ public class FunctionCallAst implements ExpressionAst{
   private final int characterStart;
 
   @Override
-  public SimpleTypedExpression toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+  public SimpleTypedExpression toTypedExpression(TypeScope typeScope, CompileContext compileContext) {
     return null; //TODO determine type
   }
 }

@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.ast.expressions;
 
 
-import static lambda.rodeo.lang.types.Atom.UNDEFINED_VAR;
+import static lambda.rodeo.lang.types.Atom.UNDEFINED;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -25,21 +25,21 @@ public class VariableAst implements ExpressionAst {
   private final int characterStart;
 
   @Override
-  public TypedExpression toTypedExpressionAst(
+  public TypedExpression toTypedExpression(
       TypeScope typeScope,
       CompileContext compileContext) {
     Optional<Entry> entry = typeScope.get(name);
     Type type = entry
         .map(Entry::getType)
-        .orElse(UNDEFINED_VAR);
+        .orElse(UNDEFINED);
     //TODO: Fix context...
-    if (Objects.equals(UNDEFINED_VAR, type)) {
+    if (Objects.equals(UNDEFINED, type)) {
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedVariableError(name, this));
       return AtomAst.builder()
-          .atom(UNDEFINED_VAR)
+          .atom(UNDEFINED)
           .build()
-          .toTypedExpressionAst(typeScope, compileContext);
+          .toTypedExpression(typeScope, compileContext);
     } else {
       return TypedVariable.builder()
           .scopeEntry(entry.get())

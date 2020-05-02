@@ -1,21 +1,35 @@
 package lambda.rodeo.lang.ast.expressions;
 
+import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compileable.expression.Compileable;
 import lambda.rodeo.lang.compileable.expression.CompileableExpr;
-import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.exceptions.TypeException;
-import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
+import lambda.rodeo.lang.types.TypeScope;
 import org.objectweb.asm.MethodVisitor;
 
+/**
+ * Represents a mathematical operation that has two operands.
+ */
 public interface BiNumericExpressionAst extends ExpressionAst {
 
   ExpressionAst getLhs();
+
   ExpressionAst getRhs();
 
+  String operationName();
+
+  /**
+   * Compile this expression to Java Byte Code.
+   *
+   * @param lhs The left hand side of the operation.
+   * @param rhs The right hand side of the operation.
+   * @param methodVisitor The ASM code writer.
+   * @param compileContext The compile context.
+   */
   void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
       CompileContext compileContext);
 
@@ -27,17 +41,24 @@ public interface BiNumericExpressionAst extends ExpressionAst {
         methodVisitor, compileContext);
   }
 
+  /**
+   * Converts this to a TypedExpression
+   *
+   * @param typeScope The type scope.
+   * @param compileContext The compile context.
+   * @return A typed version of this expression.
+   */
   @Override
-  default TypedExpression toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+  default TypedExpression toTypedExpression(TypeScope typeScope, CompileContext compileContext) {
     TypedExpression typedLhs = getLhs()
-        .toTypedExpressionAst(typeScope, compileContext);
+        .toTypedExpression(typeScope, compileContext);
     Type left = typedLhs.getType();
     TypedExpression typedRhs = getRhs()
-        .toTypedExpressionAst(typeScope, compileContext);
+        .toTypedExpression(typeScope, compileContext);
     Type right = typedRhs.getType();
 
     if (AstUtils.isAnyUndefined(left, right)) {
-      return Atom.UNDEFINED_VAR.toTypedExpressionAst();
+      return Atom.UNDEFINED.toTypedExpressionAst();
     } else if (AstUtils.bothIntType(left, right)) {
       return SimpleTypedExpression.builder()
           .expr(this)
@@ -45,8 +66,12 @@ public interface BiNumericExpressionAst extends ExpressionAst {
           .compileable(toCompilable(typedLhs, typedRhs, this))
           .build();
     } else {
-      //TODO: Compile error instead
-      throw new TypeException("Cannot add types " + left + " and " + right);
+      compileContext.getCompileErrorCollector()
+          .collect(CompileError.mathOperationWithNonNumeric(
+              this,
+              this.operationName(),
+              left, right));
+      return Atom.UNDEFINED.toTypedExpressionAst();
     }
   }
 

@@ -25,7 +25,7 @@ public class AtomAst implements ExpressionAst, Compileable {
   private final int characterStart;
 
   @Override
-  public SimpleTypedExpression toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+  public SimpleTypedExpression toTypedExpression(TypeScope typeScope, CompileContext compileContext) {
     return SimpleTypedExpression.builder()
         .compileable(this)
         .type(atom)

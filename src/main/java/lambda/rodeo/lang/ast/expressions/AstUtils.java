@@ -20,7 +20,7 @@ public class AstUtils {
 
   public static boolean isAnyUndefined(Type... types) {
     for (Type type : types) {
-      if (Objects.equals(Atom.UNDEFINED_VAR, type)) {
+      if (Objects.equals(Atom.UNDEFINED, type)) {
         return true;
       }
     }

@@ -21,6 +21,11 @@ public class SubtractAst implements BiNumericExpressionAst {
   private final int characterStart;
 
   @Override
+  public String operationName() {
+    return "subtraction (-)";
+  }
+
+  @Override
   public void compile(
       CompileableExpr lhs,
       CompileableExpr rhs,

@@ -26,15 +26,15 @@ public class UnaryMinusAst implements ExpressionAst {
   private final int characterStart;
 
   @Override
-  public SimpleTypedExpression toTypedExpressionAst(TypeScope typeScope,
+  public SimpleTypedExpression toTypedExpression(TypeScope typeScope,
       CompileContext compileContext) {
     TypedExpression typedOperand = operand
-        .toTypedExpressionAst(typeScope, compileContext);
+        .toTypedExpression(typeScope, compileContext);
     Type type = typedOperand.getType();
 
     if (AstUtils.isAnyUndefined(type)) {
       return SimpleTypedExpression.builder()
-          .type(Atom.UNDEFINED_VAR)
+          .type(Atom.UNDEFINED)
           .expr(this)
           .compileable((mv, cc) -> compile(typedOperand.toCompileableExpr(), mv, cc))
           .build();

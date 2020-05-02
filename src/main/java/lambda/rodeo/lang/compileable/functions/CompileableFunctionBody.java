@@ -17,7 +17,7 @@ public class CompileableFunctionBody {
 
   private final CompileableTypeScope initialTypeScope;
   private final List<CompileableStatement> statements;
-  private final TypedFunctionBody functionBodyAst;
+  private final TypedFunctionBody typedFunctionBody;
 
 
   public Type getReturnType() {

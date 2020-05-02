@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.typed.statements;
 
 import java.util.List;
+import java.util.Optional;
 import lambda.rodeo.lang.ast.statements.StatementAst;
 import lambda.rodeo.lang.compileable.statement.CompileableStatement;
 import lambda.rodeo.lang.typed.TypedModule;
@@ -25,7 +26,9 @@ public class TypedStatement {
         .afterTypeScope(afterTypeScope.toCompileableTypeScope(modules))
         .beforeTypeScope(beforeTypeScope.toCompileableTypeScope(modules))
         .compileableExpr(typedExpression.toCompileableExpr())
-        .compileableAssignment(typedAssignment.toCompileableAssignment())
+        .compileableAssignment(Optional.ofNullable(typedAssignment)
+            .map(TypedAssignment::toCompileableAssignment)
+            .orElse(null))
         .typedStatement(this)
         .build();
   }

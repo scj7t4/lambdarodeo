@@ -45,7 +45,22 @@ public class TypeScope {
   }
 
   public CompileableTypeScope toCompileableTypeScope(List<TypedModule> modules) {
-    return null;
+    List<CompileableTypeScope.Entry> entries = new ArrayList<>();
+
+    for (Entry entry : scope) {
+      CompileableTypeScope.Entry converted = CompileableTypeScope.Entry.builder()
+          .index(entry.index)
+          .name(entry.name)
+          // TODO: get(0) is wrong
+          .type(entry.type.toCompileableType(modules.get(0)))
+          .build();
+      entries.add(converted);
+    }
+
+    return CompileableTypeScope
+        .builder()
+        .scope(entries)
+        .build();
   }
 
   @Builder

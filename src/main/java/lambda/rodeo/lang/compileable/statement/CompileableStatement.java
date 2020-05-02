@@ -22,6 +22,11 @@ public class CompileableStatement implements Compileable {
 
   @Override
   public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
-
+    compileableExpr.compile(methodVisitor,
+        compileContext); // So this should hopefully mean that the result of the
+    // computation is on the top of the stack...
+    if (compileableAssignment != null) {
+      compileableAssignment.compile(methodVisitor, compileContext);
+    }
   }
 }

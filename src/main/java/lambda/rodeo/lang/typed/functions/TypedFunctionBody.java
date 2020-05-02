@@ -23,7 +23,7 @@ public class TypedFunctionBody {
       List<TypedModule> modules) {
     return CompileableFunctionBody.builder()
         .initialTypeScope(initialTypeScope.toCompileableTypeScope(modules))
-        .functionBodyAst(this)
+        .typedFunctionBody(this)
         .statements(statements.stream()
             .map(stmnt -> stmnt.toCompileableStatement(modules))
             .collect(Collectors.toList()))

@@ -9,13 +9,10 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 @Getter
+@Builder
 public class CompileableTypeScope {
 
   private final List<Entry> scope;
-
-  public CompileableTypeScope() {
-    scope = new ArrayList<>();
-  }
 
   @Builder
   @Getter

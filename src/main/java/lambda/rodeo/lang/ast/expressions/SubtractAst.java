@@ -3,7 +3,7 @@ package lambda.rodeo.lang.ast.expressions;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
+import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -22,8 +22,8 @@ public class SubtractAst implements BiNumericExpressionAst {
 
   @Override
   public void compile(
-      TypedExpressionAst lhs,
-      TypedExpressionAst rhs,
+      CompileableExpr lhs,
+      CompileableExpr rhs,
       MethodVisitor methodVisitor,
       CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);

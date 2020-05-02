@@ -2,8 +2,8 @@ package lambda.rodeo.lang.ast.statements;
 
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.TypeScope;
-import lambda.rodeo.lang.typed.statements.TypedAssignmentAst;
-import lambda.rodeo.lang.typed.statements.TypedSimpleAssignmentAst;
+import lambda.rodeo.lang.typed.statements.TypedAssignment;
+import lambda.rodeo.lang.typed.statements.TypedSimpleAssignment;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,8 +20,8 @@ public class SimpleAssignmentAst implements AssigmentAst {
   }
 
   @Override
-  public TypedAssignmentAst toTypedAssignmentAst(TypeScope after) {
-    return TypedSimpleAssignmentAst.builder()
+  public TypedAssignment toTypedAssignmentAst(TypeScope after) {
+    return TypedSimpleAssignment.builder()
         .assignmentAst(this)
         .typeScope(after)
         .build();

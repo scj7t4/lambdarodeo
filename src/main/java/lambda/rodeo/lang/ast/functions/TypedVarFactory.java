@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.typed.functions;
+package lambda.rodeo.lang.ast.functions;
 
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
@@ -6,15 +6,15 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.VarNameContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class TypedVarAstFactory extends LambdaRodeoBaseListener {
+public class TypedVarFactory extends LambdaRodeoBaseListener {
 
-  private TypedVarAst.TypedVarAstBuilder builder = TypedVarAst.builder();
+  private TypedVar.TypedVarBuilder builder = TypedVar.builder();
 
-  public TypedVarAstFactory(TypedVarContext ctx) {
+  public TypedVarFactory(TypedVarContext ctx) {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
-  public TypedVarAst toAst() {
+  public TypedVar toAst() {
     return builder.build();
   }
 

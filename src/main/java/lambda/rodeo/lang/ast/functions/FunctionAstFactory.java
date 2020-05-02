@@ -8,12 +8,11 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionSigContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.functions.FunctionAst.FunctionAstBuilder;
-import lambda.rodeo.lang.typed.functions.TypedVarAst;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionAstFactory extends LambdaRodeoBaseListener {
 
-  private final List<TypedVarAst> arguments = new ArrayList<>();
+  private final List<TypedVar> arguments = new ArrayList<>();
   private FunctionAstBuilder builder = FunctionAst.builder();
   private final CompileContext compileContext;
   private FunctionSigAst functionSigAst;

@@ -1,9 +1,9 @@
-package lambda.rodeo.lang.ast.expressions;
+package lambda.rodeo.lang.compileable.expression;
 
 import lambda.rodeo.lang.compilation.CompileContext;
 import org.objectweb.asm.MethodVisitor;
 
-public interface CompileableExpr {
+public interface Compileable {
 
   void compile(MethodVisitor methodVisitor, CompileContext compileContext);
 }

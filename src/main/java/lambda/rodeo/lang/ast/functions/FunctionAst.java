@@ -2,8 +2,7 @@ package lambda.rodeo.lang.ast.functions;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.typed.functions.TypedFunctionAst;
-import lambda.rodeo.lang.typed.functions.TypedVarAst;
+import lambda.rodeo.lang.typed.functions.TypedFunction;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,10 +20,10 @@ public class FunctionAst {
   private final FunctionSigAst functionSignature;
   private final FunctionBodyAst functionBodyAst;
 
-  public TypedFunctionAst toTypedFunctionAst(CompileContext compileContext) {
-    return TypedFunctionAst.builder()
+  public TypedFunction toTypedFunctionAst(CompileContext compileContext) {
+    return TypedFunction.builder()
         .functionAst(this)
-        .functionBodyAst(functionBodyAst.toTypedFunctionBodyAst(
+        .typedFunctionBody(functionBodyAst.toTypedFunctionBodyAst(
             functionSignature.getInitialTypeScope(),
             compileContext))
         .functionSigAst(functionSignature)
@@ -35,7 +34,7 @@ public class FunctionAst {
     return getFunctionSignature().getName();
   }
 
-  public List<TypedVarAst> getArguments() {
+  public List<TypedVar> getArguments() {
     return getFunctionSignature().getArguments();
   }
 }

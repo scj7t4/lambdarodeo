@@ -1,8 +1,9 @@
 package lambda.rodeo.lang.types;
 
 import java.math.BigInteger;
+import lambda.rodeo.lang.typed.TypedModule;
 
-public class IntType implements Type {
+public class IntType implements Type, CompileableType {
 
   public static final IntType INSTANCE = new IntType();
 
@@ -17,5 +18,15 @@ public class IntType implements Type {
   @Override
   public Class<?> javaType() {
     return BigInteger.class;
+  }
+
+  @Override
+  public CompileableType toCompileableType(TypedModule typedModule) {
+    return this;
+  }
+
+  @Override
+  public Type getType() {
+    return this;
   }
 }

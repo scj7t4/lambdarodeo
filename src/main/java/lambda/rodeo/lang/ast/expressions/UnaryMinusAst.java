@@ -3,10 +3,11 @@ package lambda.rodeo.lang.ast.expressions;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compileable.expression.Compileable;
 import lambda.rodeo.lang.exceptions.TypeException;
 import lambda.rodeo.lang.types.TypeScope;
-import lambda.rodeo.lang.typed.expressions.SimpleTypedExpressionAst;
-import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
+import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
+import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -25,21 +26,21 @@ public class UnaryMinusAst implements ExpressionAst {
   private final int characterStart;
 
   @Override
-  public SimpleTypedExpressionAst toTypedExpressionAst(TypeScope typeScope,
+  public SimpleTypedExpression toTypedExpressionAst(TypeScope typeScope,
       CompileContext compileContext) {
-    TypedExpressionAst typedOperand = operand
+    TypedExpression typedOperand = operand
         .toTypedExpressionAst(typeScope, compileContext);
     Type type = typedOperand.getType();
 
     if (AstUtils.isAnyUndefined(type)) {
-      return SimpleTypedExpressionAst.builder()
+      return SimpleTypedExpression.builder()
           .type(Atom.UNDEFINED_VAR)
           .expr(this)
-          .compileableExpr((mv, cc) -> compile(typedOperand, mv, cc))
+          .compileable((mv, cc) -> compile(typedOperand.toCompileableExpr(), mv, cc))
           .build();
     } else if (AstUtils.isIntType(type)) {
-      return SimpleTypedExpressionAst.builder()
-          .compileableExpr((mv, cc) -> this.compile(typedOperand, mv, cc))
+      return SimpleTypedExpression.builder()
+          .compileable((mv, cc) -> this.compile(typedOperand.toCompileableExpr(), mv, cc))
           .type(type)
           .build();
     } else {
@@ -49,7 +50,7 @@ public class UnaryMinusAst implements ExpressionAst {
   }
 
   public void compile(
-      TypedExpressionAst operand,
+      Compileable operand,
       MethodVisitor methodVisitor,
       CompileContext compileContext) {
     operand.compile(methodVisitor, compileContext);

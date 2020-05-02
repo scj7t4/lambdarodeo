@@ -3,9 +3,11 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
+import lambda.rodeo.lang.compileable.expression.Compileable;
+import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.types.TypeScope;
-import lambda.rodeo.lang.typed.expressions.SimpleTypedExpressionAst;
+import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.types.IntType;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
-public class IntConstantAst implements ExpressionAst, CompileableExpr {
+public class IntConstantAst implements ExpressionAst, Compileable {
 
   private final String literal;
   private final int startLine;
@@ -21,11 +23,11 @@ public class IntConstantAst implements ExpressionAst, CompileableExpr {
   private final int characterStart;
 
   @Override
-  public SimpleTypedExpressionAst toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
-    return SimpleTypedExpressionAst
+  public SimpleTypedExpression toTypedExpressionAst(TypeScope typeScope, CompileContext compileContext) {
+    return SimpleTypedExpression
         .builder()
         .type(IntType.INSTANCE)
-        .compileableExpr(this::compile)
+        .compileable(this::compile)
         .build();
   }
 

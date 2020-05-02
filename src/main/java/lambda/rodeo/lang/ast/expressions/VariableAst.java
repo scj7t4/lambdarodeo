@@ -7,9 +7,10 @@ import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.typed.expressions.TypedVariable;
 import lambda.rodeo.lang.types.TypeScope;
 import lambda.rodeo.lang.types.TypeScope.Entry;
-import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
+import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class VariableAst implements ExpressionAst {
   private final int characterStart;
 
   @Override
-  public TypedExpressionAst toTypedExpressionAst(
+  public TypedExpression toTypedExpressionAst(
       TypeScope typeScope,
       CompileContext compileContext) {
     Optional<Entry> entry = typeScope.get(name);
@@ -40,7 +41,7 @@ public class VariableAst implements ExpressionAst {
           .build()
           .toTypedExpressionAst(typeScope, compileContext);
     } else {
-      return TypedVariableAst.builder()
+      return TypedVariable.builder()
           .scopeEntry(entry.get())
           .variableAst(this)
           .build();

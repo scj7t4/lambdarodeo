@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import lambda.rodeo.lang.typed.TypedModule;
 import lombok.Builder;
 import lombok.Getter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
 
 @Getter
 public class TypeScope {
@@ -45,23 +44,8 @@ public class TypeScope {
         .findFirst();
   }
 
-  public void compile(MethodVisitor methodVisitor, Label start, Label end) {
-    for (Entry scopeEntry : scope) {
-      if (scopeEntry.getIndex() == -1) {
-        continue;
-      }
-
-      /*
-      methodVisitor.visitLocalVariable(
-          scopeEntry.getName(),
-          org.objectweb.asm.Type.getDescriptor(scopeEntry.getType().javaType()),
-          null,
-          start,
-          end,
-          scopeEntry.getIndex());
-ZZ
-       */
-    }
+  public CompileableTypeScope toCompileableTypeScope(List<TypedModule> modules) {
+    return null;
   }
 
   @Builder

@@ -1,13 +1,15 @@
-package lambda.rodeo.lang.typed.functions;
+package lambda.rodeo.lang.compileable.functions;
 
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ARETURN;
 
 import java.util.List;
-import lambda.rodeo.lang.ast.functions.FunctionAst;
 import lambda.rodeo.lang.ast.functions.FunctionSigAst;
+import lambda.rodeo.lang.ast.functions.TypedVar;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.typed.functions.TypedFunction;
+import lambda.rodeo.lang.types.CompileableTypeScope;
 import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,15 +20,15 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
-public class TypedFunctionAst {
-  private final FunctionAst functionAst;
-  private final TypedFunctionBodyAst functionBodyAst;
+public class CompileableFunction {
+  private final TypedFunction typedFunction;
+  private final CompileableFunctionBody functionBodyAst;
   private final FunctionSigAst functionSigAst;
 
   public String generateFunctionDescriptor() {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
-    for (TypedVarAst var : functionSigAst.getArguments()) {
+    for (TypedVar var : functionSigAst.getArguments()) {
       String descriptor = Type.getDescriptor(var.getType().javaType());
       sb.append(descriptor);
     }
@@ -56,7 +58,7 @@ public class TypedFunctionAst {
     Label endFunc = new Label();
     methodVisitor.visitLabel(endFunc);
 
-    TypeScope finalTypeScope = functionBodyAst.getFinalTypeScope();
+    CompileableTypeScope finalTypeScope = functionBodyAst.getFinalTypeScope();
     finalTypeScope.compile(methodVisitor, startFunc, endFunc);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
@@ -66,7 +68,7 @@ public class TypedFunctionAst {
     return getFunctionSigAst().getName();
   }
 
-  public List<TypedVarAst> getArguments() {
+  public List<TypedVar> getArguments() {
     return getFunctionSigAst().getArguments();
   }
 }

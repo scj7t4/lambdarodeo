@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.typed;
+package lambda.rodeo.lang.compileable;
 
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -9,10 +9,10 @@ import static org.objectweb.asm.Opcodes.V1_8;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import lambda.rodeo.lang.ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.typed.functions.TypedFunctionAst;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.typed.TypedModule;
+import lambda.rodeo.lang.types.CompileableTypeScope;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
@@ -23,11 +23,11 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
-public class TypedModuleAst {
+public class CompileableModule {
 
-  private final ModuleAst moduleAst;
-  private final List<TypedFunctionAst> functionAsts;
-  private final TypeScope moduleScope;
+  private final TypedModule typedModule;
+  private final List<CompileableFunction> compileableFunctions;
+  private final CompileableTypeScope moduleScope;
 
 
   public byte[] compile(CompileContext compileContext) {
@@ -74,7 +74,7 @@ public class TypedModuleAst {
       constructor.visitEnd();
     }
 
-    for (TypedFunctionAst func : functionAsts) {
+    for (CompileableFunction func : compileableFunctions) {
       func.compile(cw, compileContext);
     }
 
@@ -82,17 +82,17 @@ public class TypedModuleAst {
     return cw.toByteArray();
   }
 
-  public Optional<TypedFunctionAst> getFunction(String funcName) {
-    return functionAsts.stream()
+  public Optional<CompileableFunction> getFunction(String funcName) {
+    return compileableFunctions.stream()
         .filter(x -> Objects.equals(funcName, x.getName()))
         .findAny();
   }
 
   public String getInternalJavaName() {
-    return getModuleAst().getInternalJavaName();
+    return getTypedModule().getInternalJavaName();
   }
 
   public String getModuleJVMDescriptor() {
-    return getModuleAst().getModuleJVMDescriptor();
+    return getTypedModule().getModuleJVMDescriptor();
   }
 }

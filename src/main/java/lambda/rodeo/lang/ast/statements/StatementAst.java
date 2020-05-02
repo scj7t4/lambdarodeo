@@ -2,10 +2,10 @@ package lambda.rodeo.lang.ast.statements;
 
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.expressions.ExpressionAst;
-import lambda.rodeo.lang.typed.expressions.TypedExpressionAst;
+import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.TypeScope;
-import lambda.rodeo.lang.typed.statements.TypedAssignmentAst;
-import lambda.rodeo.lang.typed.statements.TypedStatementAst;
+import lambda.rodeo.lang.typed.statements.TypedAssignment;
+import lambda.rodeo.lang.typed.statements.TypedStatement;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,21 +17,21 @@ public class StatementAst {
   private final AssigmentAst assignment;
 
 
-  public TypedStatementAst toTypedStatementAst(TypeScope before, CompileContext compileContext) {
-    TypedExpressionAst typedExpr = getExpression().toTypedExpressionAst(before, compileContext);
+  public TypedStatement toTypedStatementAst(TypeScope before, CompileContext compileContext) {
+    TypedExpression typedExpr = getExpression().toTypedExpressionAst(before, compileContext);
     TypeScope after = before;
-    TypedAssignmentAst typedAssignmentAst = null;
+    TypedAssignment typedAssignment = null;
     if (assignment != null) {
       after = assignment.scopeAfter(before, compileContext, typedExpr.getType());
-      typedAssignmentAst = assignment.toTypedAssignmentAst(after);
+      typedAssignment = assignment.toTypedAssignmentAst(after);
     }
 
-    return TypedStatementAst.builder()
+    return TypedStatement.builder()
         .statementAst(this)
         .beforeTypeScope(before)
         .afterTypeScope(after)
-        .typedExpressionAst(typedExpr)
-        .typedAssignmentAst(typedAssignmentAst)
+        .typedExpression(typedExpr)
+        .typedAssignment(typedAssignment)
         .build();
   }
 }

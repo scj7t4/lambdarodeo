@@ -1,12 +1,13 @@
 package lambda.rodeo.lang.types;
 
 import lambda.rodeo.lang.ast.expressions.AtomAst;
-import lambda.rodeo.lang.typed.expressions.SimpleTypedExpressionAst;
+import lambda.rodeo.lang.typed.TypedModule;
+import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.ast.functions.Result;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class Atom implements Type, Result {
+public class Atom implements Type, Result, CompileableType {
 
   public static final Atom UNDEFINED_VAR = new Atom("$UNDEFINED");
   public static final Atom NULL = new Atom("null");
@@ -36,12 +37,22 @@ public class Atom implements Type, Result {
     return Atom.class;
   }
 
-  public SimpleTypedExpressionAst toTypedExpressionAst() {
-    return SimpleTypedExpressionAst.builder()
+  @Override
+  public CompileableType toCompileableType(TypedModule typedModule) {
+    return this;
+  }
+
+  public SimpleTypedExpression toTypedExpressionAst() {
+    return SimpleTypedExpression.builder()
         .type(this)
         .expr(AtomAst.builder()
             .atom(this)
             .build())
         .build();
+  }
+
+  @Override
+  public Type getType() {
+    return this;
   }
 }

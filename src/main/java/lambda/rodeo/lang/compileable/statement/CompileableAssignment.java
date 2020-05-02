@@ -1,8 +1,8 @@
-package lambda.rodeo.lang.typed.statements;
+package lambda.rodeo.lang.compileable.statement;
 
 import lambda.rodeo.lang.compilation.CompileContext;
 import org.objectweb.asm.MethodVisitor;
 
-public interface TypedAssignmentAst {
+public interface CompileableAssignment {
   void compile(MethodVisitor methodVisitor, CompileContext compileContext);
 }

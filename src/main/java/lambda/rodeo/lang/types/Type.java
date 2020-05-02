@@ -1,5 +1,7 @@
 package lambda.rodeo.lang.types;
 
+import lambda.rodeo.lang.typed.TypedModule;
+
 public interface Type {
 
   Class<?> javaType();
@@ -11,4 +13,6 @@ public interface Type {
   default String descriptor() {
     return org.objectweb.asm.Type.getDescriptor(javaType());
   }
+
+  CompileableType toCompileableType(TypedModule typedModule);
 }

@@ -11,7 +11,7 @@ moduleEntry: functionDef | interfaceDef;
 
 functionDef: 'def' functionSig functionBody;
 functionSig: functionName functionArgs '=>' returnType;
-functionBody: '{' statement+ '}';
+functionBody: '{' statement+ '}' | '{' case+ '}';
 functionName: IDENTIFIER;
 functionArgs:
   | '(' ')'
@@ -22,6 +22,11 @@ varType: typeExpression;
 returnType: typeExpression;
 typeExpression: intType | atom;
 intType: 'int';
+case: 'case' '(' caseArg+ ')' functionBody;
+caseArg: literal
+  | varName
+  | wildCard;
+wildCard: '*';
 
 statement: assignment? expr ';';
 atom: ':'IDENTIFIER;

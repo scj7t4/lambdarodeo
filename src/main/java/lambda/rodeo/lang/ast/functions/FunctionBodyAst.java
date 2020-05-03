@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.statements.StatementAst;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.typed.statements.TypedStatement;
 import lambda.rodeo.lang.typed.functions.TypedFunctionBody;
 import lombok.Builder;

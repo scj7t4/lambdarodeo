@@ -6,16 +6,20 @@ import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
 @EqualsAndHashCode
-public class SimpleCompilableExpr<T extends Compileable & TypedExpression>
-    implements CompileableExpr {
-  T typedExpression;
+public class SimpleCompilableExpr implements CompileableExpr {
+
+  @NonNull
+  TypedExpression typedExpression;
+  @NonNull
+  private final Compileable compileable;
 
   public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
-    typedExpression.compile(methodVisitor, compileContext);
+    compileable.compile(methodVisitor, compileContext);
   }
 }

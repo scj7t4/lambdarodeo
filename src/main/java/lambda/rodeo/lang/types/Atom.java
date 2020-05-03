@@ -2,7 +2,6 @@ package lambda.rodeo.lang.types;
 
 import lambda.rodeo.lang.ast.expressions.AtomAst;
 import lambda.rodeo.lang.ast.functions.Result;
-import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lombok.EqualsAndHashCode;
 
@@ -38,7 +37,7 @@ public class Atom implements Type, Result, CompileableType {
   }
 
   @Override
-  public CompileableType toCompileableType(TypedModule typedModule) {
+  public CompileableType toCompileableType() {
     return this;
   }
 

@@ -1,18 +1,38 @@
 package lambda.rodeo.lang.compileable.expression;
 
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+
+import java.util.List;
+import java.util.Objects;
+import lambda.rodeo.lang.ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.typed.expressions.TypedExpression;
+import lambda.rodeo.lang.exceptions.CriticalLanguageException;
+import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.typed.expressions.TypedFunctionCall;
+import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
 @Getter
 @EqualsAndHashCode
 public class CompileableFunctionCall implements CompileableExpr {
+
+  @NonNull
   private final TypedFunctionCall typedExpression;
+
+  @NonNull
+  private final List<CompileableExpr> args;
+
+  @NonNull
+  private final CompileableModuleScope compileableModuleScope;
+
+  public @NonNull ModuleAst getModuleAst() {
+    return compileableModuleScope.getThisScope().getThisModule();
+  }
 
   //
 //  public String getTargetModuleName() {
@@ -48,49 +68,48 @@ public class CompileableFunctionCall implements CompileableExpr {
 //    }
 //  }
 //
-//  public String getTargetMethod() {
-//    String[] split = functionCallAst.getCallTarget().split("\\.");
-//    return split[split.length - 1];
-//  }
-//
-//  public String getCallDescriptor(TypeScope typeScope) {
-//    StringBuilder sb = new StringBuilder();
-//    sb.append("(");
-//    for (TypedExpressionAst arg : args) {
-//      Type type = arg.getType();
-//      sb.append(type.descriptor());
-//    }
-//    sb.append(")");
-//    String returnTypeDescriptor = typeScope.get()
-//
-//    String returnTypeDescriptor = compileContext
-//        .getCompiledModules()
-//        .getModule(getTargetModuleName())
-//        .flatMap(module -> module.getFunction(getTargetMethod()))
-//        .map(fn -> fn.getFunctionSignature().getDeclaredReturnType())
-//        .map(Type::descriptor)
-//        .orElse(org.objectweb.asm.Type.getDescriptor(Object.class));
-//    sb.append(returnTypeDescriptor);
-//    return sb.toString();
-//  }
+  public String getTargetMethod() {
+    String[] split = typedExpression.getFunctionCallAst().getCallTarget().split("\\.");
+    return split[split.length - 1];
+  }
+
+  public String getCallDescriptor() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
+    for (CompileableExpr arg : args) {
+      Type type = arg.getTypedExpression().getType();
+      sb.append(type.descriptor());
+    }
+    sb.append(")");
+
+    String returnTypeDescriptor = compileableModuleScope
+        .getThisScope()
+        .getThisModule()
+        .getFunctionAsts()
+        .stream()
+        .filter(fn -> Objects.equals(fn.getName(), getTargetMethod()))
+        .findFirst()
+        .map(fn -> fn.getFunctionSignature().getDeclaredReturnType())
+        .map(Type::descriptor)
+        .orElseThrow(() -> new CriticalLanguageException(
+            "Function '" + getTargetMethod() +"' didn't have a return type descriptor"
+        ));
+    sb.append(returnTypeDescriptor);
+    return sb.toString();
+  }
 
   @Override
   public void compile(
       MethodVisitor methodVisitor,
       CompileContext compileContext) {
-//    for (TypedExpressionAst expr : args) {
-//      expr.compile(methodVisitor, compileContext);
-//    }
-//    methodVisitor.visitMethodInsn(
-//        INVOKEVIRTUAL,
-//        getJavaMethodOwner(),
-//        getTargetMethod(),
-//        getCallDescriptor(compileContext),
-//        false);
-  }
-
-  @Override
-  public TypedExpression getTypedExpression() {
-    return null;
+    for (CompileableExpr expr : args) {
+      expr.compile(methodVisitor, compileContext);
+    }
+    methodVisitor.visitMethodInsn(
+        INVOKEVIRTUAL,
+        getModuleAst().getModuleJVMDescriptor(),
+        getTargetMethod(),
+        getCallDescriptor(),
+        false);
   }
 }

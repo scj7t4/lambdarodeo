@@ -1,14 +1,16 @@
 package lambda.rodeo.lang.ast.expressions;
 
+import java.util.function.Function;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compileable.expression.Compileable;
 import lambda.rodeo.lang.compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.scope.CompileableModuleScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
-import lambda.rodeo.lang.types.TypeScope;
 import org.objectweb.asm.MethodVisitor;
 
 /**
@@ -33,12 +35,16 @@ public interface BiNumericExpressionAst extends ExpressionAst {
   void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
       CompileContext compileContext);
 
-  static Compileable toCompilable(TypedExpression lhs, TypedExpression rhs,
+  static Function<CompileableModuleScope, Compileable> toCompilable(
+      TypedExpression lhs,
+      TypedExpression rhs,
       BiNumericExpressionAst expr) {
-    return (methodVisitor, compileContext) -> expr.compile(
-        lhs.toCompileableExpr(),
-        rhs.toCompileableExpr(),
-        methodVisitor, compileContext);
+
+    return (CompileableModuleScope compileableModuleScope) ->
+        (methodVisitor, compileContext) -> expr.compile(
+            lhs.toCompileableExpr(compileableModuleScope),
+            rhs.toCompileableExpr(compileableModuleScope),
+            methodVisitor, compileContext);
   }
 
   /**
@@ -63,7 +69,7 @@ public interface BiNumericExpressionAst extends ExpressionAst {
       return SimpleTypedExpression.builder()
           .expr(this)
           .type(left)
-          .compileable(toCompilable(typedLhs, typedRhs, this))
+          .toCompileable(toCompilable(typedLhs, typedRhs, this))
           .build();
     } else {
       compileContext.getCompileErrorCollector()

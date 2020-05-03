@@ -1,14 +1,12 @@
-package lambda.rodeo.lang.types;
-
-import static lambda.rodeo.lang.ast.ModuleAst.THIS_MODULE;
+package lambda.rodeo.lang.scope;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.ast.ModuleAst;
-import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.typed.TypedModule;
+import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,37 +49,15 @@ public class TypeScope {
         .findFirst();
   }
 
-  public CompileableTypeScope toCompileableTypeScope(List<TypedModule> modules) {
+  public CompileableTypeScope toCompileableTypeScope() {
     List<CompileableTypeScope.Entry> entries = new ArrayList<>();
 
-    TypedModule thisModule = scope.stream()
-        .filter(entry -> Objects.equals(entry.getName(), THIS_MODULE))
-        .findFirst()
-        .filter(entry -> entry.getType() instanceof ModuleType)
-        .map(entry -> (ModuleType) entry.getType())
-        .map(ModuleType::getModuleAst)
-        .map(ast -> findModuleByAst(modules, ast))
-        .orElseThrow(() -> new CriticalLanguageException("$this module is not defined"));
-
     for (Entry entry : scope) {
-      Type type = entry.getType();
-      TypedModule targetModule = null;
-      if (type instanceof ModuleType) {
-        @NonNull ModuleAst moduleAst = ((ModuleType) type).getModuleAst();
-        targetModule = findModuleByAst(modules, moduleAst);
-        if (targetModule == null) {
-          throw new CriticalLanguageException("Cannot find typed version of module '"
-              + moduleAst.getName() + "'");
-        }
-      }
-      if (targetModule == null) {
-        targetModule = thisModule;
-      }
 
       CompileableTypeScope.Entry converted = CompileableTypeScope.Entry.builder()
           .index(entry.index)
           .name(entry.name)
-          .type(entry.type.toCompileableType(targetModule))
+          .type(entry.type.toCompileableType())
           .build();
       entries.add(converted);
     }
@@ -90,13 +66,6 @@ public class TypeScope {
         .builder()
         .scope(entries)
         .build();
-  }
-
-  private TypedModule findModuleByAst(List<TypedModule> modules, @NonNull ModuleAst moduleAst) {
-    return modules.stream()
-        .filter(x -> Objects.equals(moduleAst, x.getModuleAst()))
-        .findFirst()
-        .orElse(null);
   }
 
   @Builder

@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
+import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.functions.FunctionAst;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
-import lambda.rodeo.lang.types.FunctionType;
-import lambda.rodeo.lang.types.ModuleType;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,20 +32,17 @@ public class ModuleAst implements AstNode {
   private final int characterStart;
 
   public TypedModule toTypedModuleAst(CompileContext compileContext) {
-    final TypeScope initialModuleScope = TypeScope.EMPTY.declare(
-        THIS_MODULE, ModuleType.builder().moduleAst(this).build());
+    final TypeScope initialModuleScope = TypeScope.EMPTY;
 
     List<TypedFunction> typedFunctions = functionAsts
         .stream()
         .map(fn -> fn.toTypedFunctionAst(initialModuleScope, compileContext))
         .collect(Collectors.toList());
 
-    TypeScope moduleScope = initialModuleScope;
-    for(TypedFunction functionAst : typedFunctions) {
-      moduleScope = moduleScope.declare(
-          functionAst.getName(),
-          FunctionType.builder().functionAst(functionAst).build());
-    }
+    ModuleScope moduleScope = ModuleScope.builder()
+        .functions(typedFunctions)
+        .thisModule(this)
+        .build();
 
     return TypedModule.builder()
         .moduleAst(this)

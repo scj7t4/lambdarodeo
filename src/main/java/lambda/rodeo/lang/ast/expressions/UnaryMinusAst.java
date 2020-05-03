@@ -5,7 +5,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compileable.expression.Compileable;
 import lambda.rodeo.lang.exceptions.TypeException;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Atom;
@@ -38,11 +38,11 @@ public class UnaryMinusAst implements ExpressionAst {
       return SimpleTypedExpression.builder()
           .type(Atom.UNDEFINED)
           .expr(this)
-          .compileable((mv, cc) -> compile(typedOperand.toCompileableExpr(), mv, cc))
+          .toCompileable(cms -> (mv, cc) -> compile(typedOperand.toCompileableExpr(cms), mv, cc))
           .build();
     } else if (AstUtils.isIntType(type)) {
       return SimpleTypedExpression.builder()
-          .compileable((mv, cc) -> this.compile(typedOperand.toCompileableExpr(), mv, cc))
+          .toCompileable(cms -> (mv, cc) -> this.compile(typedOperand.toCompileableExpr(cms), mv, cc))
           .type(type)
           .build();
     } else {

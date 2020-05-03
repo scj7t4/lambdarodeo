@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.ast.ModuleAst;
 import lambda.rodeo.lang.compileable.CompileableModule;
+import lambda.rodeo.lang.scope.CompileableModuleScope;
+import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
-import lambda.rodeo.lang.types.TypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,14 +18,20 @@ public class TypedModule {
 
   private final ModuleAst moduleAst;
   private final List<TypedFunction> functionAsts;
-  private final TypeScope moduleScope;
+  private final ModuleScope moduleScope;
 
   public CompileableModule toCompileableModule(List<TypedModule> modules) {
+    CompileableModuleScope compiledModuleScope = CompileableModuleScope.builder()
+        .thisScope(moduleScope)
+        .importedModules(modules.stream()
+            .map(TypedModule::getModuleScope)
+            .collect(Collectors.toList()))
+        .build();
     return CompileableModule.builder()
         .compileableFunctions(functionAsts.stream()
-            .map(fn -> fn.toCompileableFunction(modules))
+            .map(fn -> fn.toCompileableFunction(compiledModuleScope))
             .collect(Collectors.toList()))
-        .moduleScope(moduleScope.toCompileableTypeScope(modules))
+        .moduleScope(compiledModuleScope)
         .typedModule(this)
         .build();
   }

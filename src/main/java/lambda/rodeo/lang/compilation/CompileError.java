@@ -13,6 +13,7 @@ public class CompileError {
   public static final String UNDEFINED_VAR = "UNDEFINED_VARIABLE";
   public static final String POINTLESS_ASSIGNMENT = "POINTLESS_ASSIGNMENT";
   public static final String ILLEGAL_MATH_OPERATION = "ILLEGAL_MATH_OPERATION";
+  public static final String NOT_A_FUNCTION = "NOT_A_FUNCTION";
 
   private final int startLine;
   private final int endLine;
@@ -20,11 +21,21 @@ public class CompileError {
   private final String errorType;
   private final String errorMsg;
 
-  public static CompileError undefinedVariableError(String variableName,
+  public static CompileError undefinedIdentifier(String identifier,
      AstNode astNode) {
     return CompileError.builder()
         .errorType(UNDEFINED_VAR)
-        .errorMsg("Variable '" + variableName + "' is not defined in the current scope")
+        .errorMsg("Identifier '" + identifier + "' is not defined in the current scope")
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
+  public static CompileError triedToCallNonFunction(String identifier, AstNode astNode) {
+    return CompileError.builder()
+        .errorType(NOT_A_FUNCTION)
+        .errorMsg("Identifier '"+ identifier +"' is not a function")
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())
         .characterStart(astNode.getCharacterStart())

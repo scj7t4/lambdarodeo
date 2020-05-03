@@ -4,7 +4,7 @@ import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.typed.statements.TypedAssignment;
 import lambda.rodeo.lang.typed.statements.TypedStatement;
 import lombok.Builder;

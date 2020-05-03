@@ -4,7 +4,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compileable.expression.Compileable;
 import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.typed.statements.TypedStatement;
-import lambda.rodeo.lang.types.CompileableTypeScope;
+import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

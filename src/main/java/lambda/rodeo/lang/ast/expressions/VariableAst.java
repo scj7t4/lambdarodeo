@@ -8,8 +8,8 @@ import java.util.Optional;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.typed.expressions.TypedVariable;
-import lambda.rodeo.lang.types.TypeScope;
-import lambda.rodeo.lang.types.TypeScope.Entry;
+import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -37,7 +37,7 @@ public class VariableAst implements ExpressionAst {
     //TODO: Fix context...
     if (Objects.equals(UNDEFINED, type)) {
       compileContext.getCompileErrorCollector()
-          .collect(CompileError.undefinedVariableError(name, this));
+          .collect(CompileError.undefinedIdentifier(name, this));
       return AtomAst.builder()
           .atom(UNDEFINED)
           .build()

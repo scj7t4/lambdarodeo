@@ -5,6 +5,7 @@ import lambda.rodeo.lang.ast.functions.FunctionAst;
 import lambda.rodeo.lang.ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.ast.functions.TypedVar;
 import lambda.rodeo.lang.compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.typed.TypedModule;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -19,9 +20,9 @@ public class TypedFunction {
   private final FunctionSigAst functionSigAst;
 
   public CompileableFunction toCompileableFunction(
-      List<TypedModule> modules) {
+      CompileableModuleScope compileableModuleScope) {
     return CompileableFunction.builder()
-        .functionBodyAst(typedFunctionBody.toCompileableFunctionBody(modules))
+        .functionBodyAst(typedFunctionBody.toCompileableFunctionBody(compileableModuleScope))
         .functionSigAst(functionSigAst)
         .typedFunction(this)
         .build();

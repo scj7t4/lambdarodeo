@@ -8,8 +8,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.ast.statements.StatementAst;
 import lambda.rodeo.lang.ast.statements.StatementAstFactory;
-import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 //TODO: TEST

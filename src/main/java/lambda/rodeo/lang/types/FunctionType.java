@@ -1,13 +1,14 @@
 package lambda.rodeo.lang.types;
 
-import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 
 @Builder
 @EqualsAndHashCode
+@Getter
 public class FunctionType implements Type, CompileableType {
   @NonNull
   private final TypedFunction functionAst;
@@ -23,7 +24,7 @@ public class FunctionType implements Type, CompileableType {
   }
 
   @Override
-  public CompileableType toCompileableType(TypedModule typedModule) {
+  public CompileableType toCompileableType() {
     return this;
   }
 

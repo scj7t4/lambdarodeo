@@ -3,7 +3,7 @@ package lambda.rodeo.lang.ast.functions;
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.typed.functions.TypedFunction;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

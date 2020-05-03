@@ -5,10 +5,8 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
 import lambda.rodeo.lang.compileable.expression.Compileable;
-import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.typed.expressions.TypedExpression;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.types.Atom;
 import lombok.Builder;
@@ -29,7 +27,7 @@ public class AtomAst implements ExpressionAst, Compileable {
   @Override
   public SimpleTypedExpression toTypedExpression(TypeScope typeScope, CompileContext compileContext) {
     return SimpleTypedExpression.builder()
-        .compileable(this)
+        .toCompileable((cms) -> this)
         .type(atom)
         .expr(this)
         .build();

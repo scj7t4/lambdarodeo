@@ -10,7 +10,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.TestUtils;

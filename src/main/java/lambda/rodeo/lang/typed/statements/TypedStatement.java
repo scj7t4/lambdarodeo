@@ -1,12 +1,11 @@
 package lambda.rodeo.lang.typed.statements;
 
-import java.util.List;
 import java.util.Optional;
 import lambda.rodeo.lang.ast.statements.StatementAst;
 import lambda.rodeo.lang.compileable.statement.CompileableStatement;
-import lambda.rodeo.lang.typed.TypedModule;
+import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.typed.expressions.TypedExpression;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,11 +22,11 @@ public class TypedStatement {
   private final TypedAssignment typedAssignment;
 
   public CompileableStatement toCompileableStatement(
-      List<TypedModule> modules) {
+      CompileableModuleScope compileableModuleScope) {
     return CompileableStatement.builder()
-        .afterTypeScope(afterTypeScope.toCompileableTypeScope(modules))
-        .beforeTypeScope(beforeTypeScope.toCompileableTypeScope(modules))
-        .compileableExpr(typedExpression.toCompileableExpr())
+        .afterTypeScope(afterTypeScope.toCompileableTypeScope())
+        .beforeTypeScope(beforeTypeScope.toCompileableTypeScope())
+        .compileableExpr(typedExpression.toCompileableExpr(compileableModuleScope))
         .compileableAssignment(Optional.ofNullable(typedAssignment)
             .map(TypedAssignment::toCompileableAssignment)
             .orElse(null))

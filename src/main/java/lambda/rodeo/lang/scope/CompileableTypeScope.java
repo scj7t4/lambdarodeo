@@ -1,8 +1,7 @@
-package lambda.rodeo.lang.types;
+package lambda.rodeo.lang.scope;
 
-import java.util.ArrayList;
 import java.util.List;
-import lambda.rodeo.lang.types.TypeScope.Entry;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

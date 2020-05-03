@@ -4,9 +4,8 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
 import lambda.rodeo.lang.compileable.expression.Compileable;
-import lambda.rodeo.lang.compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.types.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.types.IntType;
 import lombok.Builder;
@@ -29,7 +28,7 @@ public class IntConstantAst implements ExpressionAst, Compileable {
     return SimpleTypedExpression
         .builder()
         .type(IntType.INSTANCE)
-        .compileable(this::compile)
+        .toCompileable(cms -> this)
         .build();
   }
 

@@ -11,8 +11,9 @@ import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.typed.TypedModule;
-import lambda.rodeo.lang.types.CompileableTypeScope;
+import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class CompileableModule {
 
   private final TypedModule typedModule;
   private final List<CompileableFunction> compileableFunctions;
-  private final CompileableTypeScope moduleScope;
+  private final CompileableModuleScope moduleScope;
 
 
   public byte[] compile(CompileContext compileContext) {

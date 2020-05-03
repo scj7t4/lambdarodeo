@@ -12,16 +12,22 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 
 @Builder
 @Getter
 @EqualsAndHashCode
 public class TypedFunctionCall implements TypedExpression {
 
+  @NonNull
   private final TypeScope typeScope;
+  @NonNull
   private final FunctionCallAst functionCallAst;
+  @NonNull
   private final Type returnType;
+  @NonNull
   private final List<TypedExpression> args;
+  @NonNull
   private final TypedModuleScope typedModuleScope;
 
   @Override

@@ -103,7 +103,7 @@ public class CompileableFunctionCall implements CompileableExpr {
     }
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
-        getModuleAst().getModuleJVMDescriptor(),
+        getModuleAst().getInternalJavaName(),
         getTargetMethod(),
         getCallDescriptor(),
         false);

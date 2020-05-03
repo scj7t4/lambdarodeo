@@ -14,6 +14,8 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
+import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
@@ -21,20 +23,19 @@ import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lombok.SneakyThrows;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CompileableFunctionCallTest {
 
   @Test
   public void testGetCallDescriptorNoArgs() {
     String functionToCall = "someFunc";
-
-    TypedFunctionCall tfc = TypedFunctionCall.builder()
-        .returnType(IntType.INSTANCE)
-        .functionCallAst(FunctionCallAst.builder()
-            .callTarget(functionToCall)
-            .build())
-        .build();
 
     ModuleAst moduleAst = ModuleAst.builder()
         .name("testModule")
@@ -46,6 +47,22 @@ class CompileableFunctionCallTest {
                     .build())
                 .build()
         ))
+        .build();
+
+    TypedModuleScope typedModuleScope = ModuleScope.builder()
+        .thisModule(moduleAst)
+        .functions(moduleAst.getFunctionAsts())
+        .build()
+        .toTypedModuleScope(Collections.emptyList());
+
+    TypedFunctionCall tfc = TypedFunctionCall.builder()
+        .returnType(IntType.INSTANCE)
+        .functionCallAst(FunctionCallAst.builder()
+            .callTarget(functionToCall)
+            .build())
+        .typeScope(TypeScope.EMPTY)
+        .typedModuleScope(typedModuleScope)
+        .args(Collections.emptyList())
         .build();
 
     CompileableFunctionCall cfc = CompileableFunctionCall.builder()
@@ -61,13 +78,6 @@ class CompileableFunctionCallTest {
   public void testGetCallDescriptorArgs() {
     String functionToCall = "someFunc";
 
-    TypedFunctionCall tfc = TypedFunctionCall.builder()
-        .returnType(IntType.INSTANCE)
-        .functionCallAst(FunctionCallAst.builder()
-            .callTarget(functionToCall)
-            .build())
-        .build();
-
     ModuleAst moduleAst = ModuleAst.builder()
         .name("testModule")
         .functionAsts(Collections.singletonList(
@@ -80,20 +90,30 @@ class CompileableFunctionCallTest {
         ))
         .build();
 
+    TypedModuleScope typedModuleScope = ModuleScope.builder()
+        .thisModule(moduleAst)
+        .functions(moduleAst.getFunctionAsts())
+        .build()
+        .toTypedModuleScope(Collections.emptyList());
 
-    CompileableFunctionCall cfc = CompileableFunctionCall.builder()
+    TypedFunctionCall tfc = TypedFunctionCall.builder()
+        .returnType(IntType.INSTANCE)
+        .functionCallAst(FunctionCallAst.builder()
+            .callTarget(functionToCall)
+            .build())
+        .typeScope(TypeScope.EMPTY)
         .args(List.of(
             Atom.NULL
-                .toTypedExpression()
-                .toCompileableExpr(),
+                .toTypedExpression(),
             IntConstantAst.builder()
                 .literal("666")
                 .build()
                 .toTypedExpression()
-                .toCompileableExpr()
         ))
-        .typedExpression(tfc)
+        .typedModuleScope(typedModuleScope)
         .build();
+
+    CompileableFunctionCall cfc = (CompileableFunctionCall) tfc.toCompileableExpr();
 
     String callDescriptor = cfc.getCallDescriptor();
     assertThat(callDescriptor,
@@ -113,6 +133,7 @@ class CompileableFunctionCallTest {
     assertThat(factory.toAst().getName(), CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
     Class<?> compiledModule = CompileUtils.createClass(factory.toAst());
-    assertThat(compiledModule.getCanonicalName(), CoreMatchers.equalTo("BasicFunctionCall"));
+    assertThat(compiledModule.getCanonicalName(),
+        CoreMatchers.equalTo("testcase.BasicFunctionCall"));
   }
 }

@@ -21,6 +21,11 @@ public class CompileError {
   private final String errorType;
   private final String errorMsg;
 
+  @Override
+  public String toString() {
+    return errorType + ":L" + startLine + "->" + endLine + ":" + characterStart + ":: " + errorMsg;
+  }
+
   public static CompileError undefinedIdentifier(String identifier,
      AstNode astNode) {
     return CompileError.builder()

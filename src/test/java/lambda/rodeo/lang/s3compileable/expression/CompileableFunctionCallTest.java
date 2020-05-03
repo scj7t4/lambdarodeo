@@ -5,16 +5,22 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Collections;
 import java.util.List;
+import lambda.rodeo.lang.ModuleAstFactory;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s1ast.expressions.IntConstantAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.utils.CompileContextUtils;
+import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.TestUtils;
+import lombok.SneakyThrows;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
 class CompileableFunctionCallTest {
@@ -42,16 +48,9 @@ class CompileableFunctionCallTest {
         ))
         .build();
 
-    CompileableModuleScope compileableModuleScope = CompileableModuleScope.builder()
-        .thisScope(ModuleScope.builder()
-            .thisModule(moduleAst)
-            .build())
-        .build();
-
     CompileableFunctionCall cfc = CompileableFunctionCall.builder()
         .args(Collections.emptyList())
         .typedExpression(tfc)
-        .compileableModuleScope(compileableModuleScope)
         .build();
 
     String callDescriptor = cfc.getCallDescriptor();
@@ -81,30 +80,39 @@ class CompileableFunctionCallTest {
         ))
         .build();
 
-    CompileableModuleScope compileableModuleScope = CompileableModuleScope.builder()
-        .thisScope(ModuleScope.builder()
-            .thisModule(moduleAst)
-            .build())
-        .build();
 
     CompileableFunctionCall cfc = CompileableFunctionCall.builder()
         .args(List.of(
             Atom.NULL
                 .toTypedExpression()
-                .toCompileableExpr(compileableModuleScope),
+                .toCompileableExpr(),
             IntConstantAst.builder()
                 .literal("666")
                 .build()
                 .toTypedExpression()
-                .toCompileableExpr(compileableModuleScope)
+                .toCompileableExpr()
         ))
         .typedExpression(tfc)
-        .compileableModuleScope(compileableModuleScope)
         .build();
 
     String callDescriptor = cfc.getCallDescriptor();
     assertThat(callDescriptor,
         equalTo("(Llambda/rodeo/lang/types/Atom;Ljava/math/BigInteger;)Ljava/math/BigInteger;")
     );
+  }
+
+  @Test
+  @SneakyThrows
+  public void testFunctionCallCompilation() {
+    String resource = "/test_cases/modules/basic_function_call.rdo";
+    ModuleContext module = TestUtils.parseModule(resource);
+
+    ModuleAstFactory factory = new ModuleAstFactory(module,
+        CompileContextUtils.testCompileContext());
+
+    assertThat(factory.toAst().getName(), CoreMatchers.equalTo("testcase.BasicFunctionCall"));
+
+    Class<?> compiledModule = CompileUtils.createClass(factory.toAst());
+    assertThat(compiledModule.getCanonicalName(), CoreMatchers.equalTo("BasicFunctionCall"));
   }
 }

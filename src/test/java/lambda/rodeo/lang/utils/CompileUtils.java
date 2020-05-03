@@ -8,6 +8,8 @@ import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.s2typed.TypedModule;
+import lambda.rodeo.lang.scope.ModuleScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.ASMifier;
@@ -28,23 +30,31 @@ public class CompileUtils {
 
   public static Class<?> createClass(ModuleAst moduleAst) {
     CompileContext compileContext = CompileContext.builder().build();
-    TypedModule typedModule = moduleAst.toTypedModuleAst(compileContext);
-    CompileableModule compileableModule = typedModule.toCompileableModule(
-        Collections.singletonList(typedModule));
+    CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
+
     Class<?> compiledClass = new TestClassLoader(CompileUtils.class.getClassLoader())
-        .defineClass(moduleAst.getName(), compileableModule.compile(compileContext));
-    assertThat(compileContext.getCompileErrorCollector().getCompileErrors(),
+        .defineClass(compileableModule.getName(), compileableModule.compile(compileContext));
+    assertThat(
+        "There were compile errors: \n" + compileContext.getCompileErrorCollector(),
+        compileContext.getCompileErrorCollector().getCompileErrors(),
         IsEmptyCollection.empty());
     return compiledClass;
+  }
+
+  private static CompileableModule convertToCompileableModule(ModuleAst moduleAst,
+      CompileContext compileContext) {
+    // TODO: This will need to change when compiling multiple modules:
+    ModuleScope moduleScope = moduleAst.getModuleScope(compileContext);
+    TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(Collections.emptyList());
+    TypedModule typedModule = moduleAst.toTypedModuleAst(compileContext, typedModuleScope);
+    return typedModule.toCompileableModule();
   }
 
   public static void asmifyModule(ModuleAst moduleAst) {
     CompileContext compileContext = CompileContext.builder().build();
     ASMifier asMifier = new ASMifier();
-    TypedModule typedModule = moduleAst.toTypedModuleAst(compileContext);
     ClassReader classReader = new ClassReader(
-        typedModule
-            .toCompileableModule(Collections.singletonList(typedModule))
+        convertToCompileableModule(moduleAst, compileContext)
             .compile(compileContext));
     PrintWriter printWriter = new PrintWriter(System.out);
     TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, asMifier, printWriter);

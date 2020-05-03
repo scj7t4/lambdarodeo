@@ -6,7 +6,7 @@ import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Type;
 import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
@@ -22,6 +22,7 @@ public class TypedFunctionCall implements TypedExpression {
   private final FunctionCallAst functionCallAst;
   private final Type returnType;
   private final List<TypedExpression> args;
+  private final TypedModuleScope typedModuleScope;
 
   @Override
   public Type getType() {
@@ -34,12 +35,11 @@ public class TypedFunctionCall implements TypedExpression {
   }
 
   @Override
-  public CompileableExpr toCompileableExpr(CompileableModuleScope compileableModuleScope) {
+  public CompileableExpr toCompileableExpr() {
     return CompileableFunctionCall.builder()
         .typedExpression(this)
-        .compileableModuleScope(compileableModuleScope)
         .args(args.stream()
-            .map(typedExpression -> typedExpression.toCompileableExpr(compileableModuleScope))
+            .map(TypedExpression::toCompileableExpr)
             .collect(Collectors.toList()))
         .build();
   }

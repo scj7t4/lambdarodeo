@@ -11,11 +11,11 @@ import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -29,8 +29,6 @@ public class CompileableModule {
 
   private final TypedModule typedModule;
   private final List<CompileableFunction> compileableFunctions;
-  private final CompileableModuleScope moduleScope;
-
 
   public byte[] compile(CompileContext compileContext) {
     // Tell ASM we want it to compute max stack and frames.
@@ -96,5 +94,10 @@ public class CompileableModule {
 
   public String getModuleJVMDescriptor() {
     return getTypedModule().getModuleJVMDescriptor();
+  }
+
+  @NonNull
+  public String getName() {
+    return getTypedModule().getName();
   }
 }

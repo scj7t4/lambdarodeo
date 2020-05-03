@@ -8,6 +8,7 @@ import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Atom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -26,14 +27,15 @@ public class AtomAst implements ExpressionAst, Compileable {
 
   public SimpleTypedExpression toTypedExpression() {
     return SimpleTypedExpression.builder()
-        .toCompileable((cms) -> this)
+        .toCompileable(() -> this)
         .type(atom)
         .expr(this)
         .build();
   }
 
   @Override
-  public SimpleTypedExpression toTypedExpression(TypeScope typeScope, CompileContext compileContext) {
+  public SimpleTypedExpression toTypedExpression(TypeScope typeScope,
+      TypedModuleScope typedModuleScope, CompileContext compileContext) {
     return toTypedExpression();
   }
 

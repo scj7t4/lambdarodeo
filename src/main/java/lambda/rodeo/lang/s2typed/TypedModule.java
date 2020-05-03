@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s3compileable.CompileableModule;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
-import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 
 @Builder
 @Getter
@@ -18,20 +18,13 @@ public class TypedModule {
 
   private final ModuleAst moduleAst;
   private final List<TypedFunction> functionAsts;
-  private final ModuleScope moduleScope;
+  private final TypedModuleScope typedModuleScope;
 
-  public CompileableModule toCompileableModule(List<TypedModule> modules) {
-    CompileableModuleScope compiledModuleScope = CompileableModuleScope.builder()
-        .thisScope(moduleScope)
-        .importedModules(modules.stream()
-            .map(TypedModule::getModuleScope)
-            .collect(Collectors.toList()))
-        .build();
+  public CompileableModule toCompileableModule() {
     return CompileableModule.builder()
         .compileableFunctions(functionAsts.stream()
-            .map(fn -> fn.toCompileableFunction(compiledModuleScope))
+            .map(TypedFunction::toCompileableFunction)
             .collect(Collectors.toList()))
-        .moduleScope(compiledModuleScope)
         .typedModule(this)
         .build();
   }
@@ -42,5 +35,10 @@ public class TypedModule {
 
   public String getModuleJVMDescriptor() {
     return getModuleAst().getModuleJVMDescriptor();
+  }
+
+  @NonNull
+  public String getName() {
+    return getModuleAst().getName();
   }
 }

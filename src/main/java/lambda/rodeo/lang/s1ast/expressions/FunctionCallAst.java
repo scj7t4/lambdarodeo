@@ -5,8 +5,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.FunctionType;
 import lambda.rodeo.lang.types.Type;
@@ -29,30 +31,26 @@ public class FunctionCallAst implements ExpressionAst {
 
   @Override
   //TODO: Wrong...
-  public TypedExpression toTypedExpression(TypeScope typeScope, CompileContext compileContext) {
-    Optional<Entry> entry = typeScope.get(callTarget);
-    if(!entry.isPresent()) {
+  public TypedExpression toTypedExpression(
+      TypeScope typeScope,
+      TypedModuleScope typedModuleScope,
+      CompileContext compileContext) {
+    Optional<FunctionAst> calledFn = typedModuleScope.getCallTarget(callTarget);
+    if(calledFn.isEmpty()) {
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedIdentifier(callTarget, this));
       return Atom.UNDEFINED.toTypedExpression();
     }
 
-    Type entryType = entry.get().getType();
-
-    if(!(entryType instanceof FunctionType)) {
-      compileContext.getCompileErrorCollector()
-          .collect(CompileError.triedToCallNonFunction(callTarget, this));
-      return Atom.UNDEFINED.toTypedExpression();
-    }
-
-    FunctionType functionType = (FunctionType) entryType;
-    Type declaredReturnType = functionType.getFunctionAst().getFunctionSigAst()
+    Type declaredReturnType = calledFn.get()
+        .getFunctionSignature()
         .getDeclaredReturnType();
 
     return TypedFunctionCall.builder()
         .args(args.stream()
-            .map(arg -> arg.toTypedExpression(typeScope, compileContext))
+            .map(arg -> arg.toTypedExpression(typeScope, typedModuleScope, compileContext))
             .collect(Collectors.toList()))
+        .typedModuleScope(typedModuleScope)
         .functionCallAst(this)
         .returnType(declaredReturnType)
         .typeScope(typeScope)

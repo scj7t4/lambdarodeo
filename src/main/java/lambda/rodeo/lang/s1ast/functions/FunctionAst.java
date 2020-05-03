@@ -4,6 +4,7 @@ import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,13 +24,18 @@ public class FunctionAst {
   private final FunctionSigAst functionSignature;
   private final FunctionBodyAst functionBodyAst;
 
-  public TypedFunction toTypedFunctionAst(TypeScope moduleScope, CompileContext compileContext) {
+  public TypedFunction toTypedFunctionAst(
+      TypeScope moduleScope,
+      TypedModuleScope typedModuleScope,
+      CompileContext compileContext) {
     return TypedFunction.builder()
         .functionAst(this)
         .typedFunctionBody(
             functionBodyAst.toTypedFunctionBodyAst(
-            functionSignature.getInitialTypeScope(moduleScope),
-            compileContext))
+                functionSignature.getInitialTypeScope(moduleScope),
+                typedModuleScope,
+                compileContext)
+        )
         .functionSigAst(functionSignature)
         .build();
   }

@@ -11,6 +11,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.types.IntType;
@@ -19,11 +20,18 @@ import lambda.rodeo.lang.utils.TestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @Slf4j
+@ExtendWith(MockitoExtension.class)
 class MathExpressionAstFactoryTest {
 
   private CompileContext compileContext;
+
+  @Mock
+  TypedModuleScope typedModuleScope;
 
   @BeforeEach()
   public void beforeEach() {
@@ -42,7 +50,7 @@ class MathExpressionAstFactoryTest {
 
     assertThat(
         expressionAst.toTypedExpression(TypeScope.EMPTY,
-            CompileContextUtils.testCompileContext()).getType(),
+            typedModuleScope, CompileContextUtils.testCompileContext()).getType(),
         equalTo(IntType.INSTANCE));
 
 
@@ -63,7 +71,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(15)));
 
@@ -81,7 +89,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(0)));
 
@@ -99,7 +107,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(1 - 2 - 3 - 4 - 5)));
 
@@ -117,7 +125,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(1 - -3)));
 
@@ -135,7 +143,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(9)));
 
@@ -153,7 +161,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(2 * 3 * 4 * 5)));
 
@@ -171,7 +179,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(1 + 2 * 3)));
 
@@ -189,7 +197,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf((1 + 2) * (3 + 4) * 5 + 6)));
 
@@ -287,7 +295,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
         equalTo(BigInteger.valueOf(javaVal)));
 
@@ -305,7 +313,7 @@ class MathExpressionAstFactoryTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        compileContext).getType(), equalTo(Atom.UNDEFINED));
+        typedModuleScope, compileContext).getType(), equalTo(Atom.UNDEFINED));
     List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 

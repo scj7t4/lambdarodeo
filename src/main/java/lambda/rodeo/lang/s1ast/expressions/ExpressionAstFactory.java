@@ -1,11 +1,15 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionCallContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionCallExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
@@ -115,5 +119,24 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
         .startLine(ctx.getStart().getLine())
         .build();
     expressionStack.addLast(typedVarAst);
+  }
+
+  @Override
+  public void exitFunctionCall(FunctionCallContext ctx) {
+    String callTarget = ctx.callTarget().getText();
+    int size = ctx.expr().size();
+    List<ExpressionAst> args = new ArrayList<>();
+    for(int i = 0; i < size; i++) {
+      ExpressionAst expressionAst = expressionStack.pollLast();
+      args.add(expressionAst);
+    }
+    FunctionCallAst funcCall = FunctionCallAst.builder()
+        .callTarget(callTarget)
+        .args(args)
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .build();
+    expressionStack.addLast(funcCall);
   }
 }

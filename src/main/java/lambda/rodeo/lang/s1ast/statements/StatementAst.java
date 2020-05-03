@@ -7,6 +7,7 @@ import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,8 +23,12 @@ public class StatementAst implements AstNode {
   private final int endLine;
   private final int characterStart;
 
-  public TypedStatement toTypedStatementAst(TypeScope before, CompileContext compileContext) {
-    TypedExpression typedExpr = getExpression().toTypedExpression(before, compileContext);
+  public TypedStatement toTypedStatementAst(
+      TypeScope before,
+      TypedModuleScope typedModuleScope,
+      CompileContext compileContext) {
+    TypedExpression typedExpr = getExpression()
+        .toTypedExpression(before, typedModuleScope, compileContext);
     TypeScope after = before;
     TypedAssignment typedAssignment = null;
     if (assignment != null) {

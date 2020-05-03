@@ -11,6 +11,7 @@ import lambda.rodeo.lang.s2typed.expressions.TypedVariable;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -29,7 +30,7 @@ public class VariableAst implements ExpressionAst {
   @Override
   public TypedExpression toTypedExpression(
       TypeScope typeScope,
-      CompileContext compileContext) {
+      TypedModuleScope typedModuleScope, CompileContext compileContext) {
     Optional<Entry> entry = typeScope.get(name);
     Type type = entry
         .map(Entry::getType)
@@ -41,7 +42,7 @@ public class VariableAst implements ExpressionAst {
       return AtomAst.builder()
           .atom(UNDEFINED)
           .build()
-          .toTypedExpression(typeScope, compileContext);
+          .toTypedExpression(typeScope, typedModuleScope, compileContext);
     } else {
       return TypedVariable.builder()
           .scopeEntry(entry.get())

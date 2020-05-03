@@ -8,7 +8,6 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -35,8 +34,7 @@ public class TypedVariable implements TypedExpression, Compileable {
   }
 
   @Override
-  public CompileableExpr toCompileableExpr(
-      CompileableModuleScope compileableModuleScope) {
+  public CompileableExpr toCompileableExpr() {
     return SimpleCompilableExpr.builder()
         .typedExpression(this)
         .compileable(this)

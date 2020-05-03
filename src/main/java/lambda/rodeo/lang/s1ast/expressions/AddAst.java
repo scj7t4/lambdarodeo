@@ -7,6 +7,7 @@ import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
 
@@ -16,7 +17,10 @@ import org.objectweb.asm.MethodVisitor;
 @EqualsAndHashCode
 public class AddAst implements BiNumericExpressionAst {
 
+  @NonNull
   private final ExpressionAst lhs;
+
+  @NonNull
   private final ExpressionAst rhs;
   private final int startLine;
   private final int endLine;

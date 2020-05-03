@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lombok.Builder;
@@ -21,13 +20,12 @@ public class TypedFunctionBody {
   private final FunctionBodyAst functionBodyAst;
 
 
-  public CompileableFunctionBody toCompileableFunctionBody(
-      CompileableModuleScope compileableModuleScope) {
+  public CompileableFunctionBody toCompileableFunctionBody() {
     return CompileableFunctionBody.builder()
         .initialTypeScope(initialTypeScope.toCompileableTypeScope())
         .typedFunctionBody(this)
         .statements(statements.stream()
-            .map(stmnt -> stmnt.toCompileableStatement(compileableModuleScope))
+            .map(TypedStatement::toCompileableStatement)
             .collect(Collectors.toList()))
         .build();
   }

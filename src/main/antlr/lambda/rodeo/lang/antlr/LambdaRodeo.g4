@@ -41,7 +41,8 @@ addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
 
 assignment: 'let' IDENTIFIER '=';
-functionCall: SCOPED_IDENTIFIER '(' expr (',' expr)* ')';
+functionCall: callTarget '(' (expr (',' expr)*)? ')';
+callTarget: (IDENTIFIER | SCOPED_IDENTIFIER);
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

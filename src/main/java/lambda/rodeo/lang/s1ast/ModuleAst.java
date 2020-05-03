@@ -10,6 +10,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,23 +32,27 @@ public class ModuleAst implements AstNode {
   private final int endLine;
   private final int characterStart;
 
-  public TypedModule toTypedModuleAst(CompileContext compileContext) {
+  public TypedModule toTypedModuleAst(CompileContext compileContext,
+      TypedModuleScope typedModuleScope) {
+
     final TypeScope initialModuleScope = TypeScope.EMPTY;
 
     List<TypedFunction> typedFunctions = functionAsts
         .stream()
-        .map(fn -> fn.toTypedFunctionAst(initialModuleScope, compileContext))
+        .map(fn -> fn.toTypedFunctionAst(initialModuleScope, typedModuleScope, compileContext))
         .collect(Collectors.toList());
-
-    ModuleScope moduleScope = ModuleScope.builder()
-        .functions(typedFunctions)
-        .thisModule(this)
-        .build();
 
     return TypedModule.builder()
         .moduleAst(this)
-        .moduleScope(moduleScope)
+        .typedModuleScope(typedModuleScope)
         .functionAsts(typedFunctions)
+        .build();
+  }
+
+  public ModuleScope getModuleScope(CompileContext compileContext) {
+    return ModuleScope.builder()
+        .functions(functionAsts)
+        .thisModule(this)
         .build();
   }
 

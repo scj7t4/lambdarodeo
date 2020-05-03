@@ -7,6 +7,7 @@ import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,11 +21,15 @@ public class FunctionBodyAst {
 
   public TypedFunctionBody toTypedFunctionBodyAst(
       TypeScope initialTypeScope,
+      TypedModuleScope typedModuleScope,
       CompileContext compileContext) {
     TypeScope current = initialTypeScope;
     List<TypedStatement> typedStatements = new ArrayList<>();
     for(StatementAst statement : statements) {
-      TypedStatement typedStatement = statement.toTypedStatementAst(current, compileContext);
+      TypedStatement typedStatement = statement.toTypedStatementAst(
+          current,
+          typedModuleScope,
+          compileContext);
       current = typedStatement.getAfterTypeScope();
       typedStatements.add(typedStatement);
     }

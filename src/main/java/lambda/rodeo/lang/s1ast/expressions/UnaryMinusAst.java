@@ -8,6 +8,7 @@ import lambda.rodeo.lang.exceptions.TypeException;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.Atom;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -29,20 +30,20 @@ public class UnaryMinusAst implements ExpressionAst {
 
   @Override
   public SimpleTypedExpression toTypedExpression(TypeScope typeScope,
-      CompileContext compileContext) {
+      TypedModuleScope typedModuleScope, CompileContext compileContext) {
     TypedExpression typedOperand = operand
-        .toTypedExpression(typeScope, compileContext);
+        .toTypedExpression(typeScope, typedModuleScope, compileContext);
     Type type = typedOperand.getType();
 
     if (AstUtils.isAnyUndefined(type)) {
       return SimpleTypedExpression.builder()
           .type(Atom.UNDEFINED)
           .expr(this)
-          .toCompileable(cms -> (mv, cc) -> compile(typedOperand.toCompileableExpr(cms), mv, cc))
+          .toCompileable(() -> (mv, cc) -> compile(typedOperand.toCompileableExpr(), mv, cc))
           .build();
     } else if (AstUtils.isIntType(type)) {
       return SimpleTypedExpression.builder()
-          .toCompileable(cms -> (mv, cc) -> this.compile(typedOperand.toCompileableExpr(cms), mv, cc))
+          .toCompileable(() -> (mv, cc) -> this.compile(typedOperand.toCompileableExpr(), mv, cc))
           .type(type)
           .expr(this)
           .build();

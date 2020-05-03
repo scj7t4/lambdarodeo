@@ -7,7 +7,6 @@ import java.util.Objects;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
-import lambda.rodeo.lang.scope.CompileableModuleScope;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
@@ -27,11 +26,8 @@ public class CompileableFunctionCall implements CompileableExpr {
   @NonNull
   private final List<CompileableExpr> args;
 
-  @NonNull
-  private final CompileableModuleScope compileableModuleScope;
-
   public @NonNull ModuleAst getModuleAst() {
-    return compileableModuleScope.getThisScope().getThisModule();
+    return typedExpression.getTypedModuleScope().getThisScope().getThisModule();
   }
 
   //
@@ -82,7 +78,7 @@ public class CompileableFunctionCall implements CompileableExpr {
     }
     sb.append(")");
 
-    String returnTypeDescriptor = compileableModuleScope
+    String returnTypeDescriptor = typedExpression.getTypedModuleScope()
         .getThisScope()
         .getThisModule()
         .getFunctionAsts()

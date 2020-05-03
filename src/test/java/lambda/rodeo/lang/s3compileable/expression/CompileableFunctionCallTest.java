@@ -3,6 +3,8 @@ package lambda.rodeo.lang.s3compileable.expression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 import lambda.rodeo.lang.ModuleAstFactory;
@@ -135,5 +137,13 @@ class CompileableFunctionCallTest {
     Class<?> compiledModule = CompileUtils.createClass(factory.toAst());
     assertThat(compiledModule.getCanonicalName(),
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
+
+    CompileUtils.asmifyModule(factory.toAst());
+
+    Method twoptwo = compiledModule.getMethod("twoptwo");
+    assertThat(twoptwo.invoke(null), equalTo(BigInteger.valueOf(4)));
+
+    Method callAndAdd = compiledModule.getMethod("callAndAdd");
+    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
   }
 }

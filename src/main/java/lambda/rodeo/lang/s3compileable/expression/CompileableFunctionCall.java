@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.List;
@@ -102,7 +103,7 @@ public class CompileableFunctionCall implements CompileableExpr {
       expr.compile(methodVisitor, compileContext);
     }
     methodVisitor.visitMethodInsn(
-        INVOKEVIRTUAL,
+        INVOKESTATIC,
         getModuleAst().getInternalJavaName(),
         getTargetMethod(),
         getCallDescriptor(),

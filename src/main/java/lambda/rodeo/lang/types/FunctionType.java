@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.types;
 
-import lambda.rodeo.lang.typed.functions.TypedFunction;
+import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

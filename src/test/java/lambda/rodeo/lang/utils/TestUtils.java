@@ -2,7 +2,8 @@ package lambda.rodeo.lang.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import lambda.rodeo.lang.ast.ModuleAst;
+import java.util.List;
+import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.antlr.LambdaRodeoLexer;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;

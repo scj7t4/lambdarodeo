@@ -4,10 +4,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.PrintWriter;
 import java.util.Collections;
-import lambda.rodeo.lang.ast.ModuleAst;
+import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.compileable.CompileableModule;
-import lambda.rodeo.lang.typed.TypedModule;
+import lambda.rodeo.lang.s3compileable.CompileableModule;
+import lambda.rodeo.lang.s2typed.TypedModule;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.ASMifier;

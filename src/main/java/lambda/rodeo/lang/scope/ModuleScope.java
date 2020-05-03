@@ -1,8 +1,8 @@
 package lambda.rodeo.lang.scope;
 
 import java.util.List;
-import lambda.rodeo.lang.ast.ModuleAst;
-import lambda.rodeo.lang.typed.functions.TypedFunction;
+import lambda.rodeo.lang.s1ast.ModuleAst;
+import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lombok.Builder;
 import lombok.Getter;
 

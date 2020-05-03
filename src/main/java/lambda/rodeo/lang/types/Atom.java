@@ -1,8 +1,8 @@
 package lambda.rodeo.lang.types;
 
-import lambda.rodeo.lang.ast.expressions.AtomAst;
-import lambda.rodeo.lang.ast.functions.Result;
-import lambda.rodeo.lang.typed.expressions.SimpleTypedExpression;
+import lambda.rodeo.lang.s1ast.expressions.AtomAst;
+import lambda.rodeo.lang.s1ast.functions.Result;
+import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
@@ -41,13 +41,11 @@ public class Atom implements Type, Result, CompileableType {
     return this;
   }
 
-  public SimpleTypedExpression toTypedExpressionAst() {
-    return SimpleTypedExpression.builder()
-        .type(this)
-        .expr(AtomAst.builder()
-            .atom(this)
-            .build())
-        .build();
+  public SimpleTypedExpression toTypedExpression() {
+    return AtomAst.builder()
+        .atom(this)
+        .build()
+        .toTypedExpression();
   }
 
   @Override

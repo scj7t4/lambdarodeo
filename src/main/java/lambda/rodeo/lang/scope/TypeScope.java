@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import lambda.rodeo.lang.ast.ModuleAst;
-import lambda.rodeo.lang.typed.TypedModule;
 import lambda.rodeo.lang.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 
 @Getter
 @EqualsAndHashCode

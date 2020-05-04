@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'antlr'
+}
+
+group 'lambda.rodeo'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task runGrun(type: JavaExec) {
+    workingDir = "build/generated-src/antlr/main"
+    group = "Debug"
+    description = "Open grun"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.antlr.v4.gui.TestRig"
+    args("Module", "module", "-tree", "../../../../examples/example.jp")
+}
+
+task runAsmifier(type: JavaExec) {
+    group = "Debug"
+    description = "Have ASM tell me what to do"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.objectweb.asm.util.ASMifier"
+    args("build/classes/java/main/lambda/rodeo/lang/asmmodels/BasicModule1.class")
+}
+
+generateGrammarSource {
+    arguments << "-lib" << "src/main/antlr/lambda/rodeo/lang/antlr"
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    implementation group: 'org.ow2.asm', name: 'asm', version: '8.0.1'
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: '8.0.1'
+    implementation project(':runtime')
+
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testImplementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation('org.hamcrest:hamcrest-library:2.2')
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.28.2'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '2.28.2'
+
+}

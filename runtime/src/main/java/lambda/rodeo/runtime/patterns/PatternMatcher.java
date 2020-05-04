@@ -1,4 +1,4 @@
-package lambda.rodeo.runtime;
+package lambda.rodeo.runtime.patterns;
 
 public class PatternMatcher {
   public static MatchEvaluator makeEvaluator(Matcher... matchers) {

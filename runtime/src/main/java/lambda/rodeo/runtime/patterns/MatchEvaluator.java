@@ -1,4 +1,4 @@
-package lambda.rodeo.runtime;
+package lambda.rodeo.runtime.patterns;
 
 import lambda.rodeo.runtime.exceptions.RuntimeCriticalLanguageException;
 import lombok.Builder;

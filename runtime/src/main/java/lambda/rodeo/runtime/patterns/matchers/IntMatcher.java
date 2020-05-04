@@ -1,8 +1,8 @@
-package lambda.rodeo.runtime.matchers;
+package lambda.rodeo.runtime.patterns.matchers;
 
 import java.math.BigInteger;
 import java.util.Objects;
-import lambda.rodeo.runtime.Matcher;
+import lambda.rodeo.runtime.patterns.Matcher;
 
 public class IntMatcher implements Matcher {
 

@@ -139,8 +139,6 @@ class CompileableFunctionCallTest {
     assertThat(compiledModule.getCanonicalName(),
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
-    CompileUtils.asmifyModule(factory.toAst());
-
     Method twoptwo = compiledModule.getMethod("twoptwo");
     assertThat(twoptwo.invoke(null), equalTo(BigInteger.valueOf(4)));
 

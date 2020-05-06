@@ -49,7 +49,6 @@ class StatementAstFactoryTest {
     statements.add(ast2);
 
     ModuleAst moduleAst = ExpressionTestUtils.moduleForStatements(statements);
-    CompileUtils.asmifyModule(moduleAst);
 
     Object result = ExpressionTestUtils.compileAndExecute(moduleAst);
 

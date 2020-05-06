@@ -5,6 +5,5 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class AtomCaseArg implements CaseArgAst {
-  private final String atom;
+public class WildcardCaseArgAst implements CaseArgAst {
 }

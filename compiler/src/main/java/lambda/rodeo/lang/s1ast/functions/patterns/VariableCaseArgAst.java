@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class IntLiteralCaseArg implements CaseArgAst {
-  private final String value;
+public class VariableCaseArgAst implements CaseArgAst {
+  private final String identifier;
 }

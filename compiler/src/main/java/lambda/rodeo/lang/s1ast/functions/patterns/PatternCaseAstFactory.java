@@ -20,7 +20,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
 
   private final CompileContext compileContext;
-  private PatternCaseAstBuilder astBuilder = PatternCaseAst.builder();
+  private final PatternCaseAstBuilder astBuilder = PatternCaseAst.builder();
   private final List<CaseArgAst> caseArgAsts = new ArrayList<>();
   private FunctionBodyAst functionBodyAst;
 
@@ -42,14 +42,14 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     LiteralContext literal = ctx.literal();
     AtomContext atom = literal.atom();
     if (atom != null) {
-      caseArgAsts.add(AtomCaseArg.builder()
+      caseArgAsts.add(AtomCaseArgAst.builder()
           .atom(atom.IDENTIFIER().getText())
           .build());
       return;
     }
     IntLiteralContext intLiteral = literal.intLiteral();
     if (intLiteral != null) {
-      caseArgAsts.add(IntLiteralCaseArg.builder()
+      caseArgAsts.add(IntLiteralCaseArgAst.builder()
           .value(intLiteral.getText())
           .build());
     }
@@ -58,14 +58,14 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void enterCaseVarName(CaseVarNameContext ctx) {
     String varName = ctx.varName().getText();
-    caseArgAsts.add(VariableCaseArg.builder()
+    caseArgAsts.add(VariableCaseArgAst.builder()
         .identifier(varName)
         .build());
   }
 
   @Override
   public void enterCaseWildCard(CaseWildCardContext ctx) {
-    caseArgAsts.add(WildcardCaseArg.builder().build());
+    caseArgAsts.add(WildcardCaseArgAst.builder().build());
   }
 
   @Override

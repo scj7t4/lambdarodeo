@@ -23,10 +23,12 @@ returnType: typeExpression;
 typeExpression: intType | atom;
 intType: 'int';
 patternCase: 'case' '(' caseArg+ ')' functionBody;
-caseArg: literal
-  | varName
-  | wildCard;
-wildCard: '*';
+caseArg: caseLiteral
+  | caseVarName
+  | caseWildCard;
+caseWildCard: '*';
+caseLiteral: literal;
+caseVarName: varName;
 
 statement: assignment? expr ';';
 atom: ':'IDENTIFIER;

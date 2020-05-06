@@ -6,19 +6,20 @@ import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionSigContext;
-import lambda.rodeo.lang.s1ast.functions.FunctionAst.FunctionAstBuilder;
-import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.FunctionAst.FunctionAstBuilder;
+import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
+import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionAstFactory extends LambdaRodeoBaseListener {
 
-  private final List<TypedVar> arguments = new ArrayList<>();
   private FunctionAstBuilder builder = FunctionAst.builder();
   private final CompileContext compileContext;
   private FunctionSigAst functionSigAst;
   private FunctionBodyAst functionBodyAst;
+  private List<PatternCaseAst> patternCaseAsts = new ArrayList<>();
 
   public FunctionAstFactory(
       FunctionDefContext ctx,

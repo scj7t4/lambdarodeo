@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s1ast.functions;
+package lambda.rodeo.lang.functions;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
+import lambda.rodeo.lang.s1ast.functions.FunctionAst;
+import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
@@ -19,7 +21,7 @@ import lambda.rodeo.runtime.types.IntType;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-public class FunctionAstFactoryTest {
+public class BasicFunctionTest {
 
   @SneakyThrows
   @Test

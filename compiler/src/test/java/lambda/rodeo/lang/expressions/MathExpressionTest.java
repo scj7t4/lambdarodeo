@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s1ast.expressions;
+package lambda.rodeo.lang.expressions;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -11,6 +11,8 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
+import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -26,7 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-class MathExpressionAstFactoryTest {
+class MathExpressionTest {
 
   private CompileContext compileContext;
 

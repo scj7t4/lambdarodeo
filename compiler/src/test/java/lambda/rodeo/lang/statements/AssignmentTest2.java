@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s1ast.statements;
+package lambda.rodeo.lang.statements;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -8,8 +8,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.s1ast.ModuleAst;
-import lambda.rodeo.lang.s1ast.expressions.ExpressionTestUtils;
-import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.expressions.ExpressionTestUtils;
+import lambda.rodeo.lang.s1ast.statements.StatementAst;
+import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
@@ -18,7 +19,7 @@ import lambda.rodeo.lang.utils.CompileContextUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class StatementAstFactoryTest {
+class AssignmentTest2 {
 
   private CompileContext compileContext;
 

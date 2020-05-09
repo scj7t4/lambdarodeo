@@ -1,9 +1,10 @@
-package lambda.rodeo.lang.s1ast.expressions;
+package lambda.rodeo.lang.expressions;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import lambda.rodeo.lang.s1ast.ModuleAst;
+import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;

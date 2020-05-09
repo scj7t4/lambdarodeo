@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s3compileable.expression;
+package lambda.rodeo.lang.expressions;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -17,6 +17,7 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
+import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
@@ -33,7 +34,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CompileableFunctionCallTest {
+class FunctionCallTest {
 
   @Test
   public void testGetCallDescriptorNoArgs() {

@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
@@ -31,10 +32,12 @@ public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
     if (!statements.isEmpty()) {
       return FunctionBodyAst.builder()
           .statements(statements)
+          .patternCases(Collections.emptyList())
           .build();
     } else {
       return FunctionBodyAst.builder()
           .patternCases(patternCases)
+          .statements(Collections.emptyList())
           .build();
     }
   }

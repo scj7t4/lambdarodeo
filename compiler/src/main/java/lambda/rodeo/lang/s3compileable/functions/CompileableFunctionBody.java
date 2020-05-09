@@ -2,6 +2,9 @@ package lambda.rodeo.lang.s3compileable.functions;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.exceptions.CriticalLanguageException;
+import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
+import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
 import lambda.rodeo.lang.s3compileable.statement.CompileableStatement;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
@@ -18,6 +21,7 @@ public class CompileableFunctionBody {
 
   private final CompileableTypeScope initialTypeScope;
   private final List<CompileableStatement> statements;
+  private final List<CompileablePatternCase> patternCases;
   private final TypedFunctionBody typedFunctionBody;
 
 
@@ -30,8 +34,15 @@ public class CompileableFunctionBody {
 
   public void compile(MethodVisitor methodVisitor,
       CompileContext compileContext) {
+    if(!statements.isEmpty() && !patternCases.isEmpty()) {
+      throw new CriticalLanguageException("Function body has both pattern cases and statements");
+    }
+
     for (CompileableStatement statement : statements) {
       statement.compile(methodVisitor, compileContext);
+    }
+    for (CompileablePatternCase patternCase : patternCases) {
+      patternCase.compile(methodVisitor, compileContext);
     }
   }
 

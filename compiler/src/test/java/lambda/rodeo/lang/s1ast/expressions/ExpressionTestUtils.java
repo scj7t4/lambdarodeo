@@ -41,6 +41,7 @@ public class ExpressionTestUtils {
             .build())
         .functionBodyAst(FunctionBodyAst.builder()
             .statements(statements)
+            .patternCases(Collections.emptyList())
             .build())
         .build();
   }

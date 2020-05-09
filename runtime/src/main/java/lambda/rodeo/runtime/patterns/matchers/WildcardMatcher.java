@@ -2,10 +2,8 @@ package lambda.rodeo.runtime.patterns.matchers;
 
 import lambda.rodeo.runtime.patterns.Matcher;
 
-public class WildcardMatcher implements Matcher {
-
-  @Override
-  public boolean matches(Object input) {
-    return true;
-  }
+/**
+ * This is a placeholder, Wildcard always matches and so compiles to nothing.
+ */
+public abstract class WildcardMatcher implements Matcher {
 }

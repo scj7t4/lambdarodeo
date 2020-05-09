@@ -14,6 +14,7 @@ import lambda.rodeo.lang.s1ast.expressions.AtomAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s1ast.expressions.IntConstantAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
+import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
@@ -28,6 +29,7 @@ import lombok.SneakyThrows;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,6 +47,7 @@ class CompileableFunctionCallTest {
                     .name(functionToCall)
                     .declaredReturnType(IntType.INSTANCE)
                     .build())
+                .functionBodyAst(Mockito.mock(FunctionBodyAst.class))
                 .build()
         ))
         .build();
@@ -86,6 +89,7 @@ class CompileableFunctionCallTest {
                     .name(functionToCall)
                     .declaredReturnType(IntType.INSTANCE)
                     .build())
+                .functionBodyAst(Mockito.mock(FunctionBodyAst.class))
                 .build()
         ))
         .build();

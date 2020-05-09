@@ -8,6 +8,7 @@ import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 
 /*
  * Function is composed of multiple statements A -> B -> C -> D
@@ -21,7 +22,9 @@ import lombok.EqualsAndHashCode;
 //TODO: Compile error when types don't agree
 public class FunctionAst {
 
+  @NonNull
   private final FunctionSigAst functionSignature;
+  @NonNull
   private final FunctionBodyAst functionBodyAst;
 
   public TypedFunction toTypedFunctionAst(

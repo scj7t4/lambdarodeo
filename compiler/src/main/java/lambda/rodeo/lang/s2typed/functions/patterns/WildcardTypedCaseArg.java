@@ -2,6 +2,8 @@ package lambda.rodeo.lang.s2typed.functions.patterns;
 
 import lambda.rodeo.lang.s1ast.functions.patterns.VariableCaseArgAst;
 import lambda.rodeo.lang.s1ast.functions.patterns.WildcardCaseArgAst;
+import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
+import lambda.rodeo.lang.s3compileable.functions.patterns.WildcardCompileableCaseArg;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,4 +11,12 @@ import lombok.Getter;
 @Getter
 public class WildcardTypedCaseArg implements TypedCaseArg {
   private final WildcardCaseArgAst caseArgAst;
+
+
+  @Override
+  public CompileableCaseArg toCompileableCaseArg() {
+    return WildcardCompileableCaseArg.builder()
+        .typedCaseArg(this)
+        .build();
+  }
 }

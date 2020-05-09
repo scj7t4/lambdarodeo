@@ -3,6 +3,8 @@ package lambda.rodeo.lang.s2typed.functions;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
+import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
+import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
@@ -17,6 +19,7 @@ public class TypedFunctionBody {
 
   private final TypeScope initialTypeScope;
   private final List<TypedStatement> statements;
+  private final List<TypedPatternCase> patternCases;
   private final FunctionBodyAst functionBodyAst;
 
 
@@ -27,6 +30,9 @@ public class TypedFunctionBody {
         .statements(statements.stream()
             .map(TypedStatement::toCompileableStatement)
             .collect(Collectors.toList()))
+        .patternCases(patternCases.stream()
+        .map(pattern -> pattern.toCompileablePatternCase())
+        .collect(Collectors.toList()))
         .build();
   }
 

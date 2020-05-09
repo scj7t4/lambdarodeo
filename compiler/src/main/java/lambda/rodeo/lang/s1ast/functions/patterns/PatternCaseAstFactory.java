@@ -15,6 +15,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAstFactory;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst.PatternCaseAstBuilder;
+import lambda.rodeo.runtime.types.Atom;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
@@ -43,7 +44,10 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     AtomContext atom = literal.atom();
     if (atom != null) {
       caseArgAsts.add(AtomCaseArgAst.builder()
-          .atom(atom.IDENTIFIER().getText())
+          .atom(new Atom(atom.IDENTIFIER().getText()))
+          .startLine(ctx.getStart().getLine())
+          .endLine(ctx.getStop().getLine())
+          .characterStart(ctx.getStart().getCharPositionInLine())
           .build());
       return;
     }
@@ -51,6 +55,9 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     if (intLiteral != null) {
       caseArgAsts.add(IntLiteralCaseArgAst.builder()
           .value(intLiteral.getText())
+          .startLine(ctx.getStart().getLine())
+          .endLine(ctx.getStop().getLine())
+          .characterStart(ctx.getStart().getCharPositionInLine())
           .build());
     }
   }
@@ -60,12 +67,19 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     String varName = ctx.varName().getText();
     caseArgAsts.add(VariableCaseArgAst.builder()
         .identifier(varName)
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
         .build());
   }
 
   @Override
   public void enterCaseWildCard(CaseWildCardContext ctx) {
-    caseArgAsts.add(WildcardCaseArgAst.builder().build());
+    caseArgAsts.add(WildcardCaseArgAst.builder()
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .build());
   }
 
   @Override

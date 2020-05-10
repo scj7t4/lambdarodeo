@@ -28,7 +28,6 @@ public class FunctionCallAst implements ExpressionAst {
   private final int characterStart;
 
   @Override
-  //TODO: Wrong...
   public TypedExpression toTypedExpression(
       TypeScope typeScope,
       TypedModuleScope typedModuleScope,

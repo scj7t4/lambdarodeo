@@ -3,6 +3,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.exceptions.TypeException;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
@@ -36,11 +37,7 @@ public class UnaryMinusAst implements ExpressionAst {
     Type type = typedOperand.getType();
 
     if (AstUtils.isAnyUndefined(type)) {
-      return SimpleTypedExpression.builder()
-          .type(Atom.UNDEFINED)
-          .expr(this)
-          .toCompileable(() -> (mv, cc) -> compile(typedOperand.toCompileableExpr(), mv, cc))
-          .build();
+      return AtomAst.undefinedAtomExpression();
     } else if (AstUtils.isIntType(type)) {
       return SimpleTypedExpression.builder()
           .toCompileable(() -> (mv, cc) -> this.compile(typedOperand.toCompileableExpr(), mv, cc))
@@ -48,8 +45,10 @@ public class UnaryMinusAst implements ExpressionAst {
           .expr(this)
           .build();
     } else {
-      //TODO Compile error instead.
-      throw new TypeException("Cannot negate type " + type);
+      compileContext.getCompileErrorCollector().collect(
+          CompileError.mathOperationWithNonNumeric(this, "unary minus (-)", type)
+      );
+      return AtomAst.undefinedAtomExpression();
     }
   }
 

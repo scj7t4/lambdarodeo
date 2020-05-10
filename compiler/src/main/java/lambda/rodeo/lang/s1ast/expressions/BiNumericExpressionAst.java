@@ -9,7 +9,6 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.Type;
 import org.objectweb.asm.MethodVisitor;
 
@@ -66,11 +65,7 @@ public interface BiNumericExpressionAst extends ExpressionAst {
     Type right = typedRhs.getType();
 
     if (AstUtils.isAnyUndefined(left, right)) {
-      return AtomAst
-          .builder()
-          .atom(Atom.UNDEFINED)
-          .build()
-          .toTypedExpression();
+      return AtomAst.undefinedAtomExpression();
     } else if (AstUtils.bothIntType(left, right)) {
       return SimpleTypedExpression.builder()
           .expr(this)
@@ -83,11 +78,7 @@ public interface BiNumericExpressionAst extends ExpressionAst {
               this,
               this.operationName(),
               left, right));
-      return AtomAst
-          .builder()
-          .atom(Atom.UNDEFINED)
-          .build()
-          .toTypedExpression();
+      return AtomAst.undefinedAtomExpression();
     }
   }
 

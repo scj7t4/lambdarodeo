@@ -25,6 +25,13 @@ public class AtomAst implements ExpressionAst, Compileable {
   private final int endLine;
   private final int characterStart;
 
+  public static SimpleTypedExpression undefinedAtomExpression() {
+    return builder()
+        .atom(Atom.UNDEFINED)
+        .build()
+        .toTypedExpression();
+  }
+
   public SimpleTypedExpression toTypedExpression() {
     return SimpleTypedExpression.builder()
         .toCompileable(() -> this)

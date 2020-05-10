@@ -68,6 +68,17 @@ public class CompileError {
         .build();
   }
 
+  public static CompileError mathOperationWithNonNumeric(AstNode astNode,
+      String operation, Type type) {
+    return CompileError.builder()
+        .errorType(ILLEGAL_MATH_OPERATION)
+        .errorMsg("Cannot do " + operation + " with '" + type)
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
   public static CompileError identifierAlreadyDeclaredInScope(AstNode astNode, String identifier) {
     return CompileError.builder()
         .errorType(IDENTIFIER_ALREADY_IN_SCOPE)

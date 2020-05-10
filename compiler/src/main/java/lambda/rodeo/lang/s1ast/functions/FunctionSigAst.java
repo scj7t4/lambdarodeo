@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypeScopeImpl;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

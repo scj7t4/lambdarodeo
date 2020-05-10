@@ -4,6 +4,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedSimpleAssignment;
+import lambda.rodeo.lang.scope.TypeScopeImpl;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

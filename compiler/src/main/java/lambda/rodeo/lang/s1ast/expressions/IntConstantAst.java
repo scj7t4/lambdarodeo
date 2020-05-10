@@ -5,8 +5,8 @@ import static org.objectweb.asm.Opcodes.NEW;
 
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.IntType;
 import lombok.Builder;

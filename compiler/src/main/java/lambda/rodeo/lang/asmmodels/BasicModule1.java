@@ -8,7 +8,13 @@ import lambda.rodeo.runtime.types.Atom;
 
 public class BasicModule1 {
 
-  public static BigInteger testFn(Atom arg1, BigInteger arg2) {
-    throw new RuntimeCriticalLanguageException("No pattern cases matched");
+  public static BigInteger someFunc(BigInteger arg1) {
+    if (new IntMatcher(new BigInteger("1")).matches(arg1)) {
+      return new BigInteger("1");
+    }
+    if (new IntMatcher(new BigInteger("0")).matches(arg1)) {
+      return new BigInteger("0");
+    }
+    throw new RuntimeCriticalLanguageException("Pattern didn't match blah blah");
   }
 }

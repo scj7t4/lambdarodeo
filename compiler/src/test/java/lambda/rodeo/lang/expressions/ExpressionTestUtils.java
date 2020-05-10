@@ -8,6 +8,7 @@ import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
+import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lombok.SneakyThrows;
@@ -27,11 +28,11 @@ public class ExpressionTestUtils {
         .startLine(0)
         .endLine(0)
         .characterStart(0)
-        .functionAsts(Collections.singletonList(functionForStatments(statements)))
+        .functionAsts(Collections.singletonList(functionForStatements(statements)))
         .build();
   }
 
-  public static FunctionAst functionForStatments(List<StatementAst> statements) {
+  public static FunctionAst functionForStatements(List<StatementAst> statements) {
     return FunctionAst.builder()
         .functionSignature(FunctionSigAst.builder()
             .name(TEST_METHOD)
@@ -41,8 +42,10 @@ public class ExpressionTestUtils {
             .endLine(0)
             .build())
         .functionBodyAst(FunctionBodyAst.builder()
-            .statements(statements)
-            .patternCases(Collections.emptyList())
+            .patternCases(Collections.singletonList(PatternCaseAst.builder()
+                .caseArgs(Collections.emptyList())
+                .statements(statements)
+                .build()))
             .build())
         .build();
   }

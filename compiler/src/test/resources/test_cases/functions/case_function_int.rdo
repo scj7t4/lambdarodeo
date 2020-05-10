@@ -1,0 +1,8 @@
+def somefunc(arg0: int) => int {
+  case (1) {
+    1;
+  }
+  case (0) {
+    0;
+  }
+}

@@ -1,76 +1,41 @@
 package lambda.rodeo.lang.scope;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@Getter
-@EqualsAndHashCode
-public class TypeScope {
+public interface TypeScope {
 
-  public static final TypeScope EMPTY = new TypeScope();
-  private final List<Entry> scope;
+  TypeScope EMPTY = new TypeScopeImpl();
 
-  public TypeScope() {
-    scope = new ArrayList<>();
-  }
+  TypeScope declare(String varName, Type type);
 
-  public TypeScope declare(String varName, Type type) {
-    TypeScope out = new TypeScope();
-    out.scope.addAll(this.scope);
-    int slot = -1;
-    if (type.allocateSlot()) {
-      slot = out.scope.stream()
-          .filter(entry -> entry.getIndex() != -1)
-          .map(Entry::getIndex)
-          .mapToInt(x -> x)
-          .max()
-          .orElse(-1) + 1;
-    }
-    out.scope.add(Entry.builder()
-        .name(varName)
-        .type(type)
-        .index(slot)
-        .build());
-    return out;
-  }
+  Stream<Entry> get(String varName);
 
-  public Optional<Entry> get(String varName) {
-    return this.scope.stream()
-        .filter(entry -> Objects.equals(entry.name, varName))
-        .findFirst();
-  }
+  Stream<Entry> getAll();
 
-  public CompileableTypeScope toCompileableTypeScope() {
-    List<CompileableTypeScope.Entry> entries = new ArrayList<>();
+  CompileableTypeScope toCompileableTypeScope();
 
-    for (Entry entry : scope) {
+  int maxSlot();
 
-      CompileableTypeScope.Entry converted = CompileableTypeScope.Entry.builder()
-          .index(entry.index)
-          .name(entry.name)
-          .type(entry.type.toCompileableType())
-          .build();
-      entries.add(converted);
-    }
-
-    return CompileableTypeScope
-        .builder()
-        .scope(entries)
-        .build();
-  }
+  TypeScope parent();
 
   @Builder
   @Getter
-  public static class Entry {
+  class Entry {
 
     private final String name;
     private final Type type;
     private final int index;
+
+    public CompileableTypeScope.Entry toCompileableEntry() {
+      return CompileableTypeScope.Entry.builder()
+          .index(index)
+          .name(name)
+          .type(type.toCompileableType())
+          .build();
+    }
   }
 }

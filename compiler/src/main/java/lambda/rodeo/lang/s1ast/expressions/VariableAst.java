@@ -9,8 +9,8 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s2typed.expressions.TypedVariable;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
+import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
@@ -31,9 +31,9 @@ public class VariableAst implements ExpressionAst {
   public TypedExpression toTypedExpression(
       TypeScope typeScope,
       TypedModuleScope typedModuleScope, CompileContext compileContext) {
-    Optional<Entry> entry = typeScope.get(name);
+    Optional<Entry> entry = typeScope.get(name).findFirst();
     Type type = entry
-        .map(Entry::getType)
+        .map(TypeScope.Entry::getType)
         .orElse(UNDEFINED);
     //TODO: Fix context...
     if (Objects.equals(UNDEFINED, type)) {

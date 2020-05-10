@@ -31,6 +31,7 @@ public class VariableCaseArgAst implements CaseArgAst {
             .referencedArgEntry(entry)
             .build())
         .map(x -> (TypedCaseArg) x)
+        .findFirst()
         .orElseGet(() -> {
 
           compileContext

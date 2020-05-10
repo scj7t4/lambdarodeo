@@ -52,10 +52,6 @@ public class CompileableFunction {
 
     // The function body should emit a typescope which is all the variables it uses.
     functionBodyAst.compile(methodVisitor, compileContext);
-
-    // After compiling all the statements, the final statement should be on the stack:
-    // An assigment in the last statement should be illegal, so we don't allow it:
-    methodVisitor.visitInsn(ARETURN);
     Label endFunc = new Label();
     methodVisitor.visitLabel(endFunc);
 
@@ -67,9 +63,5 @@ public class CompileableFunction {
 
   public String getName() {
     return getFunctionSigAst().getName();
-  }
-
-  public List<TypedVar> getArguments() {
-    return getFunctionSigAst().getArguments();
   }
 }

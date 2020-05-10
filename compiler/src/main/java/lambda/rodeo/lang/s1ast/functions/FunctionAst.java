@@ -4,6 +4,7 @@ import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypeScopeImpl;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.Data;

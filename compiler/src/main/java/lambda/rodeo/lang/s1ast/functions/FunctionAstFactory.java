@@ -38,13 +38,8 @@ public class FunctionAstFactory extends LambdaRodeoBaseListener {
   public void enterFunctionBody(FunctionBodyContext ctx) {
     this.functionBodyAst = new FunctionBodyAstFactory(ctx, compileContext)
         .toAst();
-    List<StatementAst> statements = functionBodyAst.getStatements();
-    StatementAst lastStatement = statements.get(statements.size() - 1);
-    if (lastStatement.getAssignment() != null) {
-      compileContext.getCompileErrorCollector().collect(
-          CompileError.lastStatementCannotBeAssignment(lastStatement)
-      );
-    }
+
+    this.functionBodyAst.checkForLastStatementAssignment(compileContext);
   }
 
   public FunctionAst toAst() {

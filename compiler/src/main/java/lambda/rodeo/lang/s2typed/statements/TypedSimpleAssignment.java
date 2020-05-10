@@ -26,6 +26,7 @@ public class TypedSimpleAssignment implements TypedAssignment, CompileableAssign
     String identifier = assignmentAst.getIdentifier();
     int index = typeScope.get(identifier)
         .map(Entry::getIndex)
+        .findFirst()
         .orElseThrow(() -> new CriticalLanguageException(
             "Identifier '" + identifier + "'wasn't in type scope"));
     methodVisitor.visitVarInsn(ASTORE, index);

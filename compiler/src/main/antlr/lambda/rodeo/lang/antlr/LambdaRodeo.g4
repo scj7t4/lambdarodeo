@@ -22,7 +22,7 @@ varType: typeExpression;
 returnType: typeExpression;
 typeExpression: intType | atom;
 intType: 'int';
-patternCase: 'case' '(' caseArg+ ')' functionBody;
+patternCase: 'case' '(' caseArg+ ')' '{' statement+ '}';
 caseArg: caseLiteral
   | caseVarName
   | caseWildCard;

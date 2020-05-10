@@ -17,36 +17,33 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 //TODO: TEST
 public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
 
-  private final List<StatementAst> statements = new ArrayList<>();
   private final List<PatternCaseAst> patternCases = new ArrayList<>();
   private final CompileContext compileContext;
+  private final PatternCaseAstFactory noPatterns;
 
   public FunctionBodyAstFactory(
       FunctionBodyContext ctx,
       CompileContext compileContext) {
     this.compileContext = compileContext;
+    noPatterns = new PatternCaseAstFactory(compileContext);
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
   public FunctionBodyAst toAst() {
-    if (!statements.isEmpty()) {
+    if (!patternCases.isEmpty()) {
       return FunctionBodyAst.builder()
-          .statements(statements)
-          .patternCases(Collections.emptyList())
+          .patternCases(patternCases)
           .build();
     } else {
       return FunctionBodyAst.builder()
-          .patternCases(patternCases)
-          .statements(Collections.emptyList())
+          .patternCases(Collections.singletonList(noPatterns.toAst()))
           .build();
     }
   }
 
   @Override
   public void enterStatement(StatementContext ctx) {
-    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx);
-    StatementAst statementAst = statementAstFactory.toAst();
-    statements.add(statementAst);
+    noPatterns.enterStatement(ctx);
   }
 
   @Override

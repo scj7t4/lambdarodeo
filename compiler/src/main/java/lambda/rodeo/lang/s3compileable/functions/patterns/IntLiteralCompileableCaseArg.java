@@ -4,7 +4,7 @@ import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.TypeReference.NEW;
+import static org.objectweb.asm.Opcodes.NEW;
 
 import java.math.BigInteger;
 import lambda.rodeo.lang.compilation.CompileContext;

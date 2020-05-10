@@ -1,10 +1,11 @@
 package lambda.rodeo.lang.s3compileable.functions;
 
+import static org.objectweb.asm.Opcodes.ARETURN;
 import static org.objectweb.asm.Opcodes.ATHROW;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Type.getInternalName;
-import static org.objectweb.asm.TypeReference.NEW;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
@@ -27,36 +28,25 @@ import org.objectweb.asm.MethodVisitor;
 public class CompileableFunctionBody {
 
   private final CompileableTypeScope initialTypeScope;
-  private final List<CompileableStatement> statements;
+  private final CompileableTypeScope finalTypeScope;
   private final List<CompileablePatternCase> patternCases;
   private final TypedFunctionBody typedFunctionBody;
 
-
   public Type getReturnType() {
-    return statements.get(statements.size() - 1)
-        .getCompileableExpr()
-        .getTypedExpression()
-        .getType();
+    //Todo: This will probably be wrong.
+    return patternCases.get(0).getReturnType();
   }
 
   public void compile(MethodVisitor methodVisitor,
       CompileContext compileContext) {
-    if (!statements.isEmpty() && !patternCases.isEmpty()) {
-      throw new CriticalLanguageException("Function body has both pattern cases and statements");
-    }
-
-    for (CompileableStatement statement : statements) {
-      statement.compile(methodVisitor, compileContext);
-    }
     for (CompileablePatternCase patternCase : patternCases) {
       patternCase.compile(methodVisitor, compileContext);
     }
-    if (!patternCases.isEmpty()) {
+    if (!patternCases.get(0).getCaseArgs().isEmpty()) {
       //TODO: revisit this, probably don't want the whole language to barf if we don't cover all
       //TODO: cases.
       String exceptionType = getInternalName(RuntimeCriticalLanguageException.class);
-      methodVisitor.visitTypeInsn(NEW,
-          exceptionType);
+      methodVisitor.visitTypeInsn(NEW, exceptionType);
       methodVisitor.visitInsn(DUP);
       methodVisitor.visitLdcInsn("No pattern cases matched");
       methodVisitor.visitMethodInsn(INVOKESPECIAL,
@@ -69,8 +59,7 @@ public class CompileableFunctionBody {
   }
 
   public CompileableTypeScope getFinalTypeScope() {
-    return statements.get(statements.size() - 1)
-        .getAfterTypeScope();
+    return finalTypeScope;
   }
 
 }

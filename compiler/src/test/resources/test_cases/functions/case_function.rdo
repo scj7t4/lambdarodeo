@@ -1,8 +1,0 @@
-def somefunc(arg0: int) => int {
-  case (0) {
-    0
-  }
-  case (*) {
-    arg0 + somefunc(arg0 - 1)
-  }
-}

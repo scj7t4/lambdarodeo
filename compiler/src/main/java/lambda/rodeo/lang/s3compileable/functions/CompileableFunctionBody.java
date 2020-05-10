@@ -31,11 +31,6 @@ public class CompileableFunctionBody {
   private final List<CompileablePatternCase> patternCases;
   private final TypedFunctionBody typedFunctionBody;
 
-  public Type getReturnType() {
-    //Todo: This will probably be wrong.
-    return patternCases.get(0).getReturnType();
-  }
-
   public void compile(MethodVisitor methodVisitor,
       CompileContext compileContext, String internalModuleName) {
     for (CompileablePatternCase patternCase : patternCases) {

@@ -31,7 +31,7 @@ public class CompileableFunction {
       String descriptor = Type.getDescriptor(var.getType().javaType());
       sb.append(descriptor);
     }
-    sb.append(")").append(Type.getDescriptor(functionBody.getReturnType().javaType()));
+    sb.append(")").append(Type.getDescriptor(functionSigAst.getDeclaredReturnType().javaType()));
     return sb.toString();
   }
 

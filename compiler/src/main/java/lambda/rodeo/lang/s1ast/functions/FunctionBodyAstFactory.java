@@ -14,7 +14,6 @@ import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-//TODO: TEST
 public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
 
   private final List<PatternCaseAst> patternCases = new ArrayList<>();

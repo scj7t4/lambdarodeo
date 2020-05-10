@@ -23,7 +23,6 @@ import lombok.NonNull;
 @Data
 @Builder
 @EqualsAndHashCode
-//TODO: Compile error when types don't agree
 public class FunctionAst {
 
   @NonNull

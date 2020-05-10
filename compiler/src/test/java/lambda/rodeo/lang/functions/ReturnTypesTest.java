@@ -21,6 +21,7 @@ import lambda.rodeo.runtime.types.IntType;
 import org.junit.jupiter.api.Test;
 
 public class ReturnTypesTest {
+
   @Test
   public void testReturnTypeMismatch() {
     String expr = "1 * 2 * 3 * 4 * 5";

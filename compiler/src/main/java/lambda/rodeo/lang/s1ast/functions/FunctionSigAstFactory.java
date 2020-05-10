@@ -1,7 +1,13 @@
 package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionArgsContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionNameContext;
@@ -10,6 +16,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.ReturnTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.runtime.types.Type;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -46,7 +53,20 @@ public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void exitFunctionArgs(FunctionArgsContext ctx) {
-    // TODO: Check for variables already declared.
+    Map<String, List<TypedVar>> namingCount = new HashMap<>();
+
+    for(TypedVar var : arguments) {
+      String name = var.getName();
+      namingCount.computeIfAbsent(name, key -> new ArrayList<>()).add(var);
+    }
+
+    namingCount.values().stream()
+        .filter(typedVars -> typedVars.size() > 1)
+        .map(Collection::stream)
+        .flatMap(dupes -> dupes.skip(1))
+        .forEach(dupe -> compileContext.getCompileErrorCollector().collect(
+            CompileError.identifierAlreadyDeclaredInScope(dupe, dupe.getName())
+        ));
   }
 
   @Override

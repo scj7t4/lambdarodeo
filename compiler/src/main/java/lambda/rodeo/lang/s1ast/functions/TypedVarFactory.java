@@ -8,9 +8,13 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class TypedVarFactory extends LambdaRodeoBaseListener {
 
-  private TypedVar.TypedVarBuilder builder = TypedVar.builder();
+  private TypedVar.TypedVarBuilder builder;
 
   public TypedVarFactory(TypedVarContext ctx) {
+    builder = TypedVar.builder()
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine());
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 

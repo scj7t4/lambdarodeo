@@ -328,4 +328,28 @@ class MathExpressionTest {
     assertThat(compileError.getErrorMsg(), containsString("int"));
     assertThat(compileError.getErrorMsg(), containsString("addition"));
   }
+
+  @Test
+  public void testUndefinedUnaryMinus() {
+    String expr = "-:atom";
+    LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
+
+    ExprContext exprContext = lambdaRodeoParser.expr();
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
+    );
+    ExpressionAst expressionAst = expressionAstFactory.toAst();
+
+    assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
+        typedModuleScope, compileContext).getType(), equalTo(Atom.UNDEFINED));
+    List<CompileError> compileErrors = compileContext.getCompileErrorCollector().getCompileErrors();
+    assertThat(compileErrors, hasSize(1));
+
+    CompileError compileError = compileErrors.get(0);
+    assertThat(compileError.getStartLine(), equalTo(1));
+    assertThat(compileError.getCharacterStart(), equalTo(0));
+    assertThat(compileError.getEndLine(), equalTo(1));
+    assertThat(compileError.getErrorType(), equalTo(CompileError.ILLEGAL_MATH_OPERATION));
+    assertThat(compileError.getErrorMsg(), containsString(":atom"));
+    assertThat(compileError.getErrorMsg(), containsString("unary minus"));
+  }
 }

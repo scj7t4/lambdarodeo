@@ -95,7 +95,11 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void exitUnaryMinus(UnaryMinusContext ctx) {
     ExpressionAst op = expressionStack.pollLast();
-    expressionStack.addLast(UnaryMinusAst.builder().operand(op).build());
+    expressionStack.addLast(UnaryMinusAst.builder()
+        .operand(op)
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .build());
   }
 
   @Override

@@ -126,6 +126,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     int size = ctx.expr().size();
     Deque<ExpressionAst> args = new LinkedList<>();
     //Hurr durr the args will come off the stack backwards
+    //TODO: Unit test to make sure this stays fixed.
     for(int i = 0; i < size; i++) {
       ExpressionAst expressionAst = expressionStack.pollLast();
       args.addFirst(expressionAst);

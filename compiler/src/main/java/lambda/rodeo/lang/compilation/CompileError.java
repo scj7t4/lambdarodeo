@@ -13,6 +13,7 @@ public class CompileError {
   public static final String POINTLESS_ASSIGNMENT = "POINTLESS_ASSIGNMENT";
   public static final String ILLEGAL_MATH_OPERATION = "ILLEGAL_MATH_OPERATION";
   public static final String NOT_A_FUNCTION = "NOT_A_FUNCTION";
+  public static final String IDENTIFIER_ALREADY_IN_SCOPE = "ALREADY_IN_SCOPE";
 
   private final int startLine;
   private final int endLine;
@@ -61,6 +62,16 @@ public class CompileError {
     return CompileError.builder()
         .errorType(ILLEGAL_MATH_OPERATION)
         .errorMsg("Cannot do " + operation + " with '" + lhsType + "' and '" + rhsType + "'")
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
+  public static CompileError identifierAlreadyDeclaredInScope(AstNode astNode, String identifier) {
+    return CompileError.builder()
+        .errorType(IDENTIFIER_ALREADY_IN_SCOPE)
+        .errorMsg("Cannot declare '" + identifier + "' it is already defined in this scope")
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())
         .characterStart(astNode.getCharacterStart())

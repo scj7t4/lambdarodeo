@@ -1,15 +1,18 @@
 package lambda.rodeo.lang.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 
 import java.io.PrintWriter;
 import java.util.Collections;
+import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.ASMifier;
@@ -26,6 +29,14 @@ public class CompileUtils {
     public Class<?> defineClass(String name, byte[] b) {
       return defineClass(name, b, 0, b.length);
     }
+  }
+
+  public static CompileErrorCollector expectCompileErrors(ModuleAst moduleAst) {
+    CompileContext compileContext = CompileContext.builder().build();
+    CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
+    compileableModule.compile(compileContext);
+    assertThat(compileContext.getCompileErrorCollector().getCompileErrors(), Matchers.not(empty()));
+    return compileContext.getCompileErrorCollector();
   }
 
   public static Class<?> createClass(ModuleAst moduleAst) {

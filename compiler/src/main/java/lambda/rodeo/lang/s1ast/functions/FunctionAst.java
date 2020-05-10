@@ -52,6 +52,7 @@ public class FunctionAst {
     return getFunctionSignature().getArguments();
   }
 
+  //TODO: Figure out how to test for functions having duplicate signatures
   public boolean hasSignature(List<Type> callArguments) {
     List<TypedVar> sigArguments = functionSignature.getArguments();
     if(callArguments.size() != sigArguments.size()) {

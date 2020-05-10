@@ -31,6 +31,7 @@ public class StatementAst implements AstNode {
         .toTypedExpression(before, typedModuleScope, compileContext);
     TypeScope after = before;
     TypedAssignment typedAssignment = null;
+
     if (assignment != null) {
       after = assignment.scopeAfter(before, compileContext, typedExpr.getType());
       typedAssignment = assignment.toTypedAssignmentAst(after);

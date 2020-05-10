@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.s1ast.statements;
 
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedSimpleAssignment;
@@ -16,9 +17,19 @@ import lombok.Getter;
 public class SimpleAssignmentAst implements AssigmentAst {
 
   private final String identifier;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   @Override
   public TypeScope scopeAfter(TypeScope scopeBefore, CompileContext compileContext, Type type) {
+    boolean alreadyDeclared = scopeBefore.get(identifier).findAny().isPresent();
+    if(alreadyDeclared) {
+      compileContext.getCompileErrorCollector().collect(
+          CompileError.identifierAlreadyDeclaredInScope(this, identifier)
+      );
+      return scopeBefore;
+    }
     return scopeBefore.declare(identifier, type);
   }
 

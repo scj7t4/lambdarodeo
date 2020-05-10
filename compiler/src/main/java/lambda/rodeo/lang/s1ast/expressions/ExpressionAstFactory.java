@@ -26,8 +26,21 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
+  /**
+   * Test only!
+   */
+  ExpressionAstFactory() {
+  }
+
   public ExpressionAst toAst() {
     return expressionStack.getLast();
+  }
+
+  /**
+   * Test only!
+   */
+  void pushOnToStack(ExpressionAst expressionAst) {
+    this.expressionStack.addLast(expressionAst);
   }
 
   @Override

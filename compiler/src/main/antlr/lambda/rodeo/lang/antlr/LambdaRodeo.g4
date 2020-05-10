@@ -3,7 +3,7 @@ grammar LambdaRodeo;
 @header {
     package lambda.rodeo.lang.antlr;
 }
-
+//TODO: Choose what's next, duck types? Lambdas?
 module: 'module' moduleIdentifier moduleBody;
 moduleIdentifier: IDENTIFIER | SCOPED_IDENTIFIER;
 moduleBody: '{' moduleEntry*'}';

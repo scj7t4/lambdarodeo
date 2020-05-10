@@ -31,40 +31,6 @@ public class CompileableFunctionCall implements CompileableExpr {
     return typedExpression.getTypedModuleScope().getThisScope().getThisModule();
   }
 
-  //
-//  public String getTargetModuleName() {
-//    String[] split = functionCallAst.getCallTarget().split("\\.");
-//    String[] modTarget = new String[split.length - 1];
-//    for (int i = 0; i < modTarget.length; i++) {
-//      modTarget[i] = split[i];
-//    }
-//    if (modTarget.length > 0) {
-//      return String.join(".", modTarget);
-//    } else {
-//      return ModuleAst.THIS_MODULE; // This module
-//    }
-//  }
-//
-//  public Optional<ModuleAst> getTargetModule() {
-//    return typeScope.get(getTargetModuleName())
-//        .filter(x -> x.getType() instanceof ModuleType)
-//        .map(x -> (ModuleType) x.getType())
-//        .map(ModuleType::getModuleAst);
-//  }
-//
-//  public String getJavaMethodOwner() {
-//    String[] split = functionCallAst.getCallTarget().split("\\.");
-//    String[] modTarget = new String[split.length - 1];
-//    for (int i = 0; i < modTarget.length; i++) {
-//      modTarget[i] = split[i];
-//    }
-//    if (modTarget.length > 0) {
-//      return String.join("/", modTarget);
-//    } else {
-//      return null; // This module
-//    }
-//  }
-//
   public String getTargetMethod() {
     String[] split = typedExpression.getFunctionCallAst().getCallTarget().split("\\.");
     return split[split.length - 1];

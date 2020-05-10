@@ -35,7 +35,6 @@ public class VariableAst implements ExpressionAst {
     Type type = entry
         .map(TypeScope.Entry::getType)
         .orElse(UNDEFINED);
-    //TODO: Fix context...
     if (Objects.equals(UNDEFINED, type)) {
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedIdentifier(name, this));

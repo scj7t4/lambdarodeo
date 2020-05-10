@@ -124,14 +124,15 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   public void exitFunctionCall(FunctionCallContext ctx) {
     String callTarget = ctx.callTarget().getText();
     int size = ctx.expr().size();
-    List<ExpressionAst> args = new ArrayList<>();
+    Deque<ExpressionAst> args = new LinkedList<>();
+    //Hurr durr the args will come off the stack backwards
     for(int i = 0; i < size; i++) {
       ExpressionAst expressionAst = expressionStack.pollLast();
-      args.add(expressionAst);
+      args.addFirst(expressionAst);
     }
     FunctionCallAst funcCall = FunctionCallAst.builder()
         .callTarget(callTarget)
-        .args(args)
+        .args(new ArrayList<>(args))
         .startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())
         .characterStart(ctx.getStart().getCharPositionInLine())

@@ -1,8 +1,13 @@
 package lambda.rodeo.lang.s1ast.expressions;
+import static org.objectweb.asm.Opcodes.BASTORE;
+import static org.objectweb.asm.Opcodes.BIPUSH;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.NEWARRAY;
+import static org.objectweb.asm.Opcodes.T_BYTE;
 
+import java.math.BigInteger;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
@@ -13,6 +18,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
@@ -42,15 +48,23 @@ public class IntConstantAst implements ExpressionAst, Compileable {
   @Override
   public void compile(MethodVisitor methodVisitor,
       CompileContext compileContext) {
+    byte[] asBytes = new BigInteger(literal).toByteArray();
+
     methodVisitor.visitTypeInsn(NEW, "java/math/BigInteger"); // Start creating the new type
     methodVisitor.visitInsn(DUP); // Duplicate the new object on the stack
-    methodVisitor.visitLdcInsn(literal); // Initialize a string constant for the the value...
+    methodVisitor.visitLdcInsn(asBytes.length);
+    methodVisitor.visitIntInsn(NEWARRAY, T_BYTE);
+    for(int i = 0; i < asBytes.length; i++) {
+      methodVisitor.visitInsn(DUP);
+      methodVisitor.visitLdcInsn(i);
+      methodVisitor.visitIntInsn(BIPUSH, asBytes[i]);
+      methodVisitor.visitInsn(BASTORE);
+    }
     methodVisitor.visitMethodInsn(
         INVOKESPECIAL,
-        "java/math/BigInteger",
+        Type.getInternalName(BigInteger.class),
         "<init>",
-        "(Ljava/lang/String;)V",
-        false); // Invoke the ctor... it maybe pops the object off the stack, that's why
-    // we dup'd earlier??
+        "([B)V",
+        false);
   }
 }

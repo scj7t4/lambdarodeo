@@ -10,10 +10,12 @@ import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class VariableCaseArgAst implements CaseArgAst {
 
   private final String identifier;

@@ -6,10 +6,12 @@ import lambda.rodeo.lang.s2typed.functions.patterns.WildcardTypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class WildcardCaseArgAst implements CaseArgAst {
 
   private final int startLine;

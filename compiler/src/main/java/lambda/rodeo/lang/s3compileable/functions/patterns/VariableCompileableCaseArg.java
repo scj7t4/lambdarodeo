@@ -4,26 +4,32 @@ import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.TypeReference.NEW;
+import static org.objectweb.asm.Opcodes.NEW;
 
-import java.math.BigInteger;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.s1ast.functions.patterns.VariableCaseArgAst;
 import lambda.rodeo.lang.s2typed.functions.patterns.VariableTypedCaseArg;
+import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.runtime.patterns.matchers.EqualMatcher;
-import lambda.rodeo.runtime.patterns.matchers.IntMatcher;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class VariableCompileableCaseArg implements CompileableCaseArg {
+  @NonNull
   private final VariableTypedCaseArg typedCaseArg;
+  @NonNull
+  private final TypedStaticPattern staticPattern;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext, int argIndex) {
+  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+      CompileableCaseArgContext caseArgContext) {
     String eqMatcher = Type.getInternalName(EqualMatcher.class);
     methodVisitor.visitTypeInsn(NEW, eqMatcher);
     methodVisitor.visitInsn(DUP);
@@ -33,11 +39,22 @@ public class VariableCompileableCaseArg implements CompileableCaseArg {
         "<init>",
         "(Ljava/lang/Object;)V",
         false);
-    methodVisitor.visitVarInsn(ALOAD, argIndex);
+    methodVisitor.visitVarInsn(ALOAD, caseArgContext.getArgIndex());
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
         eqMatcher,
         "matches",
         "(Ljava/lang/Object;)Z",
         false);
+  }
+
+  @Override
+  public void declareMatcherField(ClassWriter classWriter) {
+    // Can't be declared statically
+  }
+
+  @Override
+  public void matcherInit(MethodVisitor methodVisitor, CompileContext compileContext,
+      String internalModuleName) {
+    // Can't be declared statically
   }
 }

@@ -4,7 +4,11 @@ import java.util.Objects;
 import lambda.rodeo.runtime.patterns.Matcher;
 
 public class EqualMatcher implements Matcher {
-  private Object toMatch;
+  private final Object toMatch;
+
+  public EqualMatcher(Object toMatch) {
+    this.toMatch = toMatch;
+  }
 
   @Override
   public boolean matches(Object input) {

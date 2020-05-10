@@ -23,7 +23,8 @@ public class CompileablePatternCase {
   @NonNull
   private final List<CompileableCaseArg> caseArgs;
 
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+      String internalModuleName) {
     Label patternMiss = new Label();
     for (int i = 0; i < caseArgs.size(); i++) {
       CompileableCaseArg caseArg = caseArgs.get(i);
@@ -32,7 +33,11 @@ public class CompileablePatternCase {
         // its compilation and checking to see the outcome of the match.
         continue;
       }
-      caseArg.compile(methodVisitor, compileContext, i);
+      CompileableCaseArgContext caseArgContext = CompileableCaseArgContext.builder()
+          .argIndex(i)
+          .internalModuleName(internalModuleName)
+          .build();
+      caseArg.compile(methodVisitor, compileContext, caseArgContext);
       methodVisitor.visitJumpInsn(IFEQ, patternMiss);
     }
     Label patternHit = new Label();

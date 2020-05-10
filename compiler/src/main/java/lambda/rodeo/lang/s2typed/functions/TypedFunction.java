@@ -1,10 +1,13 @@
 package lambda.rodeo.lang.s2typed.functions;
 
 import java.util.List;
+import java.util.Map;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,12 +17,13 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class TypedFunction {
   private final FunctionAst functionAst;
-  private final TypedFunctionBody typedFunctionBody;
+  private final TypedFunctionBody functionBody;
   private final FunctionSigAst functionSigAst;
 
-  public CompileableFunction toCompileableFunction() {
+  public CompileableFunction toCompileableFunction(
+      Map<TypedCaseArg, TypedStaticPattern> staticPatterns) {
     return CompileableFunction.builder()
-        .functionBodyAst(typedFunctionBody.toCompileableFunctionBody())
+        .functionBody(functionBody.toCompileableFunctionBody(staticPatterns))
         .functionSigAst(functionSigAst)
         .typedFunction(this)
         .build();

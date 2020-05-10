@@ -4,14 +4,20 @@ import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SUPER;
+import static org.objectweb.asm.Opcodes.GETSTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.RETURN;
 import static org.objectweb.asm.Opcodes.V1_8;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.s2typed.TypedModule;
+import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
+import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableStaticPattern;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,6 +35,7 @@ public class CompileableModule {
 
   private final TypedModule typedModule;
   private final List<CompileableFunction> compileableFunctions;
+  private final Map<CompileableCaseArg, CompileableStaticPattern> staticPatterns;
 
   public byte[] compile(CompileContext compileContext) {
     // Tell ASM we want it to compute max stack and frames.
@@ -40,6 +47,12 @@ public class CompileableModule {
         null,
         "java/lang/Object",
         null);
+
+    for (Map.Entry<CompileableCaseArg, CompileableStaticPattern> patternEntry
+        : staticPatterns.entrySet()) {
+      patternEntry.getKey().declareMatcherField(cw);
+    }
+
     // TODO: Mark source
     cw.visitInnerClass("java/lang/invoke/MethodHandles$Lookup", "java/lang/invoke/MethodHandles",
         "Lookup", ACC_PUBLIC | ACC_FINAL | ACC_STATIC);
@@ -60,7 +73,7 @@ public class CompileableModule {
       constructor.visitVarInsn(Opcodes.ALOAD, 0);
       constructor.visitMethodInsn(Opcodes.INVOKESPECIAL,
           Type.getInternalName(Object.class), "<init>", "()V", false);
-      constructor.visitInsn(Opcodes.RETURN);
+      constructor.visitInsn(RETURN);
       Label label1 = new Label();
       constructor.visitLabel(label1);
       constructor.visitLocalVariable(
@@ -75,7 +88,33 @@ public class CompileableModule {
     }
 
     for (CompileableFunction func : compileableFunctions) {
-      func.compile(cw, compileContext);
+      func.compile(cw, compileContext, getInternalJavaName());
+    }
+
+    // Generate Static init:
+    {
+      MethodVisitor methodVisitor = cw.visitMethod(ACC_STATIC,
+          "<clinit>",
+          "()V",
+          null,
+          null);
+      methodVisitor.visitCode();
+      Label label0 = new Label();
+      methodVisitor.visitLabel(label0);
+
+      methodVisitor.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+      methodVisitor.visitLdcInsn("<clinit> run");
+      methodVisitor
+          .visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V",
+              false);
+
+      for (Map.Entry<CompileableCaseArg, CompileableStaticPattern> patternEntry
+          : staticPatterns.entrySet()) {
+        patternEntry.getKey().matcherInit(methodVisitor, compileContext, getInternalJavaName());
+      }
+      methodVisitor.visitInsn(RETURN);
+      methodVisitor.visitMaxs(0, 0);
+      methodVisitor.visitEnd();
     }
 
     cw.visitEnd();

@@ -6,10 +6,12 @@ import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class IntLiteralCaseArgAst implements CaseArgAst {
   private final String value;
   private final int startLine;

@@ -1,19 +1,18 @@
 package lambda.rodeo.lang.s3compileable.functions;
 
-import static org.objectweb.asm.Opcodes.ARETURN;
 import static org.objectweb.asm.Opcodes.ATHROW;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Type.getInternalName;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.exceptions.CriticalLanguageException;
+import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
-import lambda.rodeo.lang.s3compileable.statement.CompileableStatement;
-import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lambda.rodeo.runtime.exceptions.RuntimeCriticalLanguageException;
 import lambda.rodeo.runtime.types.Type;
@@ -38,9 +37,9 @@ public class CompileableFunctionBody {
   }
 
   public void compile(MethodVisitor methodVisitor,
-      CompileContext compileContext) {
+      CompileContext compileContext, String internalModuleName) {
     for (CompileablePatternCase patternCase : patternCases) {
-      patternCase.compile(methodVisitor, compileContext);
+      patternCase.compile(methodVisitor, compileContext, internalModuleName);
     }
     if (!patternCases.get(0).getCaseArgs().isEmpty()) {
       //TODO: revisit this, probably don't want the whole language to barf if we don't cover all
@@ -60,6 +59,13 @@ public class CompileableFunctionBody {
 
   public CompileableTypeScope getFinalTypeScope() {
     return finalTypeScope;
+  }
+
+  public List<CompileableCaseArg> getAllCaseArgs() {
+    return patternCases.stream()
+        .map(CompileablePatternCase::getCaseArgs)
+        .flatMap(Collection::stream)
+        .collect(Collectors.toList());
   }
 
 }

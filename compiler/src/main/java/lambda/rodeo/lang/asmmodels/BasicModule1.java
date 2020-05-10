@@ -8,13 +8,14 @@ import lambda.rodeo.runtime.types.Atom;
 
 public class BasicModule1 {
 
-  public static BigInteger someFunc(BigInteger arg1) {
-    if (new IntMatcher(new BigInteger("1")).matches(arg1)) {
-      return new BigInteger("1");
-    }
-    if (new IntMatcher(new BigInteger("0")).matches(arg1)) {
-      return new BigInteger("0");
-    }
-    throw new RuntimeCriticalLanguageException("Pattern didn't match blah blah");
+  public static final IntMatcher INT_MATCHER = new IntMatcher(new BigInteger("1"));
+  public static final IntMatcher INT_MATCHER1 = new IntMatcher(new BigInteger("0"));
+
+  public static BigInteger fibonacci() {
+    return multiArgFn(BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3));
+  }
+
+  public static BigInteger multiArgFn(BigInteger v1, BigInteger v2, BigInteger v3) {
+    return v1;
   }
 }

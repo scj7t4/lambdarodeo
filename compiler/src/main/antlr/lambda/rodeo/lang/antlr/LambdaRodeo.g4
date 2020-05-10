@@ -22,7 +22,7 @@ varType: typeExpression;
 returnType: typeExpression;
 typeExpression: intType | atom;
 intType: 'int';
-patternCase: 'case' '(' caseArg+ ')' '{' statement+ '}';
+patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
 caseArg: caseLiteral
   | caseVarName
   | caseWildCard;
@@ -42,7 +42,7 @@ expr
   | identifier #identifierExpr;
 literal: atom
        | intLiteral;
-intLiteral: INT_LITERAL;
+intLiteral: '-'?INT_LITERAL;
 identifier: IDENTIFIER;
 addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');

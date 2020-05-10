@@ -56,7 +56,7 @@ class MathExpressionTest {
         equalTo(IntType.INSTANCE));
 
 
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(6)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -74,7 +74,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(15)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -92,7 +92,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(0)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -110,7 +110,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(1 - 2 - 3 - 4 - 5)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -128,7 +128,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(1 - -3)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -146,7 +146,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(9)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -164,7 +164,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(2 * 3 * 4 * 5)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -182,7 +182,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(1 + 2 * 3)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -200,7 +200,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf((1 + 2) * (3 + 4) * 5 + 6)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -298,7 +298,7 @@ class MathExpressionTest {
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
         typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
-    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst),
+    assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(javaVal)));
 
     CompileContextUtils.assertNoCompileErrors(compileContext);

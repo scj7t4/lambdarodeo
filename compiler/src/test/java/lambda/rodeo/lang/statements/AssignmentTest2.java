@@ -16,6 +16,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.utils.CompileContextUtils;
+import lambda.rodeo.runtime.types.IntType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +50,7 @@ class AssignmentTest2 {
     statements.add(ast1);
     statements.add(ast2);
 
-    ModuleAst moduleAst = ExpressionTestUtils.moduleForStatements(statements);
+    ModuleAst moduleAst = ExpressionTestUtils.moduleForStatements(statements, IntType.INSTANCE);
 
     Object result = ExpressionTestUtils.compileAndExecute(moduleAst);
 

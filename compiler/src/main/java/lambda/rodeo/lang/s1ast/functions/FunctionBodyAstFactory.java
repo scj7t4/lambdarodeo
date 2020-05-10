@@ -25,7 +25,7 @@ public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
       FunctionBodyContext ctx,
       CompileContext compileContext) {
     this.compileContext = compileContext;
-    noPatterns = new PatternCaseAstFactory(compileContext);
+    noPatterns = new PatternCaseAstFactory(compileContext, ctx.getStart(), ctx.getStop());
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 

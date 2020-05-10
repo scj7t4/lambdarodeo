@@ -2,7 +2,10 @@ package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
+import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
+import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Type;
@@ -32,14 +35,29 @@ public class FunctionAst {
       TypeScope moduleScope,
       TypedModuleScope typedModuleScope,
       CompileContext compileContext) {
+
+    TypedFunctionBody typedFunctionBody = functionBodyAst.toTypedFunctionBodyAst(
+        functionSignature.getInitialTypeScope(moduleScope),
+        typedModuleScope,
+        compileContext);
+
+    List<TypedPatternCase> patternCases = typedFunctionBody.getPatternCases();
+    for (TypedPatternCase typedPatternCase : patternCases) {
+      Type returnedType = typedPatternCase.getReturnedType();
+      Type declaredReturnedType = functionSignature.getDeclaredReturnType();
+
+      if (!declaredReturnedType.assignableFrom(returnedType)) {
+        compileContext.getCompileErrorCollector().collect(
+            CompileError
+                .returnTypeMismatch(typedPatternCase.getPatternCaseAst(), declaredReturnedType,
+                    returnedType)
+        );
+      }
+    }
+
     return TypedFunction.builder()
         .functionAst(this)
-        .functionBody(
-            functionBodyAst.toTypedFunctionBodyAst(
-                functionSignature.getInitialTypeScope(moduleScope),
-                typedModuleScope,
-                compileContext)
-        )
+        .functionBody(typedFunctionBody)
         .functionSigAst(functionSignature)
         .build();
   }
@@ -52,16 +70,15 @@ public class FunctionAst {
     return getFunctionSignature().getArguments();
   }
 
-  //TODO: Figure out how to test for functions having duplicate signatures
   public boolean hasSignature(List<Type> callArguments) {
     List<TypedVar> sigArguments = functionSignature.getArguments();
-    if(callArguments.size() != sigArguments.size()) {
+    if (callArguments.size() != sigArguments.size()) {
       return false;
     }
 
-    for(int i = 0; i < callArguments.size(); i++) {
+    for (int i = 0; i < callArguments.size(); i++) {
       Type sigArg = sigArguments.get(0).getType();
-      if(!sigArg.assignableFrom(callArguments.get(0))) {
+      if (!sigArg.assignableFrom(callArguments.get(0))) {
         return false;
       }
     }

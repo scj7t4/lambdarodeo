@@ -3,6 +3,7 @@ package lambda.rodeo.lang.s1ast.functions.patterns;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
@@ -16,10 +17,13 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PatternCaseAst {
+public class PatternCaseAst implements AstNode {
 
   private final List<StatementAst> statements;
   private final List<CaseArgAst> caseArgs;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   public static List<TypedStatement> getTypedStatements(TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope, CompileContext compileContext,
@@ -50,6 +54,7 @@ public class PatternCaseAst {
             .stream()
             .map(arg -> arg.toTypedCaseArg(initialTypeScope, typedModuleScope, compileContext))
             .collect(Collectors.toList()))
+        .patternCaseAst(this)
         .build();
   }
 

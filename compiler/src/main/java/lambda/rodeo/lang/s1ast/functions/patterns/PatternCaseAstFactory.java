@@ -16,22 +16,31 @@ import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst.PatternCaseAstB
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 import lambda.rodeo.runtime.types.Atom;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
 
   private final CompileContext compileContext;
-  private final PatternCaseAstBuilder astBuilder = PatternCaseAst.builder();
+  private final PatternCaseAstBuilder astBuilder;
   private final List<CaseArgAst> caseArg = new ArrayList<>();
   private final List<StatementAst> statements = new ArrayList<>();
 
   public PatternCaseAstFactory(PatternCaseContext ctx, CompileContext compileContext) {
     this.compileContext = compileContext;
+    astBuilder = PatternCaseAst.builder()
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine());
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
-  public PatternCaseAstFactory(CompileContext compileContext) {
+  public PatternCaseAstFactory(CompileContext compileContext, Token startToken, Token endToken) {
     this.compileContext = compileContext;
+    astBuilder = PatternCaseAst.builder()
+        .startLine(startToken.getLine())
+        .characterStart(startToken.getCharPositionInLine())
+        .endLine(endToken.getCharPositionInLine());
   }
 
   public PatternCaseAst toAst() {

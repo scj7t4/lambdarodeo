@@ -7,16 +7,16 @@ module test.Fibonacci {
       1;
     }
     case (*) {
-      fibonacci2(n, 2, 1, 1);
+      fibonacci(n, 2, 1, 1);
     }
   }
 
-  def fibonacci2(n: int, current: int, fn1: int, fn2: int) => int {
+  def fibonacci(n: int, current: int, fn1: int, fn2: int) => int {
     case(n, n, *, *) {
       fn1 + fn2;
     }
     case(*, *, *, *) {
-      fibonacci2(n, current + 1, fn1 + fn2, fn1);
+      fibonacci(n, current + 1, fn1 + fn2, fn1);
     }
   }
 }

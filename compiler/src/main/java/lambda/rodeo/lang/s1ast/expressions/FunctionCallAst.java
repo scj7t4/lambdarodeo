@@ -33,7 +33,16 @@ public class FunctionCallAst implements ExpressionAst {
       TypeScope typeScope,
       TypedModuleScope typedModuleScope,
       CompileContext compileContext) {
-    Optional<FunctionAst> calledFn = typedModuleScope.getCallTarget(callTarget);
+
+    final List<TypedExpression> typedArgs = args.stream()
+        .map(arg -> arg.toTypedExpression(typeScope, typedModuleScope, compileContext))
+        .collect(Collectors.toList());
+
+    final List<Type> argSig = typedArgs.stream()
+        .map(TypedExpression::getType)
+        .collect(Collectors.toList());
+
+    Optional<FunctionAst> calledFn = typedModuleScope.getCallTarget(callTarget, argSig);
     if(calledFn.isEmpty()) {
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedIdentifier(callTarget, this));
@@ -49,9 +58,7 @@ public class FunctionCallAst implements ExpressionAst {
         .getDeclaredReturnType();
 
     return TypedFunctionCall.builder()
-        .args(args.stream()
-            .map(arg -> arg.toTypedExpression(typeScope, typedModuleScope, compileContext))
-            .collect(Collectors.toList()))
+        .args(typedArgs)
         .typedModuleScope(typedModuleScope)
         .functionCallAst(this)
         .returnType(declaredReturnType)

@@ -5,6 +5,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,5 +50,20 @@ public class FunctionAst {
 
   public List<TypedVar> getArguments() {
     return getFunctionSignature().getArguments();
+  }
+
+  public boolean hasSignature(List<Type> callArguments) {
+    List<TypedVar> sigArguments = functionSignature.getArguments();
+    if(callArguments.size() != sigArguments.size()) {
+      return false;
+    }
+
+    for(int i = 0; i < callArguments.size(); i++) {
+      Type sigArg = sigArguments.get(0).getType();
+      if(!sigArg.assignableFrom(callArguments.get(0))) {
+        return false;
+      }
+    }
+    return true;
   }
 }

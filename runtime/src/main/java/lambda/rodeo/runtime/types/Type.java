@@ -9,4 +9,8 @@ public interface Type {
   }
 
   CompileableType toCompileableType();
+
+  default boolean assignableFrom(Type other) {
+    return this.equals(other);
+  }
 }

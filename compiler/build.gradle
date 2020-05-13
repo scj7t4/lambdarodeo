@@ -34,7 +34,7 @@ task runAsmifier(type: JavaExec) {
 }
 
 generateGrammarSource {
-    arguments << "-lib" << "src/main/antlr/lambda/rodeo/lang/antlr"
+    arguments << "-lib" << "src/main/antlr/lambda/rodeo/lang/antlr" << "-visitor"
 }
 
 dependencies {

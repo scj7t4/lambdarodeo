@@ -1,7 +1,8 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
@@ -15,38 +16,36 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class LambdaAstFactory extends LambdaRodeoBaseListener {
 
-  private final List<TypedVar> args = new ArrayList<>();
-  private final List<StatementAst> statementAsts = new ArrayList<>();
+  private final List<TypedVar> args;
+  private final List<StatementAst> statements;
 
   public LambdaAstFactory(LambdaContext ctx) {
-    ParseTreeWalker.DEFAULT.walk(this, ctx);
-  }
+    args = ctx.lambdaTypedVar()
+        .stream()
+        .map(varContext -> new TypedVarFactory(varContext).toAst())
+        .collect(Collectors.toList());
 
-  @Override
-  public void enterLambdaStatement(LambdaStatementContext ctx) {
-    statementAsts.add(new StatementAstFactory(ctx).toAst());
-  }
-
-  @Override
-  public void enterLambdaTypedVar(LambdaTypedVarContext ctx) {
-    args.add(new TypedVarFactory(ctx).toAst());
-  }
-
-  @Override
-  public void enterLambdaExpr(LambdaExprContext ctx) {
-    ExpressionAst expressionAst = new ExpressionAstFactory(ctx.expr()).toAst();
-    statementAsts.add(StatementAst.builder()
-        .endLine(ctx.getStop().getLine())
-        .startLine(ctx.getStart().getLine())
-        .characterStart(ctx.getStart().getCharPositionInLine())
-        .expression(expressionAst)
-        .build());
+    List<LambdaStatementContext> lambdaStatementContexts = ctx.lambdaStatement();
+    if(lambdaStatementContexts == null || lambdaStatementContexts.isEmpty()) {
+      LambdaExprContext lambdaExpr = ctx.lambdaExpr();
+      ExpressionAst expressionAst = new ExpressionAstFactory(lambdaExpr.expr()).toAst();
+      statements = Collections.singletonList(StatementAst.builder()
+          .endLine(ctx.getStop().getLine())
+          .startLine(ctx.getStart().getLine())
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .expression(expressionAst)
+          .build());
+    } else {
+      statements = lambdaStatementContexts.stream()
+          .map(statementCtx -> new StatementAstFactory(statementCtx).toAst())
+          .collect(Collectors.toList());
+    }
   }
 
   LambdaAst toAst() {
     return LambdaAst.builder()
         .arguments(args)
-        .statements(statementAsts)
+        .statements(statements)
         .build();
   }
 

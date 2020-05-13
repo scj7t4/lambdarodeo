@@ -47,7 +47,7 @@ intLiteral: '-'?INT_LITERAL;
 identifier: IDENTIFIER;
 addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
-lambda: '(' (lambdaTypedVar (',' lambdaTypedVar)*) ')' '=>' ('{' lambdaStatement+ '}' | lambdaExpr);
+lambda: '(' (lambdaTypedVar (',' lambdaTypedVar)*)? ')' '=>' ('{' lambdaStatement+ '}' | lambdaExpr);
 lambdaTypedVar: varName ':' varType;
 lambdaStatement: assignment? expr ';';
 lambdaExpr: expr;

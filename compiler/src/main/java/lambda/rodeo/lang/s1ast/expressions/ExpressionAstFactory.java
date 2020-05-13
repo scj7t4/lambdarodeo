@@ -5,6 +5,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
+import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
@@ -14,80 +15,78 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ParentheticalContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 @Slf4j
-public class ExpressionAstFactory extends LambdaRodeoBaseListener {
+public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> {
 
-  private final Deque<ExpressionAst> expressionStack = new LinkedList<>();
+  private final ExpressionAst expr;
 
   public ExpressionAstFactory(ExprContext ctx) {
-    ParseTreeWalker.DEFAULT.walk(this, ctx);
-  }
-
-  /**
-   * Test only!
-   */
-  ExpressionAstFactory() {
+    expr = visit(ctx);
   }
 
   public ExpressionAst toAst() {
-    return expressionStack.getLast();
-  }
-
-  /**
-   * Test only!
-   */
-  void pushOnToStack(ExpressionAst expressionAst) {
-    this.expressionStack.addLast(expressionAst);
+    return expr;
   }
 
   @Override
-  public void exitAddSub(AddSubContext ctx) {
-    ExpressionAst rhs = expressionStack.pollLast();
-    ExpressionAst lhs = expressionStack.pollLast();
+  public ExpressionAst visitAddSub(AddSubContext ctx) {
+    ExpressionAst lhs = visit(ctx.expr(0));
+    ExpressionAst rhs = visit(ctx.expr(1));
     String op = ctx.addSubOp().getText();
 
     if ("+".equals(op)) {
-      expressionStack.addLast(AddAst.builder()
+      return AddAst.builder()
           .lhs(lhs)
           .rhs(rhs)
           .characterStart(ctx.getStart().getCharPositionInLine())
           .endLine(ctx.getStop().getLine())
           .startLine(ctx.getStart().getLine())
-          .build());
+          .build();
     } else if ("-".equals(op)) {
-      expressionStack.addLast(SubtractAst.builder()
+      return SubtractAst.builder()
           .lhs(lhs)
           .rhs(rhs)
           .characterStart(ctx.getStart().getCharPositionInLine())
           .endLine(ctx.getStop().getLine())
           .startLine(ctx.getStart().getLine())
-          .build());
+          .build();
     } else {
       throw new UnsupportedOperationException("Unrecognized add/sub operation '" + op + "'");
     }
   }
 
   @Override
-  public void exitMultiDiv(MultiDivContext ctx) {
-    ExpressionAst rhs = expressionStack.pollLast();
-    ExpressionAst lhs = expressionStack.pollLast();
+  public ExpressionAst visitParenthetical(ParentheticalContext ctx) {
+    return visit(ctx.expr());
+  }
+
+  public ExpressionAst visitMultiDiv(MultiDivContext ctx) {
+    ExpressionAst lhs = visit(ctx.expr(0));
+    ExpressionAst rhs = visit(ctx.expr(1));
     String op = ctx.multiDivOp().getText();
 
     if ("*".equals(op)) {
-      expressionStack.addLast(MultiplyAst.builder()
+      return MultiplyAst.builder()
           .lhs(lhs)
           .rhs(rhs)
           .characterStart(ctx.getStart().getCharPositionInLine())
           .endLine(ctx.getStop().getLine())
           .startLine(ctx.getStart().getLine())
-          .build());
+          .build();
     } else if ("/".equals(op)) {
-      expressionStack.addLast(DivisionAst.builder().lhs(lhs).rhs(rhs).build());
+      return DivisionAst.builder()
+          .lhs(lhs)
+          .rhs(rhs)
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .endLine(ctx.getStop().getLine())
+          .startLine(ctx.getStart().getLine())
+          .build();
     } else {
       throw new UnsupportedOperationException(
           "Unrecognized multiply/divide operation '" + op + "'");
@@ -95,73 +94,68 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
   }
 
   @Override
-  public void exitUnaryMinus(UnaryMinusContext ctx) {
-    ExpressionAst op = expressionStack.pollLast();
-    expressionStack.addLast(UnaryMinusAst.builder()
+  public ExpressionAst visitUnaryMinus(UnaryMinusContext ctx) {
+    ExpressionAst op = visit(ctx.expr());
+    return UnaryMinusAst.builder()
         .operand(op)
         .startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())
-        .build());
+        .build();
   }
 
   @Override
-  public void enterIntLiteral(IntLiteralContext ctx) {
-    IntConstantAst expr = IntConstantAst.builder()
+  public ExpressionAst visitIntLiteral(IntLiteralContext ctx) {
+    return IntConstantAst.builder()
         .literal(ctx.getText())
         .characterStart(ctx.getStart().getCharPositionInLine())
         .endLine(ctx.getStop().getLine())
         .startLine(ctx.getStart().getLine())
         .build();
-    expressionStack.addLast(expr);
   }
 
   @Override
-  public void enterAtom(AtomContext ctx) {
+  public ExpressionAst visitAtom(AtomContext ctx) {
     Atom value = new Atom(ctx.IDENTIFIER().getText());
-    AtomAst expr = AtomAst.builder()
+    return AtomAst.builder()
         .atom(value)
         .characterStart(ctx.getStart().getCharPositionInLine())
         .endLine(ctx.getStop().getLine())
         .startLine(ctx.getStart().getLine())
         .build();
-    expressionStack.addLast(expr);
   }
 
   @Override
-  public void enterIdentifier(IdentifierContext ctx) {
+  public ExpressionAst visitIdentifier(IdentifierContext ctx) {
     String name = ctx.getText();
-    VariableAst typedVarAst = VariableAst.builder()
+    return VariableAst.builder()
         .name(name)
         .characterStart(ctx.getStart().getCharPositionInLine())
         .endLine(ctx.getStop().getLine())
         .startLine(ctx.getStart().getLine())
         .build();
-    expressionStack.addLast(typedVarAst);
   }
 
   @Override
-  public void exitFunctionCall(FunctionCallContext ctx) {
+  public ExpressionAst visitFunctionCall(FunctionCallContext ctx) {
     String callTarget = ctx.callTarget().getText();
     int size = ctx.expr().size();
-    Deque<ExpressionAst> args = new LinkedList<>();
-    //Hurr durr the args will come off the stack backwards
+    List<ExpressionAst> args = new ArrayList<>();
     for(int i = 0; i < size; i++) {
-      ExpressionAst expressionAst = expressionStack.pollLast();
-      args.addFirst(expressionAst);
+      ExpressionAst expressionAst = visit(ctx.expr(i));
+      args.add(expressionAst);
     }
-    FunctionCallAst funcCall = FunctionCallAst.builder()
+    return FunctionCallAst.builder()
         .callTarget(callTarget)
         .args(new ArrayList<>(args))
         .startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())
         .characterStart(ctx.getStart().getCharPositionInLine())
         .build();
-    expressionStack.addLast(funcCall);
   }
 
   @Override
-  public void enterLambda(LambdaContext ctx) {
+  public ExpressionAst visitLambda(LambdaContext ctx) {
     LambdaAstFactory lambdaAstFactory = new LambdaAstFactory(ctx);
-    expressionStack.addLast(lambdaAstFactory.toAst());
+    return lambdaAstFactory.toAst();
   }
 }

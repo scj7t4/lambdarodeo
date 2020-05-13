@@ -5,6 +5,7 @@ import static lambda.rodeo.runtime.types.Atom.UNDEFINED;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s2typed.expressions.TypedVariable;
@@ -48,5 +49,10 @@ public class VariableAst implements ExpressionAst {
           .variableAst(this)
           .build();
     }
+  }
+
+  @Override
+  public Set<String> getReferencedVariables() {
+    return Set.of(name);
   }
 }

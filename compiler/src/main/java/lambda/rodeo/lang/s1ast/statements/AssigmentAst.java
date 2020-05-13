@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s1ast.statements;
 
+import java.util.Set;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -12,4 +13,6 @@ public interface AssigmentAst extends AstNode {
   TypeScope scopeAfter(TypeScope before, CompileContext compileContext, Type typeAssignFrom);
 
   TypedAssignment toTypedAssignmentAst(TypeScope after);
+
+  Set<String> newDeclarations();
 }

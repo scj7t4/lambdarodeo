@@ -14,7 +14,7 @@ import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class LambdaAstFactory extends LambdaRodeoBaseListener {
+public class LambdaAstFactory {
 
   private final List<TypedVar> args;
   private final List<StatementAst> statements;

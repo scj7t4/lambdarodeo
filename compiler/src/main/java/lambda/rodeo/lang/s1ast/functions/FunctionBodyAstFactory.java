@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
+import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.PatternCaseContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
@@ -14,18 +15,29 @@ import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
+public class FunctionBodyAstFactory {
 
   private final List<PatternCaseAst> patternCases = new ArrayList<>();
-  private final CompileContext compileContext;
   private final PatternCaseAstFactory noPatterns;
 
   public FunctionBodyAstFactory(
       FunctionBodyContext ctx,
       CompileContext compileContext) {
-    this.compileContext = compileContext;
     noPatterns = new PatternCaseAstFactory(compileContext, ctx.getStart(), ctx.getStop());
-    ParseTreeWalker.DEFAULT.walk(this, ctx);
+
+    List<PatternCaseContext> patternCases = ctx.patternCase();
+    if(patternCases == null || patternCases.isEmpty()) {
+      List<StatementContext> statements = ctx.statement();
+      for(StatementContext statement : statements) {
+        noPatterns.enterStatement(statement);
+      }
+    } else {
+      for(PatternCaseContext patternCase : patternCases) {
+        PatternCaseAst patternCaseAst = new PatternCaseAstFactory(patternCase, compileContext)
+            .toAst();
+        this.patternCases.add(patternCaseAst);
+      }
+    }
   }
 
   public FunctionBodyAst toAst() {
@@ -38,17 +50,5 @@ public class FunctionBodyAstFactory extends LambdaRodeoBaseListener {
           .patternCases(Collections.singletonList(noPatterns.toAst()))
           .build();
     }
-  }
-
-  @Override
-  public void enterStatement(StatementContext ctx) {
-    noPatterns.enterStatement(ctx);
-  }
-
-  @Override
-  public void enterPatternCase(PatternCaseContext ctx) {
-    PatternCaseAstFactory patternCaseAstFactory = new PatternCaseAstFactory(ctx, compileContext);
-    PatternCaseAst patternCaseAst = patternCaseAstFactory.toAst();
-    patternCases.add(patternCaseAst);
   }
 }

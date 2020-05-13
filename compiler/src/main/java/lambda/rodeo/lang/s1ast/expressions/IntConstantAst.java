@@ -8,6 +8,8 @@ import static org.objectweb.asm.Opcodes.NEWARRAY;
 import static org.objectweb.asm.Opcodes.T_BYTE;
 
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.Set;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
@@ -43,6 +45,11 @@ public class IntConstantAst implements ExpressionAst, Compileable {
   public SimpleTypedExpression toTypedExpression(TypeScope typeScope,
       TypedModuleScope typedModuleScope, CompileContext compileContext) {
     return toTypedExpression();
+  }
+
+  @Override
+  public Set<String> getReferencedVariables() {
+    return Collections.emptySet();
   }
 
   @Override

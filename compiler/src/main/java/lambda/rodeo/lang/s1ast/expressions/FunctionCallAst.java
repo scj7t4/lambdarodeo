@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
@@ -64,5 +65,12 @@ public class FunctionCallAst implements ExpressionAst {
         .typeScope(typeScope)
         .build();
 
+  }
+
+  @Override
+  public Set<String> getReferencedVariables() {
+    return args.stream()
+        .flatMap(arg -> arg.getReferencedVariables().stream())
+        .collect(Collectors.toSet());
   }
 }

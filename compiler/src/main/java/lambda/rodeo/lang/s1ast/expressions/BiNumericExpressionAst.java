@@ -1,6 +1,9 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
@@ -82,5 +85,11 @@ public interface BiNumericExpressionAst extends ExpressionAst {
     }
   }
 
-
+  @Override
+  default Set<String> getReferencedVariables() {
+    return Stream.concat(
+        getLhs().getReferencedVariables().stream(),
+        getRhs().getReferencedVariables().stream())
+        .collect(Collectors.toSet());
+  }
 }

@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s1ast.statements;
 
+import java.util.Set;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
@@ -44,5 +45,9 @@ public class StatementAst implements AstNode {
         .typedExpression(typedExpr)
         .typedAssignment(typedAssignment)
         .build();
+  }
+
+  public Set<String> getReferencedVariables() {
+    return expression.getReferencedVariables();
   }
 }

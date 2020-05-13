@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
+import java.util.Set;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
@@ -15,4 +16,5 @@ public interface ExpressionAst extends AstNode {
   TypedExpression toTypedExpression(TypeScope scope,
       TypedModuleScope typedModuleScope, CompileContext compileContext);
 
+  Set<String> getReferencedVariables();
 }

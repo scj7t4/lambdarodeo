@@ -1,5 +1,7 @@
 package lambda.rodeo.lang.s1ast.statements;
 
+import java.util.Collections;
+import java.util.Set;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -39,6 +41,11 @@ public class SimpleAssignmentAst implements AssigmentAst {
         .assignmentAst(this)
         .typeScope(after)
         .build();
+  }
+
+  @Override
+  public Set<String> newDeclarations() {
+    return Set.of(identifier);
   }
 
 }

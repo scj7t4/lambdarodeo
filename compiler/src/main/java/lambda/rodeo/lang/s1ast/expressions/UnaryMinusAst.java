@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.Set;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
@@ -50,6 +51,11 @@ public class UnaryMinusAst implements ExpressionAst {
       );
       return AtomAst.undefinedAtomExpression();
     }
+  }
+
+  @Override
+  public Set<String> getReferencedVariables() {
+    return operand.getReferencedVariables();
   }
 
   public void compile(

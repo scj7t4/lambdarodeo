@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.statements;
 
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AssignmentContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaStatementContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
@@ -11,8 +12,11 @@ public class StatementAstFactory extends LambdaRodeoBaseListener {
 
   private StatementAst.StatementAstBuilder builder = StatementAst.builder();
 
-  public StatementAstFactory(
-      StatementContext ctx) {
+  public StatementAstFactory(StatementContext ctx) {
+    ParseTreeWalker.DEFAULT.walk(this, ctx);
+  }
+
+  public StatementAstFactory(LambdaStatementContext ctx) {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 

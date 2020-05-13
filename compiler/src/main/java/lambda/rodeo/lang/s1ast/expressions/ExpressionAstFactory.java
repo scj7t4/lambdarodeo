@@ -11,6 +11,8 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionCallContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
 import lambda.rodeo.runtime.types.Atom;
@@ -155,5 +157,11 @@ public class ExpressionAstFactory extends LambdaRodeoBaseListener {
         .characterStart(ctx.getStart().getCharPositionInLine())
         .build();
     expressionStack.addLast(funcCall);
+  }
+
+  @Override
+  public void enterLambda(LambdaContext ctx) {
+    LambdaAstFactory lambdaAstFactory = new LambdaAstFactory(ctx);
+    expressionStack.addLast(lambdaAstFactory.toAst());
   }
 }

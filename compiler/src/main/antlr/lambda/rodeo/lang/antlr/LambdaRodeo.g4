@@ -39,13 +39,18 @@ expr
   | expr addSubOp expr #addSub
   | literal #literalExpr
   | functionCall #functionCallExpr
-  | identifier #identifierExpr;
+  | identifier #identifierExpr
+  | lambda #lambdaFn;
 literal: atom
        | intLiteral;
 intLiteral: '-'?INT_LITERAL;
 identifier: IDENTIFIER;
 addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
+lambda: '(' (lambdaTypedVar (',' lambdaTypedVar)*) ')' '=>' ('{' lambdaStatement+ '}' | lambdaExpr);
+lambdaTypedVar: varName ':' varType;
+lambdaStatement: assignment? expr ';';
+lambdaExpr: expr;
 
 assignment: 'let' IDENTIFIER '=';
 functionCall: callTarget '(' (expr (',' expr)*)? ')';

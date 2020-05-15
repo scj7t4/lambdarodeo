@@ -5,6 +5,7 @@ import static lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst.getTyped
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -124,7 +125,8 @@ public class LambdaAst implements ExpressionAst {
     // statements, but not those declared in the scope x_x
     Set<String> assignedVars = statements.stream()
         .map(StatementAst::getAssignment)
-        .flatMap(x -> x.newDeclarations().stream())
+        .filter(Objects::nonNull)
+        .flatMap(assignment -> assignment.newDeclarations().stream())
         .collect(Collectors.toSet());
     return statements.stream()
         .flatMap(statement -> statement.getReferencedVariables().stream())

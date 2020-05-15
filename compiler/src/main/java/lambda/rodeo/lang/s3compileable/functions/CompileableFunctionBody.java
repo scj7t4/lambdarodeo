@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
@@ -19,6 +20,7 @@ import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
@@ -63,4 +65,9 @@ public class CompileableFunctionBody {
         .collect(Collectors.toList());
   }
 
+  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+    for(CompileablePatternCase patternCase : patternCases) {
+      patternCase.lambdaLift(cw, compileContext, internalJavaName);
+    }
+  }
 }

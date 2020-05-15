@@ -1,12 +1,10 @@
 package lambda.rodeo.lang.s1ast.functions.patterns;
 
-import java.util.Optional;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.VariableTypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.Builder;
@@ -26,7 +24,7 @@ public class VariableCaseArgAst implements CaseArgAst {
   @Override
   public TypedCaseArg toTypedCaseArg(TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
     return initialTypeScope.get(identifier)
         .map(entry -> VariableTypedCaseArg.builder()
             .caseArgAst(this)

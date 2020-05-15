@@ -91,6 +91,10 @@ public class CompileableModule {
       func.compile(cw, compileContext, getInternalJavaName());
     }
 
+    for (CompileableFunction func: compileableFunctions) {
+      func.lambdaLift(cw, compileContext, getInternalJavaName());
+    }
+
     // Generate Static init:
     {
       MethodVisitor methodVisitor = cw.visitMethod(ACC_STATIC,

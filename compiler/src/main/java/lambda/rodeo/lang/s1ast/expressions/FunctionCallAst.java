@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -32,7 +32,7 @@ public class FunctionCallAst implements ExpressionAst {
   public TypedExpression toTypedExpression(
       TypeScope typeScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
 
     final List<TypedExpression> typedArgs = args.stream()
         .map(arg -> arg.toTypedExpression(typeScope, typedModuleScope, compileContext))

@@ -11,6 +11,7 @@ import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
@@ -62,5 +63,11 @@ public class CompileablePatternCase {
   public CompileableTypeScope getFinalTypeScope() {
     return statements.get(statements.size() - 1)
         .getAfterTypeScope();
+  }
+
+  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+    for(CompileableStatement statement : statements) {
+      statement.lambdaLift(cw, compileContext, internalJavaName);
+    }
   }
 }

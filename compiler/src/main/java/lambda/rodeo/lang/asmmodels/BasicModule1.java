@@ -9,7 +9,7 @@ import lambda.rodeo.runtime.patterns.matchers.IntMatcher;
 import lambda.rodeo.runtime.types.Atom;
 
 public class BasicModule1 {
-  public static Function<String, String> fibonacci(String y) {
+  public static Function<BigInteger, String> fibonacci(String y) {
     return a -> y;
   }
 }

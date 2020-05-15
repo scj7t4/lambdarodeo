@@ -36,4 +36,8 @@ public class TypedFunction {
   public List<TypedVar> getArguments() {
     return getFunctionSigAst().getArguments();
   }
+
+  public boolean isLambda() {
+    return getFunctionAst().isLambda();
+  }
 }

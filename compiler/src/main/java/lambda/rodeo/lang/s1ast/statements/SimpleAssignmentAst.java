@@ -1,13 +1,11 @@
 package lambda.rodeo.lang.s1ast.statements;
 
-import java.util.Collections;
 import java.util.Set;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedSimpleAssignment;
-import lambda.rodeo.lang.scope.TypeScopeImpl;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,7 +22,7 @@ public class SimpleAssignmentAst implements AssigmentAst {
   private final int characterStart;
 
   @Override
-  public TypeScope scopeAfter(TypeScope scopeBefore, CompileContext compileContext, Type type) {
+  public TypeScope scopeAfter(TypeScope scopeBefore, ToTypedFunctionContext compileContext, Type type) {
     boolean alreadyDeclared = scopeBefore.get(identifier).findAny().isPresent();
     if(alreadyDeclared) {
       compileContext.getCompileErrorCollector().collect(

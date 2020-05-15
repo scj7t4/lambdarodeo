@@ -12,6 +12,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
@@ -26,14 +27,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class VariableExpressionTest {
 
-  private CompileContext compileContext;
+  private ToTypedFunctionContext compileContext;
 
   @Mock
   TypedModuleScope typedModuleScope;
 
   @BeforeEach()
   public void beforeEach() {
-    compileContext = CompileContextUtils.testCompileContext();
+    compileContext = CompileContextUtils.testToTypedFunctionContext();
   }
 
   @Test

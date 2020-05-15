@@ -5,13 +5,12 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import java.util.Set;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
-import lambda.rodeo.lang.exceptions.TypeException;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -32,7 +31,7 @@ public class UnaryMinusAst implements ExpressionAst {
 
   @Override
   public SimpleTypedExpression toTypedExpression(TypeScope typeScope,
-      TypedModuleScope typedModuleScope, CompileContext compileContext) {
+      TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     TypedExpression typedOperand = operand
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
     Type type = typedOperand.getType();

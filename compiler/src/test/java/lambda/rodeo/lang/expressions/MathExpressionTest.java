@@ -13,6 +13,7 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
@@ -30,14 +31,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class MathExpressionTest {
 
-  private CompileContext compileContext;
+  private ToTypedFunctionContext compileContext;
 
   @Mock
   TypedModuleScope typedModuleScope;
 
   @BeforeEach()
   public void beforeEach() {
-    compileContext = CompileContextUtils.testCompileContext();
+    compileContext = CompileContextUtils.testToTypedFunctionContext();
   }
 
   @Test
@@ -52,7 +53,7 @@ class MathExpressionTest {
 
     assertThat(
         expressionAst.toTypedExpression(TypeScope.EMPTY,
-            typedModuleScope, CompileContextUtils.testCompileContext()).getType(),
+            typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(),
         equalTo(IntType.INSTANCE));
 
 
@@ -73,7 +74,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(15)));
 
@@ -91,7 +92,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(0)));
 
@@ -109,7 +110,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(1 - 2 - 3 - 4 - 5)));
 
@@ -127,7 +128,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(1 - -3)));
 
@@ -145,7 +146,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(9)));
 
@@ -163,7 +164,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(2 * 3 * 4 * 5)));
 
@@ -181,7 +182,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(1 + 2 * 3)));
 
@@ -199,7 +200,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf((1 + 2) * (3 + 4) * 5 + 6)));
 
@@ -297,7 +298,7 @@ class MathExpressionTest {
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, CompileContextUtils.testCompileContext()).getType(), equalTo(IntType.INSTANCE));
+        typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(), equalTo(IntType.INSTANCE));
     assertThat(ExpressionTestUtils.compileAndExecute(expressionAst, IntType.INSTANCE),
         equalTo(BigInteger.valueOf(javaVal)));
 

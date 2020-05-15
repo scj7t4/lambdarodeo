@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
@@ -26,7 +27,7 @@ public class PatternCaseAst implements AstNode {
   private final int characterStart;
 
   public static List<TypedStatement> getTypedStatements(TypeScope initialTypeScope,
-      TypedModuleScope typedModuleScope, CompileContext compileContext,
+      TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext,
       List<StatementAst> statements) {
     TypeScope current = initialTypeScope;
     List<TypedStatement> typedStatements = new ArrayList<>();
@@ -44,7 +45,7 @@ public class PatternCaseAst implements AstNode {
   public TypedPatternCase toTypedPatternCase(
       TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
     List<TypedStatement> typedStatements = getTypedStatements(initialTypeScope, typedModuleScope,
         compileContext, statements);
 

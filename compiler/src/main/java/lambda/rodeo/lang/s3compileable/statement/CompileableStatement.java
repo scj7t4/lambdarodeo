@@ -4,10 +4,12 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
+import lambda.rodeo.lang.s3compileable.expression.LambdaLiftable;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 @Builder
@@ -29,6 +31,12 @@ public class CompileableStatement implements Compileable {
     // computation is on the top of the stack...
     if (compileableAssignment != null) {
       compileableAssignment.compile(methodVisitor, compileContext);
+    }
+  }
+
+  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+    if(compileableExpr instanceof LambdaLiftable) {
+      ((LambdaLiftable) compileableExpr).lambdaLift(cw, compileContext, internalJavaName);
     }
   }
 }

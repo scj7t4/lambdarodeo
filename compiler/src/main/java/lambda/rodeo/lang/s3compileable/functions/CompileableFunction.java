@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s3compileable.functions;
 
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
+import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
 
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
@@ -35,11 +36,15 @@ public class CompileableFunction {
     return sb.toString();
   }
 
-  public void compile(ClassWriter cw, CompileContext compileContext,
-      String internalModuleName) {
+  public void compile(ClassWriter cw, CompileContext compileContext, String internalModuleName) {
+    int access = ACC_PUBLIC | ACC_STATIC;
+    if(isLambda()) {
+      access |= ACC_SYNTHETIC;
+    }
+
     MethodVisitor methodVisitor = cw
         .visitMethod(
-            ACC_PUBLIC | ACC_STATIC,
+            access,
             functionSigAst.getName(),
             generateFunctionDescriptor(),
             null,
@@ -64,4 +69,11 @@ public class CompileableFunction {
     return getFunctionSigAst().getName();
   }
 
+  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+    functionBody.lambdaLift(cw, compileContext, internalJavaName);
+  }
+
+  public boolean isLambda() {
+    return getTypedFunction().isLambda();
+  }
 }

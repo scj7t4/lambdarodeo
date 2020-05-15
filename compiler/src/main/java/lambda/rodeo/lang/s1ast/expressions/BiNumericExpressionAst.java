@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
@@ -59,7 +60,7 @@ public interface BiNumericExpressionAst extends ExpressionAst {
    */
   @Override
   default TypedExpression toTypedExpression(TypeScope typeScope,
-      TypedModuleScope typedModuleScope, CompileContext compileContext) {
+      TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     TypedExpression typedLhs = getLhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
     Type left = typedLhs.getType();

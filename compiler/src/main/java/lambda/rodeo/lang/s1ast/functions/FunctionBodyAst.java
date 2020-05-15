@@ -2,7 +2,6 @@ package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
@@ -24,7 +23,7 @@ public class FunctionBodyAst {
   public TypedFunctionBody toTypedFunctionBodyAst(
       TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
 
     DerivedTypeScope patternScope = new DerivedTypeScope(initialTypeScope);
     List<TypedPatternCase> typedPatternCases = new ArrayList<>();

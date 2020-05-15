@@ -2,8 +2,8 @@ package lambda.rodeo.lang.s1ast.statements;
 
 import java.util.Set;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
@@ -27,7 +27,7 @@ public class StatementAst implements AstNode {
   public TypedStatement toTypedStatementAst(
       TypeScope before,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
     TypedExpression typedExpr = getExpression()
         .toTypedExpression(before, typedModuleScope, compileContext);
     TypeScope after = before;

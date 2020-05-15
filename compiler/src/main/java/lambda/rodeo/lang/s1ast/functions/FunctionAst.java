@@ -29,16 +29,22 @@ public class FunctionAst {
   private final FunctionSigAst functionSignature;
   @NonNull
   private final FunctionBodyAst functionBodyAst;
+  private final boolean lambda;
 
   public TypedFunction toTypedFunctionAst(
       TypeScope moduleScope,
       TypedModuleScope typedModuleScope,
       CompileContext compileContext) {
 
+    ToTypedFunctionContext toTypedFunctionContext = ToTypedFunctionContext.builder()
+        .compileContext(compileContext)
+        .functionName(functionSignature.getName())
+        .build();
+
     TypedFunctionBody typedFunctionBody = functionBodyAst.toTypedFunctionBodyAst(
         functionSignature.getInitialTypeScope(moduleScope),
         typedModuleScope,
-        compileContext);
+        toTypedFunctionContext);
 
     List<TypedPatternCase> patternCases = typedFunctionBody.getPatternCases();
     for (TypedPatternCase typedPatternCase : patternCases) {

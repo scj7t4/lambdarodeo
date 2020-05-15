@@ -6,8 +6,8 @@ import static lambda.rodeo.runtime.types.Atom.UNDEFINED;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedVariable;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
@@ -31,7 +31,7 @@ public class VariableAst implements ExpressionAst {
   @Override
   public TypedExpression toTypedExpression(
       TypeScope typeScope,
-      TypedModuleScope typedModuleScope, CompileContext compileContext) {
+      TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     Optional<Entry> entry = typeScope.get(name).findFirst();
     Type type = entry
         .map(TypeScope.Entry::getType)

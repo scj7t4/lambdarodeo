@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.s1ast.functions.patterns;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.IntLiteralTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -21,7 +21,7 @@ public class IntLiteralCaseArgAst implements CaseArgAst {
   @Override
   public TypedCaseArg toTypedCaseArg(TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
     return IntLiteralTypedCaseArg.builder()
         .caseArgAst(this)
         .build();

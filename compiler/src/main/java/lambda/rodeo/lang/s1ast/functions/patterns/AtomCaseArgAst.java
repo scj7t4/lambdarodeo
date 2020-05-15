@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.s1ast.functions.patterns;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.AtomTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -22,7 +22,7 @@ public class AtomCaseArgAst implements CaseArgAst {
   @Override
   public TypedCaseArg toTypedCaseArg(TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      ToTypedFunctionContext compileContext) {
     return AtomTypedCaseArg.builder()
         .caseArgAst(this)
         .build();

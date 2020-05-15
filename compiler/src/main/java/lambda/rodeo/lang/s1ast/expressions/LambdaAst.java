@@ -3,14 +3,21 @@ package lambda.rodeo.lang.s1ast.expressions;
 import static lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst.getTypedStatements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lambda.rodeo.lang.compilation.CompileContext;
+import java.util.stream.Stream;
+import lambda.rodeo.lang.s1ast.functions.FunctionAst;
+import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
+import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
+import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
@@ -36,8 +43,10 @@ public class LambdaAst implements ExpressionAst {
   private final List<StatementAst> statements;
 
   @Override
-  public TypedExpression toTypedExpression(TypeScope scope, TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+  public TypedExpression toTypedExpression(
+      TypeScope scope,
+      TypedModuleScope typedModuleScope,
+      ToTypedFunctionContext compileContext) {
 
     TypeScope lambdaScope = TypeScope.EMPTY;
 
@@ -66,18 +75,46 @@ public class LambdaAst implements ExpressionAst {
         .map(TypedVar::getType)
         .collect(Collectors.toList());
 
+    Type returnType = typedStatements
+        .get(typedStatements.size() - 1)
+        .getTypedExpression()
+        .getType();
+
+    TypedFunction lambdaFn = FunctionAst.builder()
+        .functionSignature(FunctionSigAst.builder()
+            .arguments(Stream.concat(scopeArgs.stream(), getArguments().stream())
+                .collect(Collectors.toList()))
+            .startLine(getStartLine())
+            .endLine(getEndLine())
+            .characterStart(getCharacterStart())
+            .declaredReturnType(returnType)
+            .name("lambda$" + compileContext.allocateLambda())
+            .build())
+        .functionBodyAst(FunctionBodyAst.builder()
+            .patternCases(
+                Collections.singletonList(
+                    PatternCaseAst.builder()
+                        .caseArgs(Collections.emptyList())
+                        .startLine(getStartLine())
+                        .endLine(getEndLine())
+                        .characterStart(getCharacterStart())
+                        .statements(getStatements())
+                        .build()
+                )
+            )
+            .build())
+        .lambda(true)
+        .build()
+        .toTypedFunctionAst(TypeScope.EMPTY, typedModuleScope, compileContext.getCompileContext());
+
     return TypedLambda.builder()
         .expr(this)
         .scopeArgs(scopeArgs)
         .type(Lambda.builder()
             .args(argTypes)
-            .returnType(
-                typedStatements
-                    .get(typedStatements.size() - 1)
-                    .getTypedExpression()
-                    .getType())
+            .returnType(returnType)
             .build())
-        .typedStatements(typedStatements)
+        .typedFunction(lambdaFn)
         .build();
   }
 

@@ -20,8 +20,8 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
   private final List<FunctionAst> functions = new ArrayList<>();
 
   public ModuleAstFactory(ModuleContext module, CompileContext compileContext) {
-    ParseTreeWalker.DEFAULT.walk(this, module);
     this.compileContext = compileContext;
+    ParseTreeWalker.DEFAULT.walk(this, module);
     builder.functionAsts(functions);
   }
 

@@ -29,7 +29,7 @@ public class ReturnTypesTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, CompileContextUtils.testCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     ModuleAst testCase = ExpressionTestUtils.moduleForExpression(expressionAst, Atom.NULL);

@@ -97,7 +97,7 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterStatement(StatementContext ctx) {
-    StatementAstFactory statementAstFactory = new StatementAstFactory(ctx);
+    StatementAstFactory statementAstFactory = new StatementAstFactory(compileContext, ctx);
     StatementAst statementAst = statementAstFactory.toAst();
     statements.add(statementAst);
   }

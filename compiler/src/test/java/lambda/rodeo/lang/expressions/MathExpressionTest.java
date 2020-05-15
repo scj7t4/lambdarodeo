@@ -47,8 +47,8 @@ class MathExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(
@@ -70,7 +70,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -88,7 +88,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -106,7 +106,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -124,7 +124,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -142,7 +142,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -160,7 +160,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -178,7 +178,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -196,7 +196,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -294,7 +294,7 @@ class MathExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext);
+        exprContext, compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -311,8 +311,8 @@ class MathExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -336,8 +336,8 @@ class MathExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,

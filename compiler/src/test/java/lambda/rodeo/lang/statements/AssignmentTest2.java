@@ -37,13 +37,13 @@ class AssignmentTest2 {
 
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(statement1);
     StatementContext exprContext = lambdaRodeoParser.statement();
-    StatementAstFactory astFactory = new StatementAstFactory(exprContext
+    StatementAstFactory astFactory = new StatementAstFactory(compileContext, exprContext
     );
     StatementAst ast1 = astFactory.toAst();
 
     lambdaRodeoParser = TestUtils.parseString(statement2);
     exprContext = lambdaRodeoParser.statement();
-    astFactory = new StatementAstFactory(exprContext);
+    astFactory = new StatementAstFactory(compileContext, exprContext);
     StatementAst ast2 = astFactory.toAst();
 
     List<StatementAst> statements = new ArrayList<>();

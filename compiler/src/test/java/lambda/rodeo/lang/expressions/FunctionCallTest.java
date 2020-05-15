@@ -142,9 +142,10 @@ class FunctionCallTest {
     ModuleAstFactory factory = new ModuleAstFactory(module,
         CompileContextUtils.testCompileContext());
 
-    assertThat(factory.toAst().getName(), CoreMatchers.equalTo("testcase.BasicFunctionCall"));
+    ModuleAst moduleAst = factory.toAst();
+    assertThat(moduleAst.getName(), CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
-    Class<?> compiledModule = CompileUtils.createClass(factory.toAst());
+    Class<?> compiledModule = CompileUtils.createClass(moduleAst);
     assertThat(compiledModule.getCanonicalName(),
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 

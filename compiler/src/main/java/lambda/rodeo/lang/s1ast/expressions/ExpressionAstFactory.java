@@ -1,10 +1,7 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
-import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AddSubContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
@@ -13,20 +10,22 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionCallContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ParentheticalContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
+import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 @Slf4j
 public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> {
 
   private final ExpressionAst expr;
+  private final CompileContext compileContext;
 
-  public ExpressionAstFactory(ExprContext ctx) {
+  public ExpressionAstFactory(ExprContext ctx, CompileContext compileContext) {
+    this.compileContext = compileContext;
     expr = visit(ctx);
   }
 
@@ -137,25 +136,42 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
 
   @Override
   public ExpressionAst visitFunctionCall(FunctionCallContext ctx) {
-    String callTarget = ctx.callTarget().getText();
-    int size = ctx.expr().size();
-    List<ExpressionAst> args = new ArrayList<>();
-    for(int i = 0; i < size; i++) {
-      ExpressionAst expressionAst = visit(ctx.expr(i));
-      args.add(expressionAst);
+    ExpressionAst callee = visit(ctx.expr(0));
+    if (callee instanceof LambdaAst) {
+      // Handle a lambda invoke
+      // TODO: I think all I need to do is put the args on the stack then invoke the apply
+      // TODO: method on my lambda...
+      return AtomAst.builder()
+          .atom(Atom.UNDEFINED)
+          .build();
+    } else if (callee instanceof VariableAst) {
+      // Handle a standard function call
+      String callTarget = ((VariableAst) callee).getName();
+      int size = ctx.expr().size();
+      List<ExpressionAst> args = new ArrayList<>();
+      for (int i = 1; i < size; i++) {
+        ExpressionAst expressionAst = visit(ctx.expr(i));
+        args.add(expressionAst);
+      }
+      return FunctionCallAst.builder()
+          .callTarget(callTarget)
+          .args(new ArrayList<>(args))
+          .startLine(ctx.getStart().getLine())
+          .endLine(ctx.getStop().getLine())
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .build();
+    } else {
+      compileContext.getCompileErrorCollector()
+          .collect(CompileError.triedToCallNonFunction(ctx, "<unknown>"));
+      return AtomAst.builder()
+          .atom(Atom.UNDEFINED)
+          .build();
     }
-    return FunctionCallAst.builder()
-        .callTarget(callTarget)
-        .args(new ArrayList<>(args))
-        .startLine(ctx.getStart().getLine())
-        .endLine(ctx.getStop().getLine())
-        .characterStart(ctx.getStart().getCharPositionInLine())
-        .build();
   }
 
   @Override
   public ExpressionAst visitLambda(LambdaContext ctx) {
-    LambdaAstFactory lambdaAstFactory = new LambdaAstFactory(ctx);
+    LambdaAstFactory lambdaAstFactory = new LambdaAstFactory(ctx, compileContext);
     return lambdaAstFactory.toAst();
   }
 }

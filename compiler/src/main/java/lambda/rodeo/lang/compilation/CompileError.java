@@ -5,6 +5,7 @@ import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 @Builder
 @Getter
@@ -46,6 +47,16 @@ public class CompileError {
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())
         .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
+  public static CompileError triedToCallNonFunction(ParserRuleContext ctx, String identifier) {
+    return CompileError.builder()
+        .errorType(NOT_A_FUNCTION)
+        .errorMsg("Identifier '" + identifier + "' is not a function")
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
         .build();
   }
 

@@ -39,17 +39,19 @@ statement: assignment? expr ';';
 atom: ':'IDENTIFIER;
 expr
   : '(' expr ')' #parenthetical
+  // Not sure about putting the function call priority here... not sure of the implications
+  // For order of operations
+  | expr '(' (expr (',' expr)*)? ')' #functionCall
   | ('-') expr #unaryMinus
   | expr multiDivOp expr #multiDiv
   | expr addSubOp expr #addSub
   | literal #literalExpr
-  | functionCall #functionCallExpr
   | identifier #identifierExpr
   | lambda #lambdaFn;
 literal: atom
        | intLiteral;
 intLiteral: '-'?INT_LITERAL;
-identifier: IDENTIFIER;
+identifier: IDENTIFIER | SCOPED_IDENTIFIER;
 addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
 lambda: '(' (lambdaTypedVar (',' lambdaTypedVar)*)? ')' '=>' ('{' lambdaStatement+ '}' | lambdaExpr);
@@ -58,8 +60,6 @@ lambdaStatement: assignment? expr ';';
 lambdaExpr: expr;
 
 assignment: 'let' IDENTIFIER '=';
-functionCall: callTarget '(' (expr (',' expr)*)? ')';
-callTarget: (IDENTIFIER | SCOPED_IDENTIFIER);
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

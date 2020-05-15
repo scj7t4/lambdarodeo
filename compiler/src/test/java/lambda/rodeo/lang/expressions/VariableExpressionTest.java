@@ -43,8 +43,8 @@ public class VariableExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -66,8 +66,8 @@ public class VariableExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -89,8 +89,8 @@ public class VariableExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -112,8 +112,8 @@ public class VariableExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -135,8 +135,8 @@ public class VariableExpressionTest {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
-    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext
-    );
+    ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
+        compileContext.getCompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,

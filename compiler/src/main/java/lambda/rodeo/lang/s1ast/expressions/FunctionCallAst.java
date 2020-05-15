@@ -12,7 +12,7 @@ import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class FunctionCallAst implements ExpressionAst {
         .map(arg -> arg.toTypedExpression(typeScope, typedModuleScope, compileContext))
         .collect(Collectors.toList());
 
-    final List<Type> argSig = typedArgs.stream()
+    final List<LambdaRodeoType> argSig = typedArgs.stream()
         .map(TypedExpression::getType)
         .collect(Collectors.toList());
 
@@ -53,7 +53,7 @@ public class FunctionCallAst implements ExpressionAst {
           .toTypedExpression();
     }
 
-    Type declaredReturnType = calledFn.get()
+    LambdaRodeoType declaredReturnType = calledFn.get()
         .getFunctionSignature()
         .getDeclaredReturnType();
 

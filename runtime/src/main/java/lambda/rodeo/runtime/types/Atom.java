@@ -4,7 +4,7 @@ import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class Atom implements Type, CompileableType {
+public class Atom implements LambdaRodeoType, CompileableType {
 
   public static final Atom UNDEFINED = new Atom("$UNDEFINED");
   public static final Atom NULL = new Atom("null");
@@ -35,7 +35,7 @@ public class Atom implements Type, CompileableType {
   }
 
   @Override
-  public Type getType() {
+  public LambdaRodeoType getType() {
     return this;
   }
 }

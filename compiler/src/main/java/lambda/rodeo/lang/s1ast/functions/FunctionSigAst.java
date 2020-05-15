@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypeScopeImpl;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class FunctionSigAst implements AstNode {
   private final int startLine;
   private final int endLine;
   private final int characterStart;
-  private final Type declaredReturnType;
+  private final LambdaRodeoType declaredReturnType;
 
   public TypeScope getInitialTypeScope(TypeScope moduleScope) {
     TypeScope typeScope = moduleScope;

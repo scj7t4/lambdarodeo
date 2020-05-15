@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.compilation;
 
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -59,7 +59,7 @@ public class CompileError {
   }
 
   public static CompileError mathOperationWithNonNumeric(AstNode astNode,
-      String operation, Type lhsType, Type rhsType) {
+      String operation, LambdaRodeoType lhsType, LambdaRodeoType rhsType) {
     return CompileError.builder()
         .errorType(ILLEGAL_MATH_OPERATION)
         .errorMsg("Cannot do " + operation + " with '" + lhsType + "' and '" + rhsType + "'")
@@ -70,7 +70,7 @@ public class CompileError {
   }
 
   public static CompileError mathOperationWithNonNumeric(AstNode astNode,
-      String operation, Type type) {
+      String operation, LambdaRodeoType type) {
     return CompileError.builder()
         .errorType(ILLEGAL_MATH_OPERATION)
         .errorMsg("Cannot do " + operation + " with '" + type)
@@ -90,7 +90,7 @@ public class CompileError {
         .build();
   }
 
-  public static CompileError returnTypeMismatch(AstNode astNode, Type declared, Type actual) {
+  public static CompileError returnTypeMismatch(AstNode astNode, LambdaRodeoType declared, LambdaRodeoType actual) {
     return CompileError.builder()
         .errorType(RETURN_TYPE_MISMATCH)
         .errorMsg(

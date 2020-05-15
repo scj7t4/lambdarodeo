@@ -9,7 +9,7 @@ import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class TypedVariable implements TypedExpression, Compileable {
   private final Entry scopeEntry;
 
   @Override
-  public Type getType() {
+  public LambdaRodeoType getType() {
     return scopeEntry.getType();
   }
 

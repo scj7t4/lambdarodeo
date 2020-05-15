@@ -11,20 +11,20 @@ import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.utils.CompileUtils;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.SneakyThrows;
 
 public class ExpressionTestUtils {
 
   public static final String TEST_METHOD = "testMethod";
 
-  public static ModuleAst moduleForExpression(ExpressionAst expr, Type expectedReturnType) {
+  public static ModuleAst moduleForExpression(ExpressionAst expr, LambdaRodeoType expectedReturnType) {
     List<StatementAst> statements = singleStatementForExpression(expr);
     return moduleForStatements(statements, expectedReturnType);
   }
 
   public static ModuleAst moduleForStatements(List<StatementAst> statements,
-      Type expectedReturnType) {
+      LambdaRodeoType expectedReturnType) {
     return ModuleAst.builder()
         .name("lambda.rodeo.TestHarness")
         .startLine(0)
@@ -35,7 +35,7 @@ public class ExpressionTestUtils {
   }
 
   public static FunctionAst functionForStatements(List<StatementAst> statements,
-      Type expectedReturnType) {
+      LambdaRodeoType expectedReturnType) {
     return FunctionAst.builder()
         .functionSignature(FunctionSigAst.builder()
             .name(TEST_METHOD)
@@ -62,7 +62,7 @@ public class ExpressionTestUtils {
   }
 
   @SneakyThrows
-  public static Object compileAndExecute(ExpressionAst expr, Type expectedType) {
+  public static Object compileAndExecute(ExpressionAst expr, LambdaRodeoType expectedType) {
     return compileAndExecute(moduleForExpression(expr, expectedType));
   }
 

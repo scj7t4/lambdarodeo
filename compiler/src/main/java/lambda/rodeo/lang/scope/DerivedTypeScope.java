@@ -1,11 +1,10 @@
 package lambda.rodeo.lang.scope;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 
 public class DerivedTypeScope implements TypeScope {
 
@@ -29,7 +28,7 @@ public class DerivedTypeScope implements TypeScope {
   }
 
   @Override
-  public TypeScope declare(String varName, Type type) {
+  public TypeScope declare(String varName, LambdaRodeoType type) {
     TypeScope declare = parent.declare(varName, type);
     Set<Integer> newAllowed = new HashSet<>(allowedEntries);
     if (type.allocateSlot()) {

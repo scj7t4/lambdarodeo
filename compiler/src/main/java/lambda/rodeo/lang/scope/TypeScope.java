@@ -1,8 +1,7 @@
 package lambda.rodeo.lang.scope;
 
-import java.util.Optional;
 import java.util.stream.Stream;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,7 +9,7 @@ public interface TypeScope {
 
   TypeScope EMPTY = new TypeScopeImpl();
 
-  TypeScope declare(String varName, Type type);
+  TypeScope declare(String varName, LambdaRodeoType type);
 
   Stream<Entry> get(String varName);
 
@@ -27,7 +26,7 @@ public interface TypeScope {
   class Entry {
 
     private final String name;
-    private final Type type;
+    private final LambdaRodeoType type;
     private final int index;
 
     public CompileableTypeScope.Entry toCompileableEntry() {

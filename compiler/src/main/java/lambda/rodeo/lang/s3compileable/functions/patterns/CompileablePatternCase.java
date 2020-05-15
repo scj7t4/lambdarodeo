@@ -7,7 +7,7 @@ import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.statement.CompileableStatement;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -53,7 +53,7 @@ public class CompileablePatternCase {
     methodVisitor.visitLabel(patternMiss);
   }
 
-  public Type getReturnType() {
+  public LambdaRodeoType getReturnType() {
     return statements.get(statements.size() - 1)
         .getCompileableExpr()
         .getTypedExpression()

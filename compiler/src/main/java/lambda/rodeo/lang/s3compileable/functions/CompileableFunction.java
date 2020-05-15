@@ -36,6 +36,17 @@ public class CompileableFunction {
     return sb.toString();
   }
 
+  public String generateFunctionSignature() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
+    for (TypedVar var : functionSigAst.getArguments()) {
+      String descriptor = var.getType().getSignature();
+      sb.append(descriptor);
+    }
+    sb.append(")").append(functionSigAst.getDeclaredReturnType().getSignature());
+    return sb.toString();
+  }
+
   public void compile(ClassWriter cw, CompileContext compileContext, String internalModuleName) {
     int access = ACC_PUBLIC | ACC_STATIC;
     if(isLambda()) {
@@ -47,7 +58,7 @@ public class CompileableFunction {
             access,
             functionSigAst.getName(),
             generateFunctionDescriptor(),
-            null,
+            generateFunctionSignature(),
             null);
 
     methodVisitor.visitCode();

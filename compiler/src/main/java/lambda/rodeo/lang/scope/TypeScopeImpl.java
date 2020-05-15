@@ -3,9 +3,8 @@ package lambda.rodeo.lang.scope;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -20,7 +19,7 @@ public class TypeScopeImpl implements TypeScope {
   }
 
   @Override
-  public TypeScopeImpl declare(String varName, Type type) {
+  public TypeScopeImpl declare(String varName, LambdaRodeoType type) {
     TypeScopeImpl out = new TypeScopeImpl();
     out.scope.addAll(this.scope);
     int slot = -1;

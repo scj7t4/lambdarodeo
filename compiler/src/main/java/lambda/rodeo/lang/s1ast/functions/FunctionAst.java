@@ -8,7 +8,7 @@ import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,8 +48,8 @@ public class FunctionAst {
 
     List<TypedPatternCase> patternCases = typedFunctionBody.getPatternCases();
     for (TypedPatternCase typedPatternCase : patternCases) {
-      Type returnedType = typedPatternCase.getReturnedType();
-      Type declaredReturnedType = functionSignature.getDeclaredReturnType();
+      LambdaRodeoType returnedType = typedPatternCase.getReturnedType();
+      LambdaRodeoType declaredReturnedType = functionSignature.getDeclaredReturnType();
 
       if (!declaredReturnedType.assignableFrom(returnedType)) {
         compileContext.getCompileErrorCollector().collect(
@@ -75,14 +75,14 @@ public class FunctionAst {
     return getFunctionSignature().getArguments();
   }
 
-  public boolean hasSignature(List<Type> callArguments) {
+  public boolean hasSignature(List<LambdaRodeoType> callArguments) {
     List<TypedVar> sigArguments = functionSignature.getArguments();
     if (callArguments.size() != sigArguments.size()) {
       return false;
     }
 
     for (int i = 0; i < callArguments.size(); i++) {
-      Type sigArg = sigArguments.get(0).getType();
+      LambdaRodeoType sigArg = sigArguments.get(0).getType();
       if (!sigArg.assignableFrom(callArguments.get(0))) {
         return false;
       }

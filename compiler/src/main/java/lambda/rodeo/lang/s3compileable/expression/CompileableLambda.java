@@ -6,6 +6,7 @@ import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -28,16 +29,22 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
 
   @Override
   public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+    String objectDescriptor = Type.getDescriptor(Object.class);
+    StringBuilder bootstrapArgs = new StringBuilder("(");
+    for (LambdaRodeoType type : typedExpression.getType().getArgs()) {
+      bootstrapArgs.append(objectDescriptor);
+    }
+    bootstrapArgs.append(")").append(objectDescriptor);
 
     methodVisitor.visitInvokeDynamicInsn(
         "apply",
-        "()"+Type.getDescriptor(Lambda0.class),
+        "()"+typedExpression.getType().getDescriptor(),
         new Handle(Opcodes.H_INVOKESTATIC,
             "java/lang/invoke/LambdaMetafactory",
             "metafactory",
             "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;",
             false),
-        Type.getType("()"+Type.getDescriptor(Object.class)),
+        Type.getType(bootstrapArgs.toString()),
         new Handle(Opcodes.H_INVOKESTATIC,
             getModuleAst().getInternalJavaName(),
             lambdaFunction.getName(),

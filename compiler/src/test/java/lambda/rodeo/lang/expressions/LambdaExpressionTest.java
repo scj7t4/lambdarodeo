@@ -20,6 +20,8 @@ import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Lambda1;
+import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.IntType;
 import lambda.rodeo.runtime.types.Lambda;
 import lombok.SneakyThrows;
@@ -80,5 +82,21 @@ public class LambdaExpressionTest {
     @SuppressWarnings("unchecked")
     Lambda0<BigInteger> res = (Lambda0<BigInteger>) noArgs.invoke(null);
     assertThat(res.apply(), equalTo(new BigInteger("1337")));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testOneArgLambda() {
+    Class<?> compiledModule = compileLambda("(a::ok) => 1337",
+        Lambda.builder()
+            .returnType(IntType.INSTANCE)
+            .args(Collections.singletonList(new Atom("ok")))
+            .build()
+    );
+
+    Method noArgs = compiledModule.getMethod(TEST_METHOD);
+    @SuppressWarnings("unchecked")
+    Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) noArgs.invoke(null);
+    assertThat(res.apply(new Atom("ok")), equalTo(new BigInteger("1337")));
   }
 }

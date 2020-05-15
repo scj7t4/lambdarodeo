@@ -13,7 +13,7 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import org.objectweb.asm.MethodVisitor;
 
 /**
@@ -63,10 +63,10 @@ public interface BiNumericExpressionAst extends ExpressionAst {
       TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     TypedExpression typedLhs = getLhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    Type left = typedLhs.getType();
+    LambdaRodeoType left = typedLhs.getType();
     TypedExpression typedRhs = getRhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    Type right = typedRhs.getType();
+    LambdaRodeoType right = typedRhs.getType();
 
     if (AstUtils.isAnyUndefined(left, right)) {
       return AtomAst.undefinedAtomExpression();

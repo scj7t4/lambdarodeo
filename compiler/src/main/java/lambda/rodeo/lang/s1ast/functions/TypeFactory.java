@@ -6,18 +6,18 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.IntType;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class TypeFactory extends LambdaRodeoBaseListener {
 
-  private Type ast;
+  private LambdaRodeoType ast;
 
   public TypeFactory(TypeExpressionContext ctx) {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
-  public Type toAst() {
+  public LambdaRodeoType toAst() {
     return ast;
   }
 

@@ -24,7 +24,7 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Lambda;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -57,7 +57,7 @@ public class LambdaAst implements ExpressionAst {
 
     List<TypedVar> scopeArgs = new ArrayList<>();
     for (String var : getReferencedVariables()) {
-      Type closureVarType = scope.get(var)
+      LambdaRodeoType closureVarType = scope.get(var)
           .findFirst()
           .map(Entry::getType)
           .orElseThrow(() -> new UnsupportedOperationException(
@@ -72,11 +72,11 @@ public class LambdaAst implements ExpressionAst {
     List<TypedStatement> typedStatements = getTypedStatements(lambdaScope, typedModuleScope,
         compileContext, statements);
 
-    List<? extends Type> argTypes = arguments.stream()
+    List<? extends LambdaRodeoType> argTypes = arguments.stream()
         .map(TypedVar::getType)
         .collect(Collectors.toList());
 
-    Type returnType = typedStatements
+    LambdaRodeoType returnType = typedStatements
         .get(typedStatements.size() - 1)
         .getTypedExpression()
         .getType();

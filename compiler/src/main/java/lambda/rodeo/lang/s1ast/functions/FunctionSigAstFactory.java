@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionArgsContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionNameContext;
@@ -17,7 +14,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
@@ -25,7 +22,7 @@ public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
   private final CompileContext compileContext;
   private FunctionSigAst.FunctionSigAstBuilder builder = FunctionSigAst.builder();
   private final List<TypedVar> arguments = new ArrayList<>();
-  private Type returnType;
+  private LambdaRodeoType returnType;
 
   public FunctionSigAstFactory(FunctionSigContext ctx, CompileContext compileContext) {
     this.compileContext = compileContext;

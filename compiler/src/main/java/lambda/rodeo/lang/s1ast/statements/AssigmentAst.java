@@ -5,11 +5,11 @@ import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 
 public interface AssigmentAst extends AstNode {
 
-  TypeScope scopeAfter(TypeScope before, ToTypedFunctionContext compileContext, Type typeAssignFrom);
+  TypeScope scopeAfter(TypeScope before, ToTypedFunctionContext compileContext, LambdaRodeoType typeAssignFrom);
 
   TypedAssignment toTypedAssignmentAst(TypeScope after);
 

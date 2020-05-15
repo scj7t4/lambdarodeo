@@ -5,7 +5,7 @@ import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class IntType implements Type, CompileableType {
+public class IntType implements LambdaRodeoType, CompileableType {
 
   public static final IntType INSTANCE = new IntType();
 
@@ -28,7 +28,7 @@ public class IntType implements Type, CompileableType {
   }
 
   @Override
-  public Type getType() {
+  public LambdaRodeoType getType() {
     return this;
   }
 }

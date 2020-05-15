@@ -6,7 +6,7 @@ import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedSimpleAssignment;
-import lambda.rodeo.runtime.types.Type;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class SimpleAssignmentAst implements AssigmentAst {
   private final int characterStart;
 
   @Override
-  public TypeScope scopeAfter(TypeScope scopeBefore, ToTypedFunctionContext compileContext, Type type) {
+  public TypeScope scopeAfter(TypeScope scopeBefore, ToTypedFunctionContext compileContext, LambdaRodeoType type) {
     boolean alreadyDeclared = scopeBefore.get(identifier).findAny().isPresent();
     if(alreadyDeclared) {
       compileContext.getCompileErrorCollector().collect(

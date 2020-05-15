@@ -1,6 +1,7 @@
 package lambda.rodeo.runtime.types;
 
 import java.math.BigInteger;
+import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
@@ -17,8 +18,8 @@ public class IntType implements Type, CompileableType {
   }
 
   @Override
-  public Class<?> javaType() {
-    return BigInteger.class;
+  public String getDescriptor() {
+    return AsmType.getDescriptor(BigInteger.class);
   }
 
   @Override

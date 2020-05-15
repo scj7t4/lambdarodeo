@@ -1,5 +1,6 @@
 package lambda.rodeo.runtime.types;
 
+import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
@@ -24,8 +25,8 @@ public class Atom implements Type, CompileableType {
   }
 
   @Override
-  public Class<?> javaType() {
-    return Atom.class;
+  public String getDescriptor() {
+    return AsmType.getDescriptor(Atom.class);
   }
 
   @Override

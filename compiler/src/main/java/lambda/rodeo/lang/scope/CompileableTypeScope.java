@@ -34,7 +34,7 @@ public class CompileableTypeScope {
 
       methodVisitor.visitLocalVariable(
           scopeEntry.getName(),
-          org.objectweb.asm.Type.getDescriptor(scopeEntry.getType().getType().javaType()),
+          scopeEntry.getType().getType().getDescriptor(),
           null,
           start,
           end,

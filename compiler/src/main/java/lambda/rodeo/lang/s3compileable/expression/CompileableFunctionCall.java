@@ -41,7 +41,7 @@ public class CompileableFunctionCall implements CompileableExpr {
     sb.append("(");
     for (CompileableExpr arg : args) {
       Type type = arg.getTypedExpression().getType();
-      sb.append(getDescriptor(type.javaType()));
+      sb.append(type.getDescriptor());
     }
     sb.append(")");
 
@@ -53,7 +53,7 @@ public class CompileableFunctionCall implements CompileableExpr {
         .filter(fn -> Objects.equals(fn.getName(), getTargetMethod()))
         .findFirst()
         .map(fn -> fn.getFunctionSignature().getDeclaredReturnType())
-        .map(type -> getDescriptor(type.javaType()))
+        .map(Type::getDescriptor)
         .orElseThrow(() -> new CriticalLanguageException(
             "Function '" + getTargetMethod() +"' didn't have a return type descriptor"
         ));

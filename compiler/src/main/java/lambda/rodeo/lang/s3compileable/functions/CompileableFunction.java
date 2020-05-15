@@ -29,10 +29,10 @@ public class CompileableFunction {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     for (TypedVar var : functionSigAst.getArguments()) {
-      String descriptor = Type.getDescriptor(var.getType().javaType());
+      String descriptor = var.getType().getDescriptor();
       sb.append(descriptor);
     }
-    sb.append(")").append(Type.getDescriptor(functionSigAst.getDeclaredReturnType().javaType()));
+    sb.append(")").append(functionSigAst.getDeclaredReturnType().getDescriptor());
     return sb.toString();
   }
 

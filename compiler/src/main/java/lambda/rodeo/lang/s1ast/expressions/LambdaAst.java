@@ -110,6 +110,7 @@ public class LambdaAst implements ExpressionAst {
 
     return TypedLambda.builder()
         .expr(this)
+        .typedModuleScope(typedModuleScope)
         .scopeArgs(scopeArgs)
         .type(Lambda.builder()
             .args(argTypes)

@@ -1,9 +1,13 @@
 package lambda.rodeo.lang.expressions;
 
+import static lambda.rodeo.lang.expressions.ExpressionTestUtils.TEST_METHOD;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.Collections;
+import java.util.function.Supplier;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
@@ -15,8 +19,10 @@ import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.types.IntType;
 import lambda.rodeo.runtime.types.Lambda;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,14 +67,18 @@ public class LambdaExpressionTest {
   }
 
   @Test
+  @SneakyThrows
   public void testNoArgsLambda() {
-    Class<?> aClass = compileLambda("() => 1337",
+    Class<?> compiledModule = compileLambda("() => 1337",
         Lambda.builder()
             .returnType(IntType.INSTANCE)
             .args(Collections.emptyList())
             .build()
     );
 
-    log.info("here.");
+    Method noArgs = compiledModule.getMethod(TEST_METHOD);
+    @SuppressWarnings("unchecked")
+    Lambda0<BigInteger> res = (Lambda0<BigInteger>) noArgs.invoke(null);
+    assertThat(res.apply(), equalTo(new BigInteger("1337")));
   }
 }

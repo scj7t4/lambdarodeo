@@ -15,6 +15,8 @@ import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.Lambda;
 import lambda.rodeo.runtime.types.Type;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,10 +33,13 @@ public class TypedLambda implements TypedExpression {
   private final List<TypedVar> scopeArgs;
 
   @NonNull
-  private final Type type;
+  private final Lambda type;
 
   @NonNull
   private final TypedFunction typedFunction;
+
+  @NonNull
+  private final TypedModuleScope typedModuleScope;
 
   @NonNull
   public List<TypedVar> getArguments() {

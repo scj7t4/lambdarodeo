@@ -1,22 +1,50 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
+import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.types.Lambda;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
 public class CompileableLambda implements CompileableExpr, LambdaLiftable {
+
   private final TypedLambda typedExpression;
   private final CompileableFunction lambdaFunction;
 
+  public @NonNull ModuleAst getModuleAst() {
+    return typedExpression.getTypedModuleScope().getThisScope().getThisModule();
+  }
+
   @Override
   public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
-    // Bunch of invoke dynamic stuff here...
+
+    methodVisitor.visitInvokeDynamicInsn(
+        "apply",
+        "()"+Type.getDescriptor(Lambda0.class),
+        new Handle(Opcodes.H_INVOKESTATIC,
+            "java/lang/invoke/LambdaMetafactory",
+            "metafactory",
+            "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;",
+            false),
+        Type.getType("()"+Type.getDescriptor(Object.class)),
+        new Handle(Opcodes.H_INVOKESTATIC,
+            getModuleAst().getInternalJavaName(),
+            lambdaFunction.getName(),
+            typedExpression.getType().getFunctionDescriptor(),
+            false),
+        Type.getType(typedExpression.getType().getFunctionDescriptor()));
+
   }
 
   @Override

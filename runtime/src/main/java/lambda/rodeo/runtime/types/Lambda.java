@@ -1,6 +1,8 @@
 package lambda.rodeo.runtime.types;
 
 import java.util.List;
+import java.util.function.Supplier;
+import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,9 +14,14 @@ public class Lambda implements Type, CompileableType {
   private final List<? extends Type> args;
   private final Type returnType;
 
+
   @Override
-  public Class<?> javaType() {
-    return Object.class;
+  public String getDescriptor() {
+    return AsmType.getDescriptor(Supplier.class);
+  }
+
+  public String getFunctionDescriptor() {
+    return "(" + ")" + returnType.getDescriptor();
   }
 
   @Override

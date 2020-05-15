@@ -2,7 +2,7 @@ package lambda.rodeo.runtime.types;
 
 public interface Type {
 
-  Class<?> javaType();
+  String getDescriptor();
 
   default boolean allocateSlot() {
     return true;

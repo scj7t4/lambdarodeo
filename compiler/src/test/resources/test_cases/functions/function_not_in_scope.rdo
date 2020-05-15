@@ -1,0 +1,5 @@
+module test.Fibonacci {
+  def fibonacci(n: int) => int {
+    fibonacci(n, 2, 1, 1);
+  }
+}

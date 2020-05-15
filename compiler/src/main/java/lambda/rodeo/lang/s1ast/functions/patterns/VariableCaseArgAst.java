@@ -36,7 +36,7 @@ public class VariableCaseArgAst implements CaseArgAst {
 
           compileContext
               .getCompileErrorCollector()
-              .collect(CompileError.undefinedIdentifier(identifier, this));
+              .collect(CompileError.undefinedIdentifier(this, identifier));
 
           return (TypedCaseArg) AtomCaseArgAst
               .builder()

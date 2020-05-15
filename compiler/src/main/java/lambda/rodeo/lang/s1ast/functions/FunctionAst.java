@@ -1,6 +1,8 @@
 package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.List;
+import java.util.Objects;
+import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
@@ -8,28 +10,26 @@ import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
-/*
- * Function is composed of multiple statements A -> B -> C -> D
- *
- * We would like to determine last function call <- | -> everything
- * to the right is grouped into a result call..
- */
 @Data
 @Builder
 @EqualsAndHashCode
-public class FunctionAst {
+public class FunctionAst implements AstNode {
 
   @NonNull
   private final FunctionSigAst functionSignature;
   @NonNull
   private final FunctionBodyAst functionBodyAst;
   private final boolean lambda;
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   public TypedFunction toTypedFunctionAst(
       TypeScope moduleScope,
@@ -51,7 +51,8 @@ public class FunctionAst {
       LambdaRodeoType returnedType = typedPatternCase.getReturnedType();
       LambdaRodeoType declaredReturnedType = functionSignature.getDeclaredReturnType();
 
-      if (!declaredReturnedType.assignableFrom(returnedType)) {
+      if (!declaredReturnedType.assignableFrom(returnedType) &&
+          !Objects.equals(returnedType, Atom.UNDEFINED)) {
         compileContext.getCompileErrorCollector().collect(
             CompileError
                 .returnTypeMismatch(typedPatternCase.getPatternCaseAst(), declaredReturnedType,
@@ -73,6 +74,10 @@ public class FunctionAst {
 
   public List<TypedVar> getArguments() {
     return getFunctionSignature().getArguments();
+  }
+
+  public String getSignature() {
+    return getName() + "\\\\" + getArguments().size();
   }
 
   public boolean hasSignature(List<LambdaRodeoType> callArguments) {

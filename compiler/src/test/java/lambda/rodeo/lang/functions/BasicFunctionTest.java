@@ -3,6 +3,7 @@ package lambda.rodeo.lang.functions;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -10,10 +11,16 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
+import lambda.rodeo.lang.ModuleAstFactory;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
+import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.runtime.types.Atom;
@@ -92,5 +99,32 @@ public class BasicFunctionTest {
     assertThat(invokeResult, instanceOf(BigInteger.class));
 
     assertThat(invokeResult, equalTo(BigInteger.valueOf(4)));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testFunctionNameReuse() {
+    String resource = "/test_cases/functions/function_already_defined.rdo";
+    ModuleContext moduleDef = TestUtils.parseModule(resource);
+    ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
+        CompileContextUtils.testCompileContext());
+    ModuleAst testCase = factory.toAst();
+
+    CompileErrorCollector compileErrorCollector = CompileUtils.expectCompileErrors(testCase);
+
+    assertThat(compileErrorCollector.getCompileErrors(), contains(
+        CompileError.identifierAlreadyDeclaredInScope(
+            ExpectedLocation.builder()
+                .startLine(2)
+                .endLine(4)
+                .characterStart(2)
+                .build(), "fibonacci\\\\1"),
+        CompileError.identifierAlreadyDeclaredInScope(
+            ExpectedLocation.builder()
+                .startLine(6)
+                .endLine(8)
+                .characterStart(2)
+                .build(), "fibonacci\\\\1")
+    ));
   }
 }

@@ -63,8 +63,6 @@ public class LambdaExpressionTest {
 
     ModuleAst moduleAst = ExpressionTestUtils.moduleForExpression(expressionAst, expectedType);
 
-    CompileUtils.asmifyModule(moduleAst);
-
     Class<?> retVal = CompileUtils.createClass(moduleAst);
 
     CompileContextUtils.assertNoCompileErrors(compileContext);

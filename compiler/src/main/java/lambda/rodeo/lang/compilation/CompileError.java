@@ -3,10 +3,12 @@ package lambda.rodeo.lang.compilation;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileError {
 
   public static final String UNDEFINED_VAR = "UNDEFINED_VARIABLE";
@@ -27,8 +29,7 @@ public class CompileError {
     return errorType + ":L" + startLine + "->" + endLine + ":" + characterStart + ":: " + errorMsg;
   }
 
-  public static CompileError undefinedIdentifier(String identifier,
-      AstNode astNode) {
+  public static CompileError undefinedIdentifier(AstNode astNode, String identifier) {
     return CompileError.builder()
         .errorType(UNDEFINED_VAR)
         .errorMsg("Identifier '" + identifier + "' is not defined in the current scope")
@@ -38,7 +39,7 @@ public class CompileError {
         .build();
   }
 
-  public static CompileError triedToCallNonFunction(String identifier, AstNode astNode) {
+  public static CompileError triedToCallNonFunction(AstNode astNode, String identifier) {
     return CompileError.builder()
         .errorType(NOT_A_FUNCTION)
         .errorMsg("Identifier '" + identifier + "' is not a function")

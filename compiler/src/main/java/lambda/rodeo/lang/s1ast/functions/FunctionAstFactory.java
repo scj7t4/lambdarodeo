@@ -24,6 +24,9 @@ public class FunctionAstFactory extends LambdaRodeoBaseListener {
       FunctionDefContext ctx,
       CompileContext compileContext) {
     this.compileContext = compileContext;
+    builder = builder.startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine());
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
@@ -39,10 +40,28 @@ public class ModuleAst implements AstNode {
   private final int endLine;
   private final int characterStart;
 
-  public TypedModule toTypedModuleAst(CompileContext compileContext,
+  public TypedModule toTypedModuleAst(
+      CompileContext compileContext,
       TypedModuleScope typedModuleScope) {
 
     final TypeScope initialModuleScope = TypeScope.EMPTY;
+
+    // Check for functions with same name an same airty
+    Map<String, List<FunctionAst>> airtyCheck = new HashMap<>();
+    for (FunctionAst fn : functionAsts) {
+      String elixirName = fn.getSignature();
+      airtyCheck.computeIfAbsent(elixirName, k -> new ArrayList<>()).add(fn);
+    }
+
+    airtyCheck.entrySet().stream()
+        .filter(entry -> entry.getValue().size() > 1)
+        .forEach(entry -> {
+          List<FunctionAst> conflicts = entry.getValue();
+          String signature = entry.getKey();
+          conflicts.forEach(fn -> compileContext.getCompileErrorCollector()
+              .collect(CompileError.identifierAlreadyDeclaredInScope(fn, signature))
+          );
+        });
 
     List<TypedFunction> typedFunctions = functionAsts
         .stream()
@@ -51,7 +70,7 @@ public class ModuleAst implements AstNode {
 
     final Map<TypedCaseArg, TypedStaticPattern> staticPatterns = new HashMap<>();
     final Set<TypedCaseArg> allArgsAllFns = new HashSet<>();
-    for (TypedFunction fn: typedFunctions) {
+    for (TypedFunction fn : typedFunctions) {
       List<TypedCaseArg> caseArgs = fn.getFunctionBody().getAllCaseArgs();
       allArgsAllFns.addAll(caseArgs);
     }

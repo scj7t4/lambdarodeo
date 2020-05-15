@@ -61,8 +61,6 @@ public class FunctionCasesTest {
         equalTo(3));
     Class<?> compiledModule = CompileUtils.createClass(testCase);
 
-    CompileUtils.asmifyModule(testCase);
-
     Method func = compiledModule.getMethod("fibonacci", BigInteger.class);
     Object invokeResult = func.invoke(null, BigInteger.ONE);
     assertThat(invokeResult, equalTo(BigInteger.ONE));

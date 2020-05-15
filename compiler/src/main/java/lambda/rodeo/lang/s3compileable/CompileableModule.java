@@ -91,7 +91,7 @@ public class CompileableModule {
       func.compile(cw, compileContext, getInternalJavaName());
     }
 
-    for (CompileableFunction func: compileableFunctions) {
+    for (CompileableFunction func : compileableFunctions) {
       func.lambdaLift(cw, compileContext, getInternalJavaName());
     }
 
@@ -105,12 +105,6 @@ public class CompileableModule {
       methodVisitor.visitCode();
       Label label0 = new Label();
       methodVisitor.visitLabel(label0);
-
-      methodVisitor.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-      methodVisitor.visitLdcInsn("<clinit> run");
-      methodVisitor
-          .visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V",
-              false);
 
       for (Map.Entry<CompileableCaseArg, CompileableStaticPattern> patternEntry
           : staticPatterns.entrySet()) {

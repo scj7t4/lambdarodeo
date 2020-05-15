@@ -38,7 +38,7 @@ public class VariableAst implements ExpressionAst {
         .orElse(UNDEFINED);
     if (Objects.equals(UNDEFINED, type)) {
       compileContext.getCompileErrorCollector()
-          .collect(CompileError.undefinedIdentifier(name, this));
+          .collect(CompileError.undefinedIdentifier(this, name));
       return AtomAst.builder()
           .atom(UNDEFINED)
           .build()

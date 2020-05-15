@@ -44,8 +44,9 @@ public class FunctionCallAst implements ExpressionAst {
 
     Optional<FunctionAst> calledFn = typedModuleScope.getCallTarget(callTarget, argSig);
     if(calledFn.isEmpty()) {
+      String callTargetSig = callTarget + "\\\\" + argSig.size();
       compileContext.getCompileErrorCollector()
-          .collect(CompileError.undefinedIdentifier(callTarget, this));
+          .collect(CompileError.undefinedIdentifier(this, callTargetSig));
       return AtomAst
           .builder()
           .atom(Atom.UNDEFINED)

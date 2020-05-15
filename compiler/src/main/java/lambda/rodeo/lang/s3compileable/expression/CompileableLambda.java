@@ -1,11 +1,12 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
+import static org.objectweb.asm.Opcodes.ALOAD;
+
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
-import lambda.rodeo.runtime.lambda.Lambda0;
-import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,9 +37,22 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
     }
     bootstrapArgs.append(")").append(objectDescriptor);
 
+    // aload all the variables carried into the closure:
+    for (Entry entry : typedExpression.getScopeArgs()) {
+      methodVisitor.visitVarInsn(ALOAD, entry.getIndex());
+    }
+
+    StringBuilder invokeDynamicDescriptor = new StringBuilder("(");
+    for (Entry entry : typedExpression.getScopeArgs()) {
+      invokeDynamicDescriptor.append(entry.getType().getDescriptor());
+    }
+    invokeDynamicDescriptor.append(")")
+        .append(typedExpression.getType().getDescriptor());
+
+
     methodVisitor.visitInvokeDynamicInsn(
         "apply",
-        "()"+typedExpression.getType().getDescriptor(),
+        invokeDynamicDescriptor.toString(),
         new Handle(Opcodes.H_INVOKESTATIC,
             "java/lang/invoke/LambdaMetafactory",
             "metafactory",

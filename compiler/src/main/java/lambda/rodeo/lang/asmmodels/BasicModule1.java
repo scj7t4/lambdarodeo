@@ -11,7 +11,7 @@ import lambda.rodeo.runtime.patterns.matchers.IntMatcher;
 import lambda.rodeo.runtime.types.Atom;
 
 public class BasicModule1 {
-  public static Lambda1<String, BigInteger> fibonacci(String y) {
-    return (q) -> new BigInteger("1337");
+  public static Lambda1<String, BigInteger> fibonacci(BigInteger y) {
+    return (q) -> y;
   }
 }

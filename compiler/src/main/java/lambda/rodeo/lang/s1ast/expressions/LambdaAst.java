@@ -55,18 +55,14 @@ public class LambdaAst implements ExpressionAst {
       lambdaScope = lambdaScope.declare(typedVar.getName(), typedVar.getType());
     }
 
-    List<TypedVar> scopeArgs = new ArrayList<>();
+    List<Entry> scopeArgs = new ArrayList<>();
     for (String var : getReferencedVariables()) {
-      LambdaRodeoType closureVarType = scope.get(var)
+      Entry scopeEntry = scope.get(var)
           .findFirst()
-          .map(Entry::getType)
           .orElseThrow(() -> new UnsupportedOperationException(
               "Variable '" + var + "' is missing from scope?"));
-      scopeArgs.add(TypedVar.builder()
-          .name(var)
-          .type(closureVarType)
-          .build());
-      lambdaScope = lambdaScope.declare(var, closureVarType);
+      scopeArgs.add(scopeEntry);
+      lambdaScope = lambdaScope.declare(var, scopeEntry.getType());
     }
 
     List<TypedStatement> typedStatements = getTypedStatements(lambdaScope, typedModuleScope,
@@ -83,7 +79,12 @@ public class LambdaAst implements ExpressionAst {
 
     TypedFunction lambdaFn = FunctionAst.builder()
         .functionSignature(FunctionSigAst.builder()
-            .arguments(Stream.concat(scopeArgs.stream(), getArguments().stream())
+            .arguments(Stream.concat(
+                scopeArgs.stream().map(entry -> TypedVar.builder()
+                    .name(entry.getName())
+                    .type(entry.getType())
+                    .build()),
+                getArguments().stream())
                 .collect(Collectors.toList()))
             .startLine(getStartLine())
             .endLine(getEndLine())

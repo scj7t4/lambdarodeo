@@ -8,6 +8,7 @@ import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Lambda;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class TypedLambda implements TypedExpression {
   private final LambdaAst expr;
 
   @NonNull
-  private final List<TypedVar> scopeArgs;
+  private final List<Entry> scopeArgs;
 
   @NonNull
   private final Lambda type;

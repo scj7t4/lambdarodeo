@@ -58,12 +58,15 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
             "metafactory",
             "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;",
             false),
+        // This seems to be just the general number of args and return of the lambda:
         Type.getType(bootstrapArgs.toString()),
         new Handle(Opcodes.H_INVOKESTATIC,
             getModuleAst().getInternalJavaName(),
             lambdaFunction.getName(),
-            typedExpression.getType().getFunctionDescriptor(),
+            // This should be the description of the full function call (with the closure variables):
+            lambdaFunction.generateFunctionDescriptor(),
             false),
+        // And this should be the descriptor of how the lambda appears:
         Type.getType(typedExpression.getType().getFunctionDescriptor()));
 
   }

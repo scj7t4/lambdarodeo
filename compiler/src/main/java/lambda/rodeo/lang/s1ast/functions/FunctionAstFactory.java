@@ -19,7 +19,6 @@ public class FunctionAstFactory extends LambdaRodeoBaseListener {
   private final CompileContext compileContext;
   private FunctionSigAst functionSigAst;
   private FunctionBodyAst functionBodyAst;
-  private List<PatternCaseAst> patternCaseAsts = new ArrayList<>();
 
   public FunctionAstFactory(
       FunctionDefContext ctx,

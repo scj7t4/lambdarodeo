@@ -19,9 +19,14 @@ functionArgs:
 typedVar: varName ':' varType;
 varName: IDENTIFIER;
 varType: typeExpression;
+
 returnType: typeExpression;
-typeExpression: intType | atom;
+typeExpression: intType
+  | atom
+  | lambdaTypeExpression;
 intType: 'int';
+lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeExpression;
+
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
 caseArg: caseLiteral
   | caseVarName

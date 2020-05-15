@@ -49,12 +49,10 @@ public class LambdaAst implements ExpressionAst {
       TypedModuleScope typedModuleScope,
       ToTypedFunctionContext compileContext) {
 
+    // The scope inside the lambda starts out empty:
     TypeScope lambdaScope = TypeScope.EMPTY;
 
-    for (TypedVar typedVar : arguments) {
-      lambdaScope = lambdaScope.declare(typedVar.getName(), typedVar.getType());
-    }
-
+    // We take the variables we reference from the enclosing scope an declare those first
     List<Entry> scopeArgs = new ArrayList<>();
     for (String var : getReferencedVariables()) {
       Entry scopeEntry = scope.get(var)
@@ -65,8 +63,17 @@ public class LambdaAst implements ExpressionAst {
       lambdaScope = lambdaScope.declare(var, scopeEntry.getType());
     }
 
-    List<TypedStatement> typedStatements = getTypedStatements(lambdaScope, typedModuleScope,
-        compileContext, statements);
+    // Then we add the arguments of the function itself:
+    for (TypedVar typedVar : arguments) {
+      lambdaScope = lambdaScope.declare(typedVar.getName(), typedVar.getType());
+    }
+
+    // Now we produce a list of the typed statements.
+    List<TypedStatement> typedStatements = getTypedStatements(
+        lambdaScope,
+        typedModuleScope,
+        compileContext,
+        statements);
 
     List<? extends LambdaRodeoType> argTypes = arguments.stream()
         .map(TypedVar::getType)
@@ -130,9 +137,13 @@ public class LambdaAst implements ExpressionAst {
         .filter(Objects::nonNull)
         .flatMap(assignment -> assignment.newDeclarations().stream())
         .collect(Collectors.toSet());
+    Set<String> arguments = getArguments().stream()
+        .map(TypedVar::getName)
+        .collect(Collectors.toSet());
     return statements.stream()
         .flatMap(statement -> statement.getReferencedVariables().stream())
         .filter(referencedVar -> !assignedVars.contains(referencedVar))
+        .filter(referencedVar -> !arguments.contains(referencedVar))
         .collect(Collectors.toSet());
   }
 }

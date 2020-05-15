@@ -3,6 +3,7 @@ package lambda.rodeo.lang.expressions;
 import static lambda.rodeo.lang.expressions.ExpressionTestUtils.TEST_METHOD;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 import java.lang.reflect.Method;
 import java.math.BigInteger;
@@ -10,9 +11,12 @@ import java.util.Collections;
 import java.util.function.Supplier;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
+import lambda.rodeo.lang.s1ast.functions.FunctionAst;
+import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
@@ -98,5 +102,54 @@ public class LambdaExpressionTest {
     @SuppressWarnings("unchecked")
     Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) noArgs.invoke(null);
     assertThat(res.apply(new Atom("ok")), equalTo(new BigInteger("1337")));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testClosure0() {
+    String resource = "/test_cases/functions/closure_0.rdo";
+    FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
+    FunctionAst functionAst = factory.toAst();
+    assertThat(functionAst.getName(), equalTo("closure0"));
+    assertThat(functionAst.getArguments(), hasSize(1));
+    assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
+    assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
+
+    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+        .functionAsts(Collections.singletonList(functionAst))
+        .build());
+
+    Method method = compiledModule.getMethod("closure0", BigInteger.class);
+    @SuppressWarnings("unchecked")
+    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null, BigInteger.TWO);
+
+    assertThat(invokeResult.apply(), equalTo(BigInteger.TWO));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testClosure1() {
+    String resource = "/test_cases/functions/closure_1.rdo";
+    FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
+    FunctionAst functionAst = factory.toAst();
+    assertThat(functionAst.getName(), equalTo("closure1"));
+    assertThat(functionAst.getArguments(), hasSize(1));
+    assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
+    assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
+
+    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+        .functionAsts(Collections.singletonList(functionAst))
+        .build());
+
+    Method method = compiledModule.getMethod("closure1", BigInteger.class);
+    @SuppressWarnings("unchecked")
+    Lambda1<BigInteger, Lambda0<BigInteger>> invokeResult =
+        (Lambda1<BigInteger, Lambda0<BigInteger>>) method.invoke(null, BigInteger.TWO);
+
+    assertThat(invokeResult.apply(BigInteger.TWO).apply(), equalTo(new BigInteger("4")));
   }
 }

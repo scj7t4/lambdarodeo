@@ -22,4 +22,10 @@ public class TypedModuleScope {
         .filter(fn -> fn.hasSignature(argSig))
         .findFirst();
   }
+
+  public boolean nameExists(String callTarget) {
+    return thisScope.getFunctions()
+        .stream()
+        .anyMatch(fn -> Objects.equals(callTarget, fn.getName()));
+  }
 }

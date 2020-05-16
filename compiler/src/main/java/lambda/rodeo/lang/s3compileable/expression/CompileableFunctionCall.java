@@ -31,7 +31,7 @@ public class CompileableFunctionCall implements CompileableExpr {
   }
 
   public String getTargetMethod() {
-    String[] split = typedExpression.getFunctionCallAst().getCallTarget().split("\\.");
+    String[] split = typedExpression.getCallTarget().split("\\.");
     return split[split.length - 1];
   }
 

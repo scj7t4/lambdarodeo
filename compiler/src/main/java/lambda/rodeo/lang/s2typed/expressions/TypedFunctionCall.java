@@ -24,6 +24,8 @@ public class TypedFunctionCall implements TypedExpression {
   @NonNull
   private final FunctionCallAst functionCallAst;
   @NonNull
+  private final String callTarget;
+  @NonNull
   private final LambdaRodeoType returnType;
   @NonNull
   private final List<TypedExpression> args;
@@ -39,6 +41,7 @@ public class TypedFunctionCall implements TypedExpression {
   public ExpressionAst getExpr() {
     return functionCallAst;
   }
+
 
   @Override
   public CompileableExpr toCompileableExpr() {

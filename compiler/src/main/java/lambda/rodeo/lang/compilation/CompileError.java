@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.compilation;
 
+import java.util.List;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class CompileError {
   public static final String NOT_A_FUNCTION = "NOT_A_FUNCTION";
   public static final String IDENTIFIER_ALREADY_IN_SCOPE = "ALREADY_IN_SCOPE";
   public static final String RETURN_TYPE_MISMATCH = "RETURN_TYPE_MISMATCH";
+  public static final String CALLED_WITH_WRONG_ARGS = "CALLED_WITH_WRONG_ARGS";
 
   private final int startLine;
   private final int endLine;
@@ -44,6 +46,34 @@ public class CompileError {
     return CompileError.builder()
         .errorType(NOT_A_FUNCTION)
         .errorMsg("Identifier '" + identifier + "' is not a function")
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
+  public static CompileError calledFunctionWithWrongArgs(AstNode astNode,
+      List<? extends LambdaRodeoType> expected, List<? extends LambdaRodeoType> actual) {
+    StringBuilder sb = new StringBuilder("Function called with wrong number/type of args.")
+        .append(" Expected: <");
+    for(int i = 0; i < expected.size(); i++) {
+      sb.append(expected.get(i));
+      if(i != expected.size() -1) {
+        sb.append(",");
+      }
+    }
+    sb.append(">; Actual: <");
+    for(int i = 0; i < actual.size(); i++) {
+      sb.append(actual.get(i));
+      if(i != actual.size() -1) {
+        sb.append(",");
+      }
+    }
+    sb.append(">");
+
+    return CompileError.builder()
+        .errorType(CALLED_WITH_WRONG_ARGS)
+        .errorMsg(sb.toString())
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())
         .characterStart(astNode.getCharacterStart())

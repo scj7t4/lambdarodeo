@@ -1,9 +1,11 @@
 package lambda.rodeo.lang.s2typed.expressions;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.s3compileable.expression.CompileableLambdaInvoke;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
@@ -23,11 +25,15 @@ public class TypedLambdaInvoke implements TypedExpression {
   private final List<TypedExpression> args;
   @NonNull
   private final TypedModuleScope typedModuleScope;
-  
-  private final Entry invokeTarget;
+
+  private final TypedExpression invokeTarget;
 
   @Override
   public CompileableExpr toCompileableExpr() {
-    return null;
+    return CompileableLambdaInvoke.builder()
+        .invokeTarget(invokeTarget.toCompileableExpr())
+        .args(args.stream().map(TypedExpression::toCompileableExpr).collect(Collectors.toList()))
+        .typedExpression(this)
+        .build();
   }
 }

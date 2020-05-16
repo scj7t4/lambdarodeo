@@ -16,6 +16,7 @@ import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.expressions.AtomAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s1ast.expressions.IntConstantAst;
+import lambda.rodeo.lang.s1ast.expressions.VariableAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
@@ -66,11 +67,14 @@ class FunctionCallTest {
     TypedFunctionCall tfc = TypedFunctionCall.builder()
         .returnType(IntType.INSTANCE)
         .functionCallAst(FunctionCallAst.builder()
-            .callTarget(functionToCall)
+            .callTarget(VariableAst.builder()
+                .name(functionToCall)
+                .build())
             .build())
         .typeScope(TypeScope.EMPTY)
         .typedModuleScope(typedModuleScope)
         .args(Collections.emptyList())
+        .callTarget(functionToCall)
         .build();
 
     CompileableFunctionCall cfc = CompileableFunctionCall.builder()
@@ -108,7 +112,9 @@ class FunctionCallTest {
     TypedFunctionCall tfc = TypedFunctionCall.builder()
         .returnType(IntType.INSTANCE)
         .functionCallAst(FunctionCallAst.builder()
-            .callTarget(functionToCall)
+            .callTarget(VariableAst.builder()
+                .name(functionToCall)
+                .build())
             .build())
         .typeScope(TypeScope.EMPTY)
         .args(List.of(
@@ -123,6 +129,7 @@ class FunctionCallTest {
                 .toTypedExpression()
         ))
         .typedModuleScope(typedModuleScope)
+        .callTarget(functionToCall)
         .build();
 
     CompileableFunctionCall cfc = (CompileableFunctionCall) tfc.toCompileableExpr();
@@ -173,7 +180,7 @@ class FunctionCallTest {
                 .startLine(3)
                 .endLine(3)
                 .characterStart(4)
-                .build(), "fibonacci\\\\4")
+                .build(), "fibonacci")
     ));
   }
 }

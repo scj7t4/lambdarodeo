@@ -137,47 +137,19 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
   @Override
   public ExpressionAst visitFunctionCall(FunctionCallContext ctx) {
     ExpressionAst callee = visit(ctx.expr(0));
-    if (callee instanceof LambdaAst) {
-      // Handle a lambda invoke
-      // TODO: I think all I need to do is put the args on the stack then invoke the apply
-      // TODO: method on my lambda...
-      String callTarget = "<lambda>";
-      int size = ctx.expr().size();
-      List<ExpressionAst> args = new ArrayList<>();
-      for (int i = 1; i < size; i++) {
-        ExpressionAst expressionAst = visit(ctx.expr(i));
-        args.add(expressionAst);
-      }
-      return FunctionCallAst.builder()
-          .callTarget(callTarget)
-          .args(new ArrayList<>(args))
-          .startLine(ctx.getStart().getLine())
-          .endLine(ctx.getStop().getLine())
-          .characterStart(ctx.getStart().getCharPositionInLine())
-          .build();
-    } else if (callee instanceof VariableAst) {
-      // Handle a standard function call
-      String callTarget = ((VariableAst) callee).getName();
-      int size = ctx.expr().size();
-      List<ExpressionAst> args = new ArrayList<>();
-      for (int i = 1; i < size; i++) {
-        ExpressionAst expressionAst = visit(ctx.expr(i));
-        args.add(expressionAst);
-      }
-      return FunctionCallAst.builder()
-          .callTarget(callTarget)
-          .args(new ArrayList<>(args))
-          .startLine(ctx.getStart().getLine())
-          .endLine(ctx.getStop().getLine())
-          .characterStart(ctx.getStart().getCharPositionInLine())
-          .build();
-    } else {
-      compileContext.getCompileErrorCollector()
-          .collect(CompileError.triedToCallNonFunction(ctx, "<unknown>"));
-      return AtomAst.builder()
-          .atom(Atom.UNDEFINED)
-          .build();
+    int size = ctx.expr().size();
+    List<ExpressionAst> args = new ArrayList<>();
+    for (int i = 1; i < size; i++) {
+      ExpressionAst expressionAst = visit(ctx.expr(i));
+      args.add(expressionAst);
     }
+    return FunctionCallAst.builder()
+        .callTarget(callee)
+        .args(new ArrayList<>(args))
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .build();
   }
 
   @Override

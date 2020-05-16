@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.hasSize;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
-import java.util.function.Supplier;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
@@ -150,5 +149,52 @@ public class LambdaExpressionTest {
         (Lambda1<BigInteger, Lambda0<BigInteger>>) method.invoke(null, BigInteger.TWO);
 
     assertThat(invokeResult.apply(BigInteger.TWO).apply(), equalTo(new BigInteger("4")));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testInvoke1() {
+    String resource = "/test_cases/functions/invoke_closure_1.rdo";
+    FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
+    FunctionAst functionAst = factory.toAst();
+    assertThat(functionAst.getName(), equalTo("closure1"));
+    assertThat(functionAst.getArguments(), hasSize(1));
+    assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
+    assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
+
+    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+        .functionAsts(Collections.singletonList(functionAst))
+        .build());
+
+    Method method = compiledModule.getMethod("closure1", BigInteger.class);
+    BigInteger invokeResult = (BigInteger) method.invoke(null, BigInteger.TWO);
+
+    assertThat(invokeResult, equalTo(new BigInteger("4")));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testInvoke0() {
+    String resource = "/test_cases/functions/invoke_closure_0.rdo";
+    FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
+    FunctionAstFactory factory = new FunctionAstFactory(functionDef,
+        CompileContextUtils.testCompileContext());
+    FunctionAst functionAst = factory.toAst();
+    assertThat(functionAst.getName(), equalTo("closure1"));
+    assertThat(functionAst.getArguments(), hasSize(1));
+    assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
+    assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
+
+    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+        .functionAsts(Collections.singletonList(functionAst))
+        .build());
+
+    Method method = compiledModule.getMethod("closure1", BigInteger.class);
+    @SuppressWarnings("unchecked")
+    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null, BigInteger.TWO);
+
+    assertThat(invokeResult.apply(), equalTo(new BigInteger("4")));
   }
 }

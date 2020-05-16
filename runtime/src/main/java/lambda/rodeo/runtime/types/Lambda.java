@@ -23,6 +23,11 @@ public class Lambda implements LambdaRodeoType, CompileableType {
   }
 
   @Override
+  public String getInternalName() {
+    return AsmType.getInternalName(functionalRep());
+  }
+
+  @Override
   public String getSignature() {
     StringBuilder sb = new StringBuilder("L");
     sb.append(AsmType.getInternalName(functionalRep()));
@@ -55,6 +60,15 @@ public class Lambda implements LambdaRodeoType, CompileableType {
     return sb.toString();
   }
 
+  public String getGenericFunctionDescriptor() {
+    StringBuilder sb = new StringBuilder("(");
+    for (LambdaRodeoType arg : args) {
+      sb.append(AsmType.getDescriptor(Object.class));
+    }
+    sb.append(")").append(AsmType.getDescriptor(Object.class));
+    return sb.toString();
+  }
+
   @Override
   public CompileableType toCompileableType() {
     return this;
@@ -63,5 +77,19 @@ public class Lambda implements LambdaRodeoType, CompileableType {
   @Override
   public LambdaRodeoType getType() {
     return this;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("<lambda>(");
+    for(int i = 0; i < args.size(); i++) {
+      LambdaRodeoType arg = args.get(i);
+      sb.append(arg);
+      if(i < args.size() - 1) {
+        sb.append(",");
+      }
+    }
+    sb.append(")=>").append(returnType);
+    return sb.toString();
   }
 }

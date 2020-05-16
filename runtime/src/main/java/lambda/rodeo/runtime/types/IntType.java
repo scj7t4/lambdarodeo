@@ -23,6 +23,11 @@ public class IntType implements LambdaRodeoType, CompileableType {
   }
 
   @Override
+  public String getInternalName() {
+    return AsmType.getInternalName(BigInteger.class);
+  }
+
+  @Override
   public CompileableType toCompileableType() {
     return this;
   }

@@ -3,6 +3,8 @@ package lambda.rodeo.runtime.types;
 public interface LambdaRodeoType {
 
   String getDescriptor();
+  String getInternalName();
+
   default String getSignature() {
     return getDescriptor();
   };

@@ -144,6 +144,7 @@ public class FunctionCallAst implements ExpressionAst {
         .typedModuleScope(typedModuleScope)
         .expr(this)
         .type(asLambda.getReturnType())
+        .lambda(asLambda)
         .invokeTarget(variable)
         .build();
   }

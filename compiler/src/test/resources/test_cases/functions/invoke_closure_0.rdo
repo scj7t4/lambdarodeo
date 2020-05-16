@@ -1,0 +1,5 @@
+def closure1(v1: int) => () => int {
+  (v2: int) => {
+    () => v1 + v2;
+  }(v1);
+}

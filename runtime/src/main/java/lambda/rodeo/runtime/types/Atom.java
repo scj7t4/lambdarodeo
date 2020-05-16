@@ -30,6 +30,11 @@ public class Atom implements LambdaRodeoType, CompileableType {
   }
 
   @Override
+  public String getInternalName() {
+    return AsmType.getInternalName(Atom.class);
+  }
+
+  @Override
   public CompileableType toCompileableType() {
     return this;
   }

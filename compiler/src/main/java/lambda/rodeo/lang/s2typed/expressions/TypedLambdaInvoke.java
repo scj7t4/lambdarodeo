@@ -8,6 +8,7 @@ import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableLambdaInvoke;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.Lambda;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,8 @@ public class TypedLambdaInvoke implements TypedExpression {
   private final ExpressionAst expr;
   @NonNull
   private final LambdaRodeoType type;
+  @NonNull
+  private final Lambda lambda;
   @NonNull
   private final List<TypedExpression> args;
   @NonNull

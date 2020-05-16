@@ -36,6 +36,8 @@ public class FunctionAst implements AstNode {
       TypedModuleScope typedModuleScope,
       CompileContext compileContext) {
 
+    functionSignature.checkCollisionAgainstModule(typedModuleScope, compileContext);
+
     ToTypedFunctionContext toTypedFunctionContext = ToTypedFunctionContext.builder()
         .compileContext(compileContext)
         .functionName(functionSignature.getName())

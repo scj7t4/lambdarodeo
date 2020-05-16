@@ -27,7 +27,6 @@ public class VariableAst implements ExpressionAst {
   private final int startLine;
   private final int endLine;
   private final int characterStart;
-  //TODO: Compile error if arg or variable declaration would shadow function
 
   @Override
   public TypedExpression toTypedExpression(

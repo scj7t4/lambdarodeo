@@ -6,6 +6,7 @@ import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.s2typed.statements.TypedSimpleAssignment;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -44,6 +45,16 @@ public class SimpleAssignmentAst implements AssigmentAst {
   @Override
   public Set<String> newDeclarations() {
     return Set.of(identifier);
+  }
+
+  @Override
+  public void checkCollisionAgainstModule(TypedModuleScope typedModuleScope,
+      ToTypedFunctionContext compileContext) {
+    if(typedModuleScope.nameExists(identifier)) {
+      compileContext.getCompileErrorCollector().collect(
+          CompileError.identifierAlreadyDeclaredInScope(this, identifier)
+      );
+    }
   }
 
 }

@@ -3,7 +3,10 @@ package lambda.rodeo.lang.s1ast.functions;
 import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
+import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -27,5 +30,16 @@ public class FunctionSigAst implements AstNode {
       typeScope = typeScope.declare(arg.getName(), arg.getType());
     }
     return typeScope;
+  }
+
+  public void checkCollisionAgainstModule(TypedModuleScope typedModuleScope,
+      CompileContext compileContext) {
+    for(TypedVar arg : arguments) {
+      if(typedModuleScope.nameExists(arg.getName())) {
+        compileContext.getCompileErrorCollector().collect(
+            CompileError.identifierAlreadyDeclaredInScope(arg, arg.getName())
+        );
+      }
+    }
   }
 }

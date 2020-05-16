@@ -36,6 +36,7 @@ public class StatementAst implements AstNode {
     TypedAssignment typedAssignment = null;
 
     if (assignment != null) {
+      assignment.checkCollisionAgainstModule(typedModuleScope, compileContext);
       after = assignment.scopeAfter(before, compileContext, typedExpr.getType());
       typedAssignment = assignment.toTypedAssignmentAst(after);
     }

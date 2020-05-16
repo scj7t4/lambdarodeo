@@ -141,8 +141,19 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
       // Handle a lambda invoke
       // TODO: I think all I need to do is put the args on the stack then invoke the apply
       // TODO: method on my lambda...
-      return AtomAst.builder()
-          .atom(Atom.UNDEFINED)
+      String callTarget = "<lambda>";
+      int size = ctx.expr().size();
+      List<ExpressionAst> args = new ArrayList<>();
+      for (int i = 1; i < size; i++) {
+        ExpressionAst expressionAst = visit(ctx.expr(i));
+        args.add(expressionAst);
+      }
+      return FunctionCallAst.builder()
+          .callTarget(callTarget)
+          .args(new ArrayList<>(args))
+          .startLine(ctx.getStart().getLine())
+          .endLine(ctx.getStop().getLine())
+          .characterStart(ctx.getStart().getCharPositionInLine())
           .build();
     } else if (callee instanceof VariableAst) {
       // Handle a standard function call

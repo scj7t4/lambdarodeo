@@ -44,7 +44,7 @@ public class LambdaAst implements ExpressionAst {
   private final List<StatementAst> statements;
 
   @Override
-  public TypedExpression toTypedExpression(
+  public TypedLambda toTypedExpression(
       TypeScope scope,
       TypedModuleScope typedModuleScope,
       ToTypedFunctionContext compileContext) {

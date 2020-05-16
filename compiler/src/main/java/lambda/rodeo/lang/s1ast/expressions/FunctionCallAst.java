@@ -9,9 +9,12 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
+import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.runtime.types.Lambda;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -43,7 +46,39 @@ public class FunctionCallAst implements ExpressionAst {
         .collect(Collectors.toList());
 
     Optional<FunctionAst> calledFn = typedModuleScope.getCallTarget(callTarget, argSig);
-    if(calledFn.isEmpty()) {
+    if (calledFn.isEmpty()) {
+      Optional<Entry> lambdaVar = typeScope.get(callTarget)
+          .filter(entry -> entry.getType() instanceof Lambda)
+          .filter(entry -> {
+            Lambda type = (Lambda) entry.getType();
+            List<? extends LambdaRodeoType> argTypes = type.getArgs();
+            if (argTypes.size() != typedArgs.size()) {
+              return false;
+            }
+            for (int i = 0; i < argTypes.size(); i++) {
+              LambdaRodeoType argType = argTypes.get(i);
+              LambdaRodeoType calledArg = typedArgs.get(i).getType();
+              if (!argType.assignableFrom(calledArg)) {
+                return false;
+              }
+            }
+            return true;
+          })
+          .findFirst();
+      if (lambdaVar.isPresent()) {
+        Entry varEntry = lambdaVar.get();
+        Lambda lambda = (Lambda) varEntry.getType();
+        LambdaRodeoType returnType = lambda.getReturnType();
+
+        return TypedLambdaInvoke.builder()
+            .args(typedArgs)
+            .typedModuleScope(typedModuleScope)
+            .expr(this)
+            .type(returnType)
+            .invokeTarget(varEntry)
+            .build();
+      }
+
       String callTargetSig = callTarget + "\\\\" + argSig.size();
       compileContext.getCompileErrorCollector()
           .collect(CompileError.undefinedIdentifier(this, callTargetSig));

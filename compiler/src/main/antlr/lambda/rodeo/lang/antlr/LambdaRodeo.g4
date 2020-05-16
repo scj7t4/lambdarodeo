@@ -49,8 +49,13 @@ expr
   | identifier #identifierExpr
   | lambda #lambdaFn;
 literal: atom
-       | intLiteral;
+       | intLiteral
+       | quoteString;
+       // TODO: support elixir sigils?
+
 intLiteral: '-'?INT_LITERAL;
+quoteString: QSTRING;
+
 identifier: IDENTIFIER | SCOPED_IDENTIFIER;
 addSubOp: ('+'|'-');
 multiDivOp: ('*'|'/');
@@ -69,3 +74,4 @@ STATEMENT: [^;]* ';';
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 SCOPED_IDENTIFIER: IDENTIFIER(('.'IDENTIFIER)*);
 WS: [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
+QSTRING: '"' (~[\\"] | '\\' [\\"()])* '"';

@@ -6,8 +6,11 @@ grammar LambdaRodeo;
 //TODO: Choose what's next, strings or ducktypes
 module: 'module' moduleIdentifier moduleBody;
 moduleIdentifier: IDENTIFIER | SCOPED_IDENTIFIER;
-moduleBody: '{' moduleEntry*'}';
+moduleBody: '{' moduleEntry* '}';
 moduleEntry: functionDef | interfaceDef;
+
+interfaceDef: 'interface' '{' memberDecl* '}';
+memberDecl: typedVar ';';
 
 functionDef: 'def' functionSig functionBody;
 functionSig: functionName functionArgs '=>' returnType;
@@ -67,9 +70,6 @@ lambdaStatement: assignment? expr ';';
 lambdaExpr: expr;
 
 assignment: 'let' IDENTIFIER '=';
-
-interfaceDef: 'interface' '{' memberDecl* '}';
-memberDecl: typedVar ';';
 
 INT_LITERAL: [0-9]+;
 STATEMENT: [^;]* ';';

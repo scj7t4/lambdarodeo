@@ -57,7 +57,7 @@ public class AddAst implements BiNumericExpressionAst {
       return builder.build();
     } else {
       return BiNumericExpressionAst.super
-          .toTypedExpression(typeScope, typedModuleScope, compileContext);
+          .getTypedExpression(compileContext, typedLhs, left, typedRhs, right);
     }
   }
 

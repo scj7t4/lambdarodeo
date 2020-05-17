@@ -68,6 +68,12 @@ public interface BiNumericExpressionAst extends ExpressionAst {
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
     LambdaRodeoType right = typedRhs.getType();
 
+    return getTypedExpression(compileContext, typedLhs, left, typedRhs, right);
+  }
+
+  default TypedExpression getTypedExpression(ToTypedFunctionContext compileContext,
+      TypedExpression typedLhs, LambdaRodeoType left, TypedExpression typedRhs,
+      LambdaRodeoType right) {
     if (AstUtils.isAnyUndefined(left, right)) {
       return AtomAst.undefinedAtomExpression();
     } else if (AstUtils.bothIntType(left, right)) {

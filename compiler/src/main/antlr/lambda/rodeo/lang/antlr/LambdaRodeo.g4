@@ -22,9 +22,11 @@ varType: typeExpression;
 
 returnType: typeExpression;
 typeExpression: intType
+  | stringType
   | atom
   | lambdaTypeExpression;
 intType: 'int';
+stringType: 'string';
 lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeExpression;
 
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
@@ -50,11 +52,11 @@ expr
   | lambda #lambdaFn;
 literal: atom
        | intLiteral
-       | quoteString;
+       | stringLiteral;
        // TODO: support elixir sigils?
 
 intLiteral: '-'?INT_LITERAL;
-quoteString: QSTRING;
+stringLiteral: DOUBLEQSTRING;
 
 identifier: IDENTIFIER | SCOPED_IDENTIFIER;
 addSubOp: ('+'|'-');
@@ -72,6 +74,16 @@ memberDecl: typedVar ';';
 INT_LITERAL: [0-9]+;
 STATEMENT: [^;]* ';';
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
+SINGLE_LETTER: [a-zA-Z];
 SCOPED_IDENTIFIER: IDENTIFIER(('.'IDENTIFIER)*);
 WS: [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
-QSTRING: '"' (~[\\"] | '\\' [\\"()])* '"';
+// Opening quote : (anything that isn't a quote or (literal slash
+DOUBLEQSTRING: '"' (~["] | '\\"' )* '"';
+TRIPLEQSTRING: '"""' (~["] | ('"' ~["]) | '""' ~["])* '"""';
+
+BLOCK_COMMENT
+	: '/*' .*? '*/' -> channel(HIDDEN)
+	;
+LINE_COMMENT
+	: '//' ~[\r\n]* -> channel(HIDDEN)
+	;

@@ -7,11 +7,13 @@ import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaTypeExpressionContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.IntType;
 import lambda.rodeo.runtime.types.Lambda;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.runtime.types.StringType;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class TypeFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
@@ -46,5 +48,10 @@ public class TypeFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
         .args(types.subList(0, types.size() - 1))
         .returnType(types.get(types.size() - 1))
         .build();
+  }
+
+  @Override
+  public LambdaRodeoType visitStringType(StringTypeContext ctx) {
+    return StringType.INSTANCE;
   }
 }

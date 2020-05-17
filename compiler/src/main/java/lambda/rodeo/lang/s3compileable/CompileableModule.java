@@ -7,6 +7,7 @@ import static org.objectweb.asm.Opcodes.ACC_SUPER;
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.V11;
 import static org.objectweb.asm.Opcodes.V1_8;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class CompileableModule {
     // Tell ASM we want it to compute max stack and frames.
     ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
     cw.visit(
-        V1_8,
+        V11,
         ACC_PUBLIC | ACC_SUPER,
         getInternalJavaName(),
         null,

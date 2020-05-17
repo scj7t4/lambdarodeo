@@ -12,11 +12,13 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ParentheticalContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 
 @Slf4j
 public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> {
@@ -150,6 +152,25 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
         .endLine(ctx.getStop().getLine())
         .characterStart(ctx.getStart().getCharPositionInLine())
         .build();
+  }
+
+  @Override
+  public ExpressionAst visitStringLiteral(StringLiteralContext ctx) {
+    if(ctx.DOUBLEQSTRING() != null) {
+      String contents = ctx.DOUBLEQSTRING().getText();
+      contents = contents.substring(1, contents.length()-1);
+      StringEscapeUtils.unescapeJava(contents);
+      return StringLiteralAst.builder()
+          .characterStart(ctx.getStart().getCharPositionInLine())
+          .startLine(ctx.getStart().getLine())
+          .endLine(ctx.getStop().getLine())
+          .contents(contents)
+          .build();
+    } else {
+      return AtomAst.builder()
+          .atom(Atom.UNDEFINED)
+          .build();
+    }
   }
 
   @Override

@@ -2,8 +2,17 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.Objects;
 import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
+import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
+import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat;
+import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat.TypedStringConcatBuilder;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.runtime.types.StringType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,6 +38,27 @@ public class AddAst implements BiNumericExpressionAst {
   @Override
   public String operationName() {
     return "addition (+)";
+  }
+
+  @Override
+  public TypedExpression toTypedExpression(TypeScope typeScope, TypedModuleScope typedModuleScope,
+      ToTypedFunctionContext compileContext) {
+    TypedExpression typedLhs = getLhs()
+        .toTypedExpression(typeScope, typedModuleScope, compileContext);
+    LambdaRodeoType left = typedLhs.getType();
+    TypedExpression typedRhs = getRhs()
+        .toTypedExpression(typeScope, typedModuleScope, compileContext);
+    LambdaRodeoType right = typedRhs.getType();
+    if (Objects.equals(StringType.INSTANCE, left) || Objects.equals(StringType.INSTANCE, right)) {
+      TypedStringConcatBuilder builder = TypedStringConcat.builder()
+          .expr(this)
+          .lhs(typedLhs)
+          .rhs(typedRhs);
+      return builder.build();
+    } else {
+      return BiNumericExpressionAst.super
+          .toTypedExpression(typeScope, typedModuleScope, compileContext);
+    }
   }
 
   public void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,

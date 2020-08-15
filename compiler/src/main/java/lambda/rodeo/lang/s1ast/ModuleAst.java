@@ -36,6 +36,9 @@ public class ModuleAst implements AstNode {
   @Builder.Default
   private final List<FunctionAst> functionAsts = new ArrayList<>();
 
+  @Builder.Default
+  private final List<ImportAst> imports = new ArrayList<>();
+
   private final int startLine;
   private final int endLine;
   private final int characterStart;

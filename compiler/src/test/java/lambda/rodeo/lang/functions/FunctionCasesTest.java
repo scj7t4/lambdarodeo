@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.hasSize;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
-import lambda.rodeo.lang.ModuleAstFactory;
+import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
@@ -16,7 +16,6 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
-import lambda.rodeo.runtime.types.Atom;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 

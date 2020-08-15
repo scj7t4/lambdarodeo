@@ -9,6 +9,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
+import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class Compiler {
     for (CompileUnit unit : sources) {
       noCompileErrors &= compileUnit(modules, unit);
     }
+
+
 
     return noCompileErrors;
   }

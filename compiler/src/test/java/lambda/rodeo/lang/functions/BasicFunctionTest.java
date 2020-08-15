@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
-import lambda.rodeo.lang.ModuleAstFactory;
+import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;

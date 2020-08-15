@@ -1,7 +1,8 @@
-package lambda.rodeo.lang;
+package lambda.rodeo.lang.s1ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleImportContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
@@ -18,11 +19,13 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
   private ModuleAstBuilder builder = ModuleAst.builder();
   private final CompileContext compileContext;
   private final List<FunctionAst> functions = new ArrayList<>();
+  private final List<ImportAst> imports = new ArrayList<>();
 
   public ModuleAstFactory(ModuleContext module, CompileContext compileContext) {
     this.compileContext = compileContext;
     ParseTreeWalker.DEFAULT.walk(this, module);
     builder.functionAsts(functions);
+    builder.imports(imports);
   }
 
   public ModuleAst toAst() {
@@ -45,5 +48,11 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
   public void enterFunctionDef(FunctionDefContext ctx) {
     FunctionAstFactory functionAstFactory = new FunctionAstFactory(ctx, compileContext);
     functions.add(functionAstFactory.toAst());
+  }
+
+
+  @Override
+  public void enterModuleImport(ModuleImportContext ctx) {
+    imports.add(new ImportAstFactory(ctx).toAst());
   }
 }

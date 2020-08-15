@@ -6,7 +6,6 @@ import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import java.util.List;
 import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.runtime.types.Lambda;
 import lombok.Builder;
 import lombok.Getter;

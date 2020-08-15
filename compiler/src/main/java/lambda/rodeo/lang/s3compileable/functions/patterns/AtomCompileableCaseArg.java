@@ -15,7 +15,6 @@ import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.AtomTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.runtime.patterns.matchers.AtomMatcher;
-import lambda.rodeo.runtime.patterns.matchers.IntMatcher;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

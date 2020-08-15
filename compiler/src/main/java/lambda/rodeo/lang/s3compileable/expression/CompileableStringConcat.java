@@ -1,7 +1,6 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
 import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat;
 import lombok.Builder;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import java.util.Collections;
 import java.util.Set;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
@@ -54,7 +54,7 @@ public class StringLiteralAst implements ExpressionAst, TypedExpression, Compile
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     methodVisitor.visitLdcInsn(contents);
   }
 }

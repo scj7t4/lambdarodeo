@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ public class SimpleCompilableExpr implements CompileableExpr {
   @NonNull
   private final Compileable compileable;
 
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     compileable.compile(methodVisitor, compileContext);
   }
 }

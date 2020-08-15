@@ -1,28 +1,23 @@
 package lambda.rodeo.lang.s1ast.functions;
 
-import java.util.ArrayList;
-import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionSigContext;
-import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst.FunctionAstBuilder;
-import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
-import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionAstFactory extends LambdaRodeoBaseListener {
 
   private FunctionAstBuilder builder = FunctionAst.builder();
-  private final CompileContext compileContext;
+  private final S1CompileContext compileContext;
   private FunctionSigAst functionSigAst;
   private FunctionBodyAst functionBodyAst;
 
   public FunctionAstFactory(
       FunctionDefContext ctx,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     this.compileContext = compileContext;
     builder = builder.startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())

@@ -14,7 +14,7 @@ import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.runtime.types.IntType;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +22,11 @@ import org.junit.jupiter.api.Test;
 
 class AssignmentTest2 {
 
-  private CompileContext compileContext;
+  private S1CompileContext compileContext;
 
   @BeforeEach
   public void beforeEach() {
-    compileContext = CompileContextUtils.testCompileContext();
+    compileContext = CompileContextUtils.testS1CompileContext();
   }
 
   @Test

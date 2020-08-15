@@ -4,7 +4,9 @@ import static org.objectweb.asm.Opcodes.ARETURN;
 import static org.objectweb.asm.Opcodes.IFEQ;
 
 import java.util.List;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s3compileable.statement.CompileableStatement;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
@@ -24,7 +26,7 @@ public class CompileablePatternCase {
   @NonNull
   private final List<CompileableCaseArg> caseArgs;
 
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       String internalModuleName) {
     Label patternMiss = new Label();
     for (int i = 0; i < caseArgs.size(); i++) {
@@ -65,7 +67,7 @@ public class CompileablePatternCase {
         .getAfterTypeScope();
   }
 
-  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalJavaName) {
     for(CompileableStatement statement : statements) {
       statement.lambdaLift(cw, compileContext, internalJavaName);
     }

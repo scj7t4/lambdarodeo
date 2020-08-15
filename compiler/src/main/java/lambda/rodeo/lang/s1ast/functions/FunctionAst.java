@@ -3,8 +3,10 @@ package lambda.rodeo.lang.s1ast.functions;
 import java.util.List;
 import java.util.Objects;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S2CompileContext;
+import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
@@ -34,7 +36,7 @@ public class FunctionAst implements AstNode {
   public TypedFunction toTypedFunctionAst(
       TypeScope moduleScope,
       TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      S2CompileContext compileContext) {
 
     functionSignature.checkCollisionAgainstModule(typedModuleScope, compileContext);
 

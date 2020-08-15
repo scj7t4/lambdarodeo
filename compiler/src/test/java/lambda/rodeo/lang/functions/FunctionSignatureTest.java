@@ -1,26 +1,17 @@
 package lambda.rodeo.lang.functions;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.math.BigInteger;
-import java.util.Collections;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
-import lambda.rodeo.lang.expressions.ExpressionTestUtils;
-import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.utils.CompileContextUtils;
-import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
-import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.IntType;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -32,7 +23,7 @@ public class FunctionSignatureTest {
   public void testSignatureDeclaresSameNameTwice() {
     String resource = "/test_cases/functions/arg_named_twice.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
-    CompileContext compileContext = CompileContextUtils.testCompileContext();
+    S1CompileContext compileContext = CompileContextUtils.testS1CompileContext();
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         compileContext);
     FunctionAst functionAst = factory.toAst();

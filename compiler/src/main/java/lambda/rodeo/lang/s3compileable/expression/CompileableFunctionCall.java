@@ -5,7 +5,7 @@ import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import java.util.List;
 import java.util.Objects;
 import lambda.rodeo.lang.s1ast.ModuleAst;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
@@ -63,7 +63,7 @@ public class CompileableFunctionCall implements CompileableExpr {
   @Override
   public void compile(
       MethodVisitor methodVisitor,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     for (CompileableExpr expr : args) {
       expr.compile(methodVisitor, compileContext);
     }

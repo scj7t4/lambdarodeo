@@ -11,7 +11,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.PUTSTATIC;
 import static org.objectweb.asm.TypeReference.NEW;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.AtomTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.runtime.patterns.matchers.AtomMatcher;
@@ -35,7 +35,7 @@ public class AtomCompileableCaseArg implements CompileableCaseArg {
   private final TypedStaticPattern staticPattern;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       CompileableCaseArgContext caseArgContext) {
     final String atomMatcherInternal = Type.getInternalName(AtomMatcher.class);
     methodVisitor.visitFieldInsn(GETSTATIC,
@@ -62,7 +62,7 @@ public class AtomCompileableCaseArg implements CompileableCaseArg {
   }
 
   @Override
-  public void matcherInit(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void matcherInit(MethodVisitor methodVisitor, S1CompileContext compileContext,
       String internalModuleName) {
     final String atomMatcherInternal = Type.getInternalName(AtomMatcher.class);
     methodVisitor.visitTypeInsn(NEW, atomMatcherInternal);

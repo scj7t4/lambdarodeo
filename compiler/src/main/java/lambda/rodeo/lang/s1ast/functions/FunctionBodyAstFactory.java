@@ -3,17 +3,12 @@ package lambda.rodeo.lang.s1ast.functions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
-import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.PatternCaseContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAstFactory;
-import lambda.rodeo.lang.s1ast.statements.StatementAst;
-import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionBodyAstFactory {
 
@@ -22,7 +17,7 @@ public class FunctionBodyAstFactory {
 
   public FunctionBodyAstFactory(
       FunctionBodyContext ctx,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     noPatterns = new PatternCaseAstFactory(compileContext, ctx.getStart(), ctx.getStop());
 
     List<PatternCaseContext> patternCases = ctx.patternCase();

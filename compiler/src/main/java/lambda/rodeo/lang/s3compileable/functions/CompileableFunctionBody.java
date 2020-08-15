@@ -9,7 +9,9 @@ import static org.objectweb.asm.Type.getInternalName;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
@@ -32,7 +34,7 @@ public class CompileableFunctionBody {
   private final TypedFunctionBody typedFunctionBody;
 
   public void compile(MethodVisitor methodVisitor,
-      CompileContext compileContext, String internalModuleName) {
+      S1CompileContext compileContext, String internalModuleName) {
     for (CompileablePatternCase patternCase : patternCases) {
       patternCase.compile(methodVisitor, compileContext, internalModuleName);
     }
@@ -63,7 +65,7 @@ public class CompileableFunctionBody {
         .collect(Collectors.toList());
   }
 
-  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalJavaName) {
     for(CompileablePatternCase patternCase : patternCases) {
       patternCase.lambdaLift(cw, compileContext, internalJavaName);
     }

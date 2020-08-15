@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
@@ -35,7 +35,7 @@ public class CompileableModule {
   private final List<CompileableFunction> compileableFunctions;
   private final Map<CompileableCaseArg, CompileableStaticPattern> staticPatterns;
 
-  public byte[] compile(CompileContext compileContext) {
+  public byte[] compile(S2CompileContextImpl compileContext) {
     // Tell ASM we want it to compute max stack and frames.
     ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
     cw.visit(

@@ -14,8 +14,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ParentheticalContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
-import lambda.rodeo.lang.compilation.CompileContext;
-import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
@@ -24,9 +23,9 @@ import org.apache.commons.text.StringEscapeUtils;
 public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> {
 
   private final ExpressionAst expr;
-  private final CompileContext compileContext;
+  private final S1CompileContext compileContext;
 
-  public ExpressionAstFactory(ExprContext ctx, CompileContext compileContext) {
+  public ExpressionAstFactory(ExprContext ctx, S1CompileContext compileContext) {
     this.compileContext = compileContext;
     expr = visit(ctx);
   }

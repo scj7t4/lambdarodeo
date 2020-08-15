@@ -4,23 +4,23 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.AssignmentContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaStatementContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class StatementAstFactory {
 
-  private final CompileContext compileContext;
+  private final S1CompileContext compileContext;
   private final StatementAst statementAst;
 
-  public StatementAstFactory(CompileContext compileContext,
+  public StatementAstFactory(S1CompileContext compileContext,
       StatementContext ctx) {
     this.compileContext = compileContext;
     statementAst = handleStatement(ctx, ctx.assignment(), ctx.expr(), compileContext);
   }
 
-  public StatementAstFactory(CompileContext compileContext,
+  public StatementAstFactory(S1CompileContext compileContext,
       LambdaStatementContext ctx) {
     this.compileContext = compileContext;
     statementAst = handleStatement(ctx, ctx.assignment(), ctx.expr(), compileContext);
@@ -33,7 +33,7 @@ public class StatementAstFactory {
   public static StatementAst handleStatement(ParserRuleContext where,
       AssignmentContext assignment,
       ExprContext exprContext,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     SimpleAssignmentAst simpleAssignmentAst = null;
 
     if (assignment != null) {

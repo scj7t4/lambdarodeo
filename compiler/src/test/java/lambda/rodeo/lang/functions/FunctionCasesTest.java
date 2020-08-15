@@ -27,7 +27,7 @@ public class FunctionCasesTest {
     String resource = "/test_cases/functions/case_function_int.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     ModuleAst testCase = TestUtils.testModule()
         .functionAsts(Collections.singletonList(functionAst))
@@ -52,7 +52,7 @@ public class FunctionCasesTest {
     String resource = "/test_cases/functions/case_function_fibo.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ModuleAst testCase = factory.toAst();
 
     assertThat(

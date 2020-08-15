@@ -2,7 +2,7 @@ package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.ArrayList;
 import java.util.List;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
@@ -45,7 +45,7 @@ public class FunctionBodyAst {
         .build();
   }
 
-  public void checkForLastStatementAssignment(CompileContext compileContext) {
+  public void checkForLastStatementAssignment(S1CompileContext compileContext) {
     for(PatternCaseAst patternCaseAst : patternCases) {
       patternCaseAst.checkForLastStatementAssignment(compileContext);
     }

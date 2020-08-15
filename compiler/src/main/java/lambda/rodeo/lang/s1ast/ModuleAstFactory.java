@@ -3,13 +3,12 @@ package lambda.rodeo.lang.s1ast;
 import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleImportContext;
-import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleIdentifierContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -17,11 +16,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class ModuleAstFactory extends LambdaRodeoBaseListener {
 
   private ModuleAstBuilder builder = ModuleAst.builder();
-  private final CompileContext compileContext;
+  private final S1CompileContext compileContext;
   private final List<FunctionAst> functions = new ArrayList<>();
   private final List<ImportAst> imports = new ArrayList<>();
 
-  public ModuleAstFactory(ModuleContext module, CompileContext compileContext) {
+  public ModuleAstFactory(ModuleContext module, S1CompileContext compileContext) {
     this.compileContext = compileContext;
     ParseTreeWalker.DEFAULT.walk(this, module);
     builder.functionAsts(functions);

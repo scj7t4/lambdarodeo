@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
@@ -59,7 +59,7 @@ public class PatternCaseAst implements AstNode {
         .build();
   }
 
-  public void checkForLastStatementAssignment(CompileContext compileContext) {
+  public void checkForLastStatementAssignment(S1CompileContext compileContext) {
     StatementAst lastStatement = statements.get(statements.size() - 1);
     if (lastStatement.getAssignment() != null) {
       compileContext.getCompileErrorCollector().collect(

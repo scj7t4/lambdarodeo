@@ -54,7 +54,7 @@ public class LambdaExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -108,7 +108,7 @@ public class LambdaExpressionTest {
     String resource = "/test_cases/functions/closure_0.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("closure0"));
     assertThat(functionAst.getArguments(), hasSize(1));
@@ -132,7 +132,7 @@ public class LambdaExpressionTest {
     String resource = "/test_cases/functions/closure_1.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("closure1"));
     assertThat(functionAst.getArguments(), hasSize(1));
@@ -157,7 +157,7 @@ public class LambdaExpressionTest {
     String resource = "/test_cases/functions/invoke_closure_1.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("closure1"));
     assertThat(functionAst.getArguments(), hasSize(1));
@@ -180,7 +180,7 @@ public class LambdaExpressionTest {
     String resource = "/test_cases/functions/invoke_closure_0.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("closure1"));
     assertThat(functionAst.getArguments(), hasSize(1));

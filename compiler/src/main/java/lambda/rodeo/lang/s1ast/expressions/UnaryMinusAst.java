@@ -3,7 +3,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Set;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
@@ -60,7 +60,7 @@ public class UnaryMinusAst implements ExpressionAst {
   public void compile(
       Compileable operand,
       MethodVisitor methodVisitor,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     operand.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,

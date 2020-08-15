@@ -4,9 +4,11 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
 
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lombok.Builder;
@@ -46,7 +48,7 @@ public class CompileableFunction {
     return sb.toString();
   }
 
-  public void compile(ClassWriter cw, CompileContext compileContext, String internalModuleName) {
+  public void compile(ClassWriter cw, S2CompileContext compileContext, String internalModuleName) {
     int access = ACC_PUBLIC | ACC_STATIC;
     if(isLambda()) {
       access |= ACC_SYNTHETIC;
@@ -79,7 +81,7 @@ public class CompileableFunction {
     return getFunctionSigAst().getName();
   }
 
-  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalJavaName) {
     functionBody.lambdaLift(cw, compileContext, internalJavaName);
   }
 

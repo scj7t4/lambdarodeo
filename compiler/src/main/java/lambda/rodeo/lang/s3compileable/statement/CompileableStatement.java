@@ -1,6 +1,8 @@
 package lambda.rodeo.lang.s3compileable.statement;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
@@ -25,7 +27,7 @@ public class CompileableStatement implements Compileable {
 
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     compileableExpr.compile(methodVisitor,
         compileContext); // So this should hopefully mean that the result of the
     // computation is on the top of the stack...
@@ -34,7 +36,7 @@ public class CompileableStatement implements Compileable {
     }
   }
 
-  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalJavaName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalJavaName) {
     if(compileableExpr instanceof LambdaLiftable) {
       ((LambdaLiftable) compileableExpr).lambdaLift(cw, compileContext, internalJavaName);
     }

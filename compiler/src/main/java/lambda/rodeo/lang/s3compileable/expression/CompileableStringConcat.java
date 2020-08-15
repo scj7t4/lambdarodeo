@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class CompileableStringConcat implements CompileableExpr {
   private final CompileableExpr rhs;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);
     rhs.compile(methodVisitor, compileContext);
     String invokeDescriptor = "("

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaStatementContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
 import lambda.rodeo.lang.s1ast.functions.TypedVarFactory;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
@@ -18,7 +18,7 @@ public class LambdaAstFactory {
   private final List<StatementAst> statements;
 
   public LambdaAstFactory(LambdaContext ctx,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     args = ctx.lambdaTypedVar()
         .stream()
         .map(varContext -> new TypedVarFactory(varContext).toAst())

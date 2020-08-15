@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Set;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
@@ -56,7 +56,7 @@ public class AtomAst implements ExpressionAst, Compileable {
 
   @Override
   public void compile(MethodVisitor methodVisitor,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     methodVisitor.visitTypeInsn(NEW, "lambda/rodeo/runtime/types/Atom");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(atom.getNameLiteral());

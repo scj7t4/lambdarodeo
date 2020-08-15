@@ -12,7 +12,7 @@ import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.PUTSTATIC;
 
 import java.math.BigInteger;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.IntLiteralTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.runtime.patterns.matchers.IntMatcher;
@@ -36,7 +36,7 @@ public class IntLiteralCompileableCaseArg implements CompileableCaseArg {
   private final TypedStaticPattern staticPattern;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       CompileableCaseArgContext caseArgContext) {
     String intMatcher = Type.getInternalName(IntMatcher.class);
     methodVisitor.visitFieldInsn(GETSTATIC,
@@ -64,7 +64,7 @@ public class IntLiteralCompileableCaseArg implements CompileableCaseArg {
   @Override
   public void matcherInit(
       MethodVisitor methodVisitor,
-      CompileContext compileContext, String internalModuleName) {
+      S1CompileContext compileContext, String internalModuleName) {
     String type = Type.getInternalName(IntMatcher.class);
     methodVisitor.visitTypeInsn(NEW, type);
     methodVisitor.visitInsn(DUP);

@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
@@ -36,7 +36,7 @@ public interface BiNumericExpressionAst extends ExpressionAst {
    * @param compileContext The compile context.
    */
   void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
-      CompileContext compileContext);
+      S1CompileContext compileContext);
 
   static Supplier<Compileable> toCompilable(
       TypedExpression lhs,

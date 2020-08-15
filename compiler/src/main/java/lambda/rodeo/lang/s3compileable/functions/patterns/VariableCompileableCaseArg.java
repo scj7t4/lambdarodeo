@@ -6,7 +6,7 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.VariableTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.runtime.patterns.matchers.EqualMatcher;
@@ -28,7 +28,7 @@ public class VariableCompileableCaseArg implements CompileableCaseArg {
   private final TypedStaticPattern staticPattern;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       CompileableCaseArgContext caseArgContext) {
     String eqMatcher = Type.getInternalName(EqualMatcher.class);
     methodVisitor.visitTypeInsn(NEW, eqMatcher);
@@ -53,7 +53,7 @@ public class VariableCompileableCaseArg implements CompileableCaseArg {
   }
 
   @Override
-  public void matcherInit(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void matcherInit(MethodVisitor methodVisitor, S1CompileContext compileContext,
       String internalModuleName) {
     // Can't be declared statically
   }

@@ -22,7 +22,7 @@ public class AssignmentCompileErrorsTest {
     String resource = "/test_cases/functions/already_in_scope.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ModuleAst testCase = factory.toAst();
 
     CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(testCase);
@@ -39,7 +39,7 @@ public class AssignmentCompileErrorsTest {
     String resource = "/test_cases/functions/already_in_scope2.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ModuleAst testCase = factory.toAst();
 
     CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(testCase);
@@ -56,7 +56,7 @@ public class AssignmentCompileErrorsTest {
     String resource = "/test_cases/functions/already_in_scope3.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ModuleAst testCase = factory.toAst();
 
     CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(testCase);

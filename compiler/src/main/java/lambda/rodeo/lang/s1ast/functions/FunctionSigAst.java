@@ -3,8 +3,9 @@ package lambda.rodeo.lang.s1ast.functions;
 import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
@@ -33,7 +34,7 @@ public class FunctionSigAst implements AstNode {
   }
 
   public void checkCollisionAgainstModule(TypedModuleScope typedModuleScope,
-      CompileContext compileContext) {
+      S2CompileContext compileContext) {
     for(TypedVar arg : arguments) {
       if(typedModuleScope.nameExists(arg.getName())) {
         compileContext.getCompileErrorCollector().collect(

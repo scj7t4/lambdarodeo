@@ -4,7 +4,7 @@ import static org.objectweb.asm.Opcodes.ALOAD;
 
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.VariableAst;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
@@ -42,7 +42,7 @@ public class TypedVariable implements TypedExpression, Compileable {
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     methodVisitor.visitVarInsn(ALOAD, scopeEntry.getIndex());
   }
 

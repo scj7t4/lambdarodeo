@@ -3,7 +3,6 @@ package lambda.rodeo.lang.functions;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.math.BigInteger;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileError;
@@ -12,12 +11,10 @@ import lambda.rodeo.lang.expressions.ExpressionTestUtils;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
-import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.IntType;
 import org.junit.jupiter.api.Test;
 
 public class ReturnTypesTest {
@@ -29,7 +26,7 @@ public class ReturnTypesTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(
-        exprContext, CompileContextUtils.testCompileContext());
+        exprContext, CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     ModuleAst testCase = ExpressionTestUtils.moduleForExpression(expressionAst, Atom.NULL);

@@ -4,7 +4,7 @@ package lambda.rodeo.lang.s2typed.statements;
 import static org.objectweb.asm.Opcodes.ASTORE;
 
 import lambda.rodeo.lang.s1ast.statements.SimpleAssignmentAst;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s3compileable.statement.CompileableAssignment;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -22,7 +22,7 @@ public class TypedSimpleAssignment implements TypedAssignment, CompileableAssign
   private final TypeScope typeScope;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     String identifier = assignmentAst.getIdentifier();
     int index = typeScope.get(identifier)
         .map(Entry::getIndex)

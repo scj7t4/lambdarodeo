@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.s3compileable.functions.patterns;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.WildcardTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class WildcardCompileableCaseArg implements CompileableCaseArg {
   private final TypedStaticPattern staticPattern;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       CompileableCaseArgContext caseArgContext) {
     // Wildcard always matches and is handled as a special case in
     // CompileablePatternCase
@@ -33,7 +33,7 @@ public class WildcardCompileableCaseArg implements CompileableCaseArg {
   }
 
   @Override
-  public void matcherInit(MethodVisitor methodVisitor, CompileContext compileContext,
+  public void matcherInit(MethodVisitor methodVisitor, S1CompileContext compileContext,
       String internalModuleName) {
     // Nothing to init statically.
   }

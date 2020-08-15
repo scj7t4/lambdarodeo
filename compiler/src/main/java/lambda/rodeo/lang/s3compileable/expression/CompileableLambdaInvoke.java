@@ -4,7 +4,9 @@ import static org.objectweb.asm.Opcodes.CHECKCAST;
 import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 
 import java.util.List;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
 import lambda.rodeo.runtime.types.Lambda;
 import lombok.Builder;
@@ -21,7 +23,7 @@ public class CompileableLambdaInvoke implements CompileableExpr, LambdaLiftable 
   private final CompileableExpr invokeTarget;
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     // Load the lambda object onto the stack:
     invokeTarget.compile(methodVisitor, compileContext);
     // Then load all its args:
@@ -41,7 +43,7 @@ public class CompileableLambdaInvoke implements CompileableExpr, LambdaLiftable 
 
 
   @Override
-  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalModuleName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalModuleName) {
     if(invokeTarget instanceof LambdaLiftable) {
       ((LambdaLiftable) invokeTarget).lambdaLift(cw, compileContext, internalModuleName);
     }

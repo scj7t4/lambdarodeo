@@ -147,7 +147,7 @@ class FunctionCallTest {
     ModuleContext module = TestUtils.parseModule(resource);
 
     ModuleAstFactory factory = new ModuleAstFactory(module,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
 
     ModuleAst moduleAst = factory.toAst();
     assertThat(moduleAst.getName(), CoreMatchers.equalTo("testcase.BasicFunctionCall"));
@@ -169,7 +169,7 @@ class FunctionCallTest {
     String resource = "/test_cases/functions/function_not_in_scope.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ModuleAst testCase = factory.toAst();
 
     CompileErrorCollector compileErrorCollector = CompileUtils.expectCompileErrors(testCase);

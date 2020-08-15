@@ -6,8 +6,8 @@ import static org.hamcrest.Matchers.empty;
 import java.io.PrintWriter;
 import java.util.Collections;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.ModuleAst;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.scope.ModuleScope;
@@ -32,7 +32,9 @@ public class CompileUtils {
   }
 
   public static CompileErrorCollector expectCompileErrors(ModuleAst moduleAst) {
-    CompileContext compileContext = CompileContext.builder().build();
+    S2CompileContextImpl compileContext = S2CompileContextImpl.builder()
+        .source("test")
+        .build();
     CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
     compileableModule.compile(compileContext);
     assertThat(compileContext.getCompileErrorCollector().getCompileErrors(), Matchers.not(empty()));
@@ -40,7 +42,9 @@ public class CompileUtils {
   }
 
   public static Class<?> createClass(ModuleAst moduleAst) {
-    CompileContext compileContext = CompileContext.builder().build();
+    S2CompileContextImpl compileContext = S2CompileContextImpl.builder()
+        .source("test")
+        .build();
     CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
 
     Class<?> compiledClass = new TestClassLoader(CompileUtils.class.getClassLoader())
@@ -53,7 +57,7 @@ public class CompileUtils {
   }
 
   private static CompileableModule convertToCompileableModule(ModuleAst moduleAst,
-      CompileContext compileContext) {
+      S2CompileContextImpl compileContext) {
     // TODO: This will need to change when compiling multiple modules:
     ModuleScope moduleScope = moduleAst.getModuleScope(compileContext);
     TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(Collections.emptyList());
@@ -62,7 +66,7 @@ public class CompileUtils {
   }
 
   public static void asmifyModule(ModuleAst moduleAst) {
-    CompileContext compileContext = CompileContext.builder().build();
+    S2CompileContextImpl compileContext = S2CompileContextImpl.builder().build();
     ASMifier asMifier = new ASMifier();
     ClassReader classReader = new ClassReader(
         convertToCompileableModule(moduleAst, compileContext)

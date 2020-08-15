@@ -3,7 +3,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Objects;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat;
@@ -62,7 +62,7 @@ public class AddAst implements BiNumericExpressionAst {
   }
 
   public void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
-      CompileContext compileContext) {
+      S1CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);
     rhs.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(

@@ -12,19 +12,19 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionSigContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ReturnTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
 
-  private final CompileContext compileContext;
+  private final S1CompileContext compileContext;
   private FunctionSigAst.FunctionSigAstBuilder builder = FunctionSigAst.builder();
   private final List<TypedVar> arguments = new ArrayList<>();
   private LambdaRodeoType returnType;
 
-  public FunctionSigAstFactory(FunctionSigContext ctx, CompileContext compileContext) {
+  public FunctionSigAstFactory(FunctionSigContext ctx, S1CompileContext compileContext) {
     this.compileContext = compileContext;
     builder.arguments(arguments);
     ParseTreeWalker.DEFAULT.walk(this, ctx);

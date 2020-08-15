@@ -11,7 +11,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.PatternCaseContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst.PatternCaseAstBuilder;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
@@ -21,12 +21,12 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
 
-  private final CompileContext compileContext;
+  private final S1CompileContext compileContext;
   private final PatternCaseAstBuilder astBuilder;
   private final List<CaseArgAst> caseArg = new ArrayList<>();
   private final List<StatementAst> statements = new ArrayList<>();
 
-  public PatternCaseAstFactory(PatternCaseContext ctx, CompileContext compileContext) {
+  public PatternCaseAstFactory(PatternCaseContext ctx, S1CompileContext compileContext) {
     this.compileContext = compileContext;
     astBuilder = PatternCaseAst.builder()
         .startLine(ctx.getStart().getLine())
@@ -35,7 +35,7 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     ParseTreeWalker.DEFAULT.walk(this, ctx);
   }
 
-  public PatternCaseAstFactory(CompileContext compileContext, Token startToken, Token endToken) {
+  public PatternCaseAstFactory(S1CompileContext compileContext, Token startToken, Token endToken) {
     this.compileContext = compileContext;
     astBuilder = PatternCaseAst.builder()
         .startLine(startToken.getLine())

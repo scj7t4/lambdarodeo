@@ -8,7 +8,6 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
@@ -44,7 +43,7 @@ public class VariableExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -67,7 +66,7 @@ public class VariableExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -90,7 +89,7 @@ public class VariableExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -113,7 +112,7 @@ public class VariableExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
@@ -136,7 +135,7 @@ public class VariableExpressionTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,

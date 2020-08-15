@@ -55,7 +55,7 @@ public class StringConcatTest {
 
     ExprContext exprContext = lambdaRodeoParser.expr();
     ExpressionAstFactory expressionAstFactory = new ExpressionAstFactory(exprContext,
-        compileContext.getCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,

@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.s3compileable.functions.patterns;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import org.objectweb.asm.ClassWriter;
@@ -14,12 +14,12 @@ public interface CompileableCaseArg {
    * @param compileContext For global compile information.
    * @param caseArgContext
    */
-  void compile(MethodVisitor methodVisitor, CompileContext compileContext,
+  void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       CompileableCaseArgContext caseArgContext);
 
   TypedStaticPattern getStaticPattern();
 
   void declareMatcherField(ClassWriter classWriter);
-  void matcherInit(MethodVisitor methodVisitor, CompileContext compileContext,
+  void matcherInit(MethodVisitor methodVisitor, S1CompileContext compileContext,
       String internalModuleName);
 }

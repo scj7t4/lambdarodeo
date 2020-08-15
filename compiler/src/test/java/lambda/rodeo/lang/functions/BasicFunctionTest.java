@@ -36,7 +36,7 @@ public class BasicFunctionTest {
     String resource = "/test_cases/functions/no_args_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("noArgs"));
     assertThat(functionAst.getArguments(), empty());
@@ -57,7 +57,7 @@ public class BasicFunctionTest {
     String resource = "/test_cases/functions/one_arg_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("nillify"));
     assertThat(functionAst.getArguments(), hasSize(1));
@@ -80,7 +80,7 @@ public class BasicFunctionTest {
     String resource = "/test_cases/functions/two_arg_function.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     FunctionAst functionAst = factory.toAst();
     assertThat(functionAst.getName(), equalTo("add"));
     assertThat(functionAst.getArguments(), hasSize(2));
@@ -107,7 +107,7 @@ public class BasicFunctionTest {
     String resource = "/test_cases/functions/function_already_defined.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
-        CompileContextUtils.testCompileContext());
+        CompileContextUtils.testS1CompileContext());
     ModuleAst testCase = factory.toAst();
 
     CompileErrorCollector compileErrorCollector = CompileUtils.expectCompileErrors(testCase);

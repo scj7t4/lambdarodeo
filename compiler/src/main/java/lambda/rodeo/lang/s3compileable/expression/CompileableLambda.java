@@ -2,7 +2,9 @@ package lambda.rodeo.lang.s3compileable.expression;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 
-import lambda.rodeo.lang.compilation.CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
+import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
@@ -29,7 +31,7 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
   }
 
   @Override
-  public void compile(MethodVisitor methodVisitor, CompileContext compileContext) {
+  public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     String objectDescriptor = Type.getDescriptor(Object.class);
     StringBuilder bootstrapArgs = new StringBuilder("(");
     for (LambdaRodeoType type : typedExpression.getType().getArgs()) {
@@ -72,7 +74,7 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
   }
 
   @Override
-  public void lambdaLift(ClassWriter cw, CompileContext compileContext, String internalModuleName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalModuleName) {
     lambdaFunction.compile(cw, compileContext, internalModuleName);
     lambdaFunction.lambdaLift(cw, compileContext, internalModuleName);
   }

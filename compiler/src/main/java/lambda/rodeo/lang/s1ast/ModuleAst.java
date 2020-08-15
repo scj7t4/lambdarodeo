@@ -9,8 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.compilation.CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S2CompileContext;
+import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
@@ -44,7 +45,7 @@ public class ModuleAst implements AstNode {
   private final int characterStart;
 
   public TypedModule toTypedModuleAst(
-      CompileContext compileContext,
+      S2CompileContextImpl compileContext,
       TypedModuleScope typedModuleScope) {
 
     final TypeScope initialModuleScope = TypeScope.EMPTY;
@@ -93,7 +94,7 @@ public class ModuleAst implements AstNode {
         .build();
   }
 
-  public ModuleScope getModuleScope(CompileContext compileContext) {
+  public ModuleScope getModuleScope(S2CompileContext compileContext) {
     return ModuleScope.builder()
         .functions(functionAsts)
         .thisModule(this)

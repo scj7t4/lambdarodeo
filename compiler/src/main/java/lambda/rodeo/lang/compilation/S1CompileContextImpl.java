@@ -5,9 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class CompileContext {
+public class S1CompileContextImpl implements S1CompileContext {
 
   private final String source;
   private final CompileErrorCollector compileErrorCollector = new CompileErrorCollector();
-  private final CompiledModules compiledModules = new CompiledModules();
 }

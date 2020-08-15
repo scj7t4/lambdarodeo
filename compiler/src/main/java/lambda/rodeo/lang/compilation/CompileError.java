@@ -20,6 +20,7 @@ public class CompileError {
   public static final String IDENTIFIER_ALREADY_IN_SCOPE = "ALREADY_IN_SCOPE";
   public static final String RETURN_TYPE_MISMATCH = "RETURN_TYPE_MISMATCH";
   public static final String CALLED_WITH_WRONG_ARGS = "CALLED_WITH_WRONG_ARGS";
+  public static final String BAD_MODULE_IMPORT = "BAD_MODULE_IMPORT";
 
   private final int startLine;
   private final int endLine;
@@ -137,6 +138,16 @@ public class CompileError {
         .errorType(RETURN_TYPE_MISMATCH)
         .errorMsg(
             "Pattern case returns '" + actual + "'; it cannot be assigned to '" + declared + "'")
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
+  public static CompileError badImport(AstNode astNode, String badTarget) {
+    return CompileError.builder()
+        .errorType(BAD_MODULE_IMPORT)
+        .errorMsg("Cannot find module '" + badTarget + "'")
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())
         .characterStart(astNode.getCharacterStart())

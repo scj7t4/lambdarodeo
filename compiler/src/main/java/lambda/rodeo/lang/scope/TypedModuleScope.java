@@ -16,9 +16,29 @@ public class TypedModuleScope {
 
   public Optional<FunctionAst> getCallTarget(String callTarget,
       List<LambdaRodeoType> argSig) {
-    return thisScope.getFunctions()
+    Optional<FunctionAst> fnInThisModule = thisScope.getFunctions()
         .stream()
         .filter(fn -> Objects.equals(callTarget, fn.getName()))
+        .filter(fn -> fn.hasSignature(argSig))
+        .findFirst();
+
+    if(fnInThisModule.isPresent()) {
+      return fnInThisModule;
+    }
+
+    String[] callTargetTokens = callTarget.split("\\.");
+
+    if(callTargetTokens.length != 2) {
+      return Optional.empty();
+    }
+
+    String module = callTargetTokens[0];
+    String fnName = callTargetTokens[1];
+
+    return importedModules.stream()
+        .filter(imported -> Objects.equals(imported.getSimpleModuleName(), module))
+        .flatMap(imported -> imported.getFunctions().stream())
+        .filter(fn -> Objects.equals(fnName, fn.getName()))
         .filter(fn -> fn.hasSignature(argSig))
         .findFirst();
   }

@@ -20,4 +20,8 @@ public class ModuleScope {
         .importedModules(importedModules)
         .build();
   }
+
+  public String getSimpleModuleName() {
+    return thisModule.getSimpleName();
+  }
 }

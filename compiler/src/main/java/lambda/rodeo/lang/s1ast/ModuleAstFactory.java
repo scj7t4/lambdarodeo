@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.LrImportContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleImportContext;
 import lambda.rodeo.lang.s1ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
@@ -51,7 +52,7 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
 
 
   @Override
-  public void enterModuleImport(ModuleImportContext ctx) {
+  public void enterLrImport(LrImportContext ctx) {
     imports.add(new ImportAstFactory(ctx).toAst());
   }
 }

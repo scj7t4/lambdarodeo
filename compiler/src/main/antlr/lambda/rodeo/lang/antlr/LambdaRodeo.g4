@@ -5,9 +5,12 @@ grammar LambdaRodeo;
 }
 module: 'module' moduleIdentifier ';' moduleBody;
 moduleIdentifier: IDENTIFIER | SCOPED_IDENTIFIER;
-moduleBody: moduleImport* moduleEntry*;
+moduleBody: (lrImport)* moduleEntry*;
 moduleEntry: functionDef | interfaceDef;
-moduleImport: 'import' '{' IDENTIFIER (',' IDENTIFIER*) '}' 'from' SCOPED_IDENTIFIER ';';
+lrImport: memberImport
+        | moduleImport;
+memberImport: 'import' '{' IDENTIFIER (',' IDENTIFIER*) '}' 'from' SCOPED_IDENTIFIER ';';
+moduleImport: 'import' SCOPED_IDENTIFIER ';';
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

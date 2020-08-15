@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
@@ -94,7 +95,7 @@ public class ModuleAst implements AstNode {
         .build();
   }
 
-  public ModuleScope getModuleScope(S2CompileContext compileContext) {
+  public ModuleScope getModuleScope(S1CompileContext compileContext) {
     return ModuleScope.builder()
         .functions(functionAsts)
         .thisModule(this)
@@ -107,5 +108,10 @@ public class ModuleAst implements AstNode {
 
   public String getModuleJVMDescriptor() {
     return "L" + getInternalJavaName() + ";";
+  }
+
+  public String getSimpleName() {
+    String[] tokens = this.name.split("\\.");
+    return tokens[tokens.length - 1];
   }
 }

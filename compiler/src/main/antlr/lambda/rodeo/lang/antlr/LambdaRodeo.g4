@@ -3,10 +3,9 @@ grammar LambdaRodeo;
 @header {
     package lambda.rodeo.lang.antlr;
 }
-//TODO: Choose what's next, strings or ducktypes
-module: 'module' moduleIdentifier moduleBody;
+module: 'module' moduleIdentifier ';' moduleBody;
 moduleIdentifier: IDENTIFIER | SCOPED_IDENTIFIER;
-moduleBody: '{' moduleEntry* '}';
+moduleBody: moduleEntry*;
 moduleEntry: functionDef | interfaceDef;
 
 interfaceDef: 'interface' '{' memberDecl* '}';

@@ -1,9 +1,9 @@
-module test.Fibonacci {
-  def fibonacci(n: int) => int {
-    fibonacci(n+1);
-  }
+module test.Fibonacci;
 
-  def fibonacci(n: int) => int {
-    3;
-  }
+def fibonacci(n: int) => int {
+  fibonacci(n+1);
+}
+
+def fibonacci(n: int) => int {
+  3;
 }

@@ -1,9 +1,9 @@
-module testcase.BasicFunctionCall {
-  def twoptwo() => int {
-    2 + 2;
-  }
+module testcase.BasicFunctionCall;
 
-  def callAndAdd() => int {
-    3 + twoptwo();
-  }
+def twoptwo() => int {
+  2 + 2;
+}
+
+def callAndAdd() => int {
+  3 + twoptwo();
 }

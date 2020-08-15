@@ -1,6 +1,6 @@
-module test.AlreadyInScope {
-  def function(function: int) => int {
-    let v1 = function + 1;
-    v1;
-  }
+module test.AlreadyInScope;
+
+def function(function: int) => int {
+  let v1 = function + 1;
+  v1;
 }

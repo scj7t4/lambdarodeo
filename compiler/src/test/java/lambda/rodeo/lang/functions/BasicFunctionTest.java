@@ -115,15 +115,15 @@ public class BasicFunctionTest {
     assertThat(compileErrorCollector.getCompileErrors(), contains(
         CompileError.identifierAlreadyDeclaredInScope(
             ExpectedLocation.builder()
-                .startLine(2)
-                .endLine(4)
-                .characterStart(2)
+                .startLine(3)
+                .endLine(5)
+                .characterStart(0)
                 .build(), "fibonacci\\\\1"),
         CompileError.identifierAlreadyDeclaredInScope(
             ExpectedLocation.builder()
-                .startLine(6)
-                .endLine(8)
-                .characterStart(2)
+                .startLine(7)
+                .endLine(9)
+                .characterStart(0)
                 .build(), "fibonacci\\\\1")
     ));
   }

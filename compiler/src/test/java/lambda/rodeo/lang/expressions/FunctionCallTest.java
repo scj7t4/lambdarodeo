@@ -177,9 +177,9 @@ class FunctionCallTest {
     assertThat(compileErrorCollector.getCompileErrors(), contains(
         CompileError.undefinedIdentifier(
             ExpectedLocation.builder()
-                .startLine(3)
-                .endLine(3)
-                .characterStart(4)
+                .startLine(4)
+                .endLine(4)
+                .characterStart(2)
                 .build(), "fibonacci")
     ));
   }

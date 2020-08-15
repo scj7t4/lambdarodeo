@@ -1,5 +1,5 @@
-module lambda.rodeo.TwoPTwo {
-  def twoptwo {
-    2 + 2;
-  }
+module lambda.rodeo.TwoPTwo;
+
+def twoptwo {
+  2 + 2;
 }

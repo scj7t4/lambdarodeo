@@ -1,22 +1,22 @@
-module test.Fibonacci {
-  def fibonacci(n: int) => int {
-    case (1) {
-      1;
-    }
-    case (0) {
-      1;
-    }
-    case (*) {
-      fibonacci(n, 2, 1, 1);
-    }
-  }
+module test.Fibonacci;
 
-  def fibonacci(n: int, current: int, fn1: int, fn2: int) => int {
-    case(n, n, *, *) {
-      fn1 + fn2;
-    }
-    case(*, *, *, *) {
-      fibonacci(n, current + 1, fn1 + fn2, fn1);
-    }
+def fibonacci(n: int) => int {
+  case (1) {
+    1;
+  }
+  case (0) {
+    1;
+  }
+  case (*) {
+    fibonacci(n, 2, 1, 1);
+  }
+}
+
+def fibonacci(n: int, current: int, fn1: int, fn2: int) => int {
+  case(n, n, *, *) {
+    fn1 + fn2;
+  }
+  case(*, *, *, *) {
+    fibonacci(n, current + 1, fn1 + fn2, fn1);
   }
 }

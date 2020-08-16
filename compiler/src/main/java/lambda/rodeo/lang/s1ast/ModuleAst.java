@@ -13,6 +13,7 @@ import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
+import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
@@ -35,10 +36,16 @@ public class ModuleAst implements AstNode {
   private final String name;
 
   @Builder.Default
+  @NonNull
   private final List<FunctionAst> functionAsts = new ArrayList<>();
 
   @Builder.Default
+  @NonNull
   private final List<ModuleImportAst> imports = new ArrayList<>();
+
+  @Builder.Default
+  @NonNull
+  private final List<InterfaceAst> interfaces = new ArrayList<>();
 
   private final int startLine;
   private final int endLine;

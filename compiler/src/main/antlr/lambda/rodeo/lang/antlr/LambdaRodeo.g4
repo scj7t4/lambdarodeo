@@ -11,7 +11,7 @@ alias: 'as' IDENTIFIER;
 moduleImport: 'import' SCOPED_IDENTIFIER alias? ';';
 
 
-interfaceDef: 'interface' '{' memberDecl* '}';
+interfaceDef: 'interface' IDENTIFIER '{' memberDecl* '}';
 memberDecl: typedVar ';';
 
 functionDef: 'def' functionSig functionBody;

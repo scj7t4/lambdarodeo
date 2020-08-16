@@ -4,10 +4,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileError;
@@ -162,6 +166,31 @@ class FunctionCallTest {
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
     assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
   }
+
+  @Test
+  @SneakyThrows
+  public void testFunctionCallCompilation2() {
+    String resource = "/test_cases/modules/basic_function_call.rdo";
+    Supplier<InputStream> inputStreamSupplier = TestUtils.supplyResource(resource);
+    CompileUnit unit = CompileUnit.builder()
+        .contents(inputStreamSupplier)
+        .sourcePath(resource)
+        .build();
+
+    Map<String, Class<?>> classes = CompileUtils.createClasses(Collections.singletonList(unit));
+    Class<?> compiledModule = classes.get("testcase.BasicFunctionCall");
+
+    assertThat(compiledModule.getCanonicalName(),
+        CoreMatchers.equalTo("testcase.BasicFunctionCall"));
+
+    Method twoptwo = compiledModule.getMethod("twoptwo");
+    assertThat(twoptwo.invoke(null), equalTo(BigInteger.valueOf(4)));
+
+    Method callAndAdd = compiledModule.getMethod("callAndAdd");
+    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+  }
+
+
 
   @Test
   @SneakyThrows

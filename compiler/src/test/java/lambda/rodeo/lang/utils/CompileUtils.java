@@ -2,9 +2,18 @@ package lambda.rodeo.lang.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lambda.rodeo.lang.CompileUnit;
+import lambda.rodeo.lang.CompilerChain;
+import lambda.rodeo.lang.CompilerChain.CompileResult;
+import lambda.rodeo.lang.S3Compiler.CompiledUnit;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.ModuleAst;
@@ -74,5 +83,28 @@ public class CompileUtils {
     PrintWriter printWriter = new PrintWriter(System.out);
     TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, asMifier, printWriter);
     classReader.accept(traceClassVisitor, 0);
+  }
+
+  public static Map<String, Class<?>> createClasses(List<CompileUnit> units) throws IOException {
+    CompilerChain chain = CompilerChain.builder()
+        .compileUnits(units)
+        .build();
+    CompileResult compile = chain.compile();
+    assertThat(compile.getErrorCollector().getCompileErrors(), empty());
+    assertThat(compile.isSuccess(), equalTo(true));
+    TestClassLoader classLoader = new TestClassLoader(CompileUtils.class.getClassLoader());
+
+    assertThat(compile.getCompiledUnits().isPresent(), equalTo(true));
+    List<CompiledUnit> compiledUnits = compile.getCompiledUnits().orElse(Collections.emptyList());
+
+    Map<String, Class<?>> compiledClasses = new HashMap<>();
+
+    for(CompiledUnit compiledUnit : compiledUnits) {
+      Class<?> aClass = classLoader
+          .defineClass(compiledUnit.getModuleName(), compiledUnit.getByteCode());
+      compiledClasses.put(compiledUnit.getModuleName(), aClass);
+    }
+
+    return compiledClasses;
   }
 }

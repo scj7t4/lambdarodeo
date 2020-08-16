@@ -8,5 +8,7 @@ import lombok.Getter;
 public class S1CompileContextImpl implements S1CompileContext {
 
   private final String source;
+
+  @Builder.Default
   private final CompileErrorCollector compileErrorCollector = new CompileErrorCollector();
 }

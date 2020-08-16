@@ -7,6 +7,7 @@ import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoLexer;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
+import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.s1ast.ModuleAst;
@@ -24,7 +25,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 @Slf4j
 public class S1Compiler {
 
+  @NonNull
   private final List<CompileUnit> sources;
+
+  @NonNull
+  private final CompileErrorCollector errorCollector;
 
   public S1Compiler.FinalResult compile() throws IOException {
     List<ModuleResult> modules = new ArrayList<>();
@@ -56,19 +61,12 @@ public class S1Compiler {
           .source(unit.getSourcePath())
           .build();
       ModuleAstFactory factory = new ModuleAstFactory(module, compileContext);
-      if (!compileContext.getCompileErrorCollector().getCompileErrors().isEmpty()) {
-        log.error("Compile Errors For {}:\n{}",
-            unit.getSourcePath(),
-            compileContext.getCompileErrorCollector());
-        return ModuleResult.builder()
-            .moduleAst(factory.toAst())
-            .success(false)
-            .build();
-      }
+      errorCollector.collectAll(compileContext.getCompileErrorCollector());
       return ModuleResult.builder()
           .source(unit.getSourcePath())
           .moduleAst(factory.toAst())
-          .success(true)
+          .errorCollector(compileContext.getCompileErrorCollector())
+          .success(compileContext.getCompileErrorCollector().getCompileErrors().isEmpty())
           .build();
     }
   }
@@ -82,6 +80,8 @@ public class S1Compiler {
     private final String source;
     @NonNull
     private final ModuleAst moduleAst;
+    @NonNull
+    private final CompileErrorCollector errorCollector;
   }
 
   @Builder
@@ -89,7 +89,8 @@ public class S1Compiler {
   public static class FinalResult {
 
     private final boolean success;
-    private final List<ModuleResult> modules;
 
+    @NonNull
+    private final List<ModuleResult> modules;
   }
 }

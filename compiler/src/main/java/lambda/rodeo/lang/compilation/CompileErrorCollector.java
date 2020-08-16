@@ -13,6 +13,10 @@ public class CompileErrorCollector {
     this.compileErrors.add(error);
   }
 
+  public void collectAll(CompileErrorCollector other) {
+    this.compileErrors.addAll(other.compileErrors);
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

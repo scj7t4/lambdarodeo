@@ -3,6 +3,7 @@ package lambda.rodeo.lang.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.function.Supplier;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.antlr.LambdaRodeoLexer;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
@@ -46,6 +47,10 @@ public class TestUtils {
   public static CharStream openSourceFile(String resource) throws IOException {
     InputStream is = TestUtils.class.getResourceAsStream(resource);
     return CharStreams.fromStream(is);
+  }
+
+  public static Supplier<InputStream> supplyResource(String resource) {
+    return () -> TestUtils.class.getResourceAsStream(resource);
   }
 
   public static ModuleAst.ModuleAstBuilder testModule() {

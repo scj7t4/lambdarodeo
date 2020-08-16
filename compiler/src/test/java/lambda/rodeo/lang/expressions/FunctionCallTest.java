@@ -7,16 +7,17 @@ import static org.hamcrest.Matchers.equalTo;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import lambda.rodeo.lang.CompileUnit;
-import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.s1ast.ModuleAst;
+import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lambda.rodeo.lang.s1ast.expressions.AtomAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s1ast.expressions.IntConstantAst;
@@ -24,17 +25,18 @@ import lambda.rodeo.lang.s1ast.expressions.VariableAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
+import lambda.rodeo.lang.s1ast.functions.TypedVar;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.lang.utils.ExpectedLocation;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
+import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.runtime.types.IntType;
 import lombok.SneakyThrows;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
@@ -93,6 +95,17 @@ class FunctionCallTest {
   @Test
   public void testGetCallDescriptorArgs() {
     String functionToCall = "someFunc";
+    List<TypedVar> arguments = new ArrayList<>();
+    arguments.add(TypedVar.builder()
+        .name("v1")
+        .type(Atom.NULL)
+        .build()
+    );
+    arguments.add(TypedVar.builder()
+        .name("v2")
+        .type(IntType.INSTANCE)
+        .build()
+    );
 
     ModuleAst moduleAst = ModuleAst.builder()
         .name("testModule")
@@ -100,6 +113,7 @@ class FunctionCallTest {
             FunctionAst.builder()
                 .functionSignature(FunctionSigAst.builder()
                     .name(functionToCall)
+                    .arguments(arguments)
                     .declaredReturnType(IntType.INSTANCE)
                     .build())
                 .functionBodyAst(Mockito.mock(FunctionBodyAst.class))
@@ -190,7 +204,37 @@ class FunctionCallTest {
     assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
   }
 
+  @Test
+  @SneakyThrows
+  public void testFunctionCallCompilation3() {
+    String basicResource = "/test_cases/modules/basic_function_call.rdo";
+    Supplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
+    String importResource = "/test_cases/modules/import_module_function_call.rdo";
+    Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
+    CompileUnit basicUnit = CompileUnit.builder()
+        .contents(basicSource)
+        .sourcePath(basicResource)
+        .build();
+
+    CompileUnit importUnit = CompileUnit.builder()
+        .contents(importSource)
+        .sourcePath(importResource)
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(basicUnit);
+    toCompile.add(importUnit);
+
+    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
+    Class<?> compiledModule = classes.get("testcase.ImportModuleFunctionCall");
+
+    assertThat(compiledModule.getCanonicalName(),
+        CoreMatchers.equalTo("testcase.ImportModuleFunctionCall"));
+
+    Method callAndAdd = compiledModule.getMethod("callAndAdd");
+    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+  }
 
   @Test
   @SneakyThrows

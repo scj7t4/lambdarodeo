@@ -1,0 +1,7 @@
+module testcase.ImportModuleFunctionCall;
+
+import testcase.BasicFunctionCall;
+
+def callAndAdd() => int {
+  3 + BasicFunctionCall.twoptwo();
+}

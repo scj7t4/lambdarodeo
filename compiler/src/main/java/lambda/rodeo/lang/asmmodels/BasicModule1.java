@@ -12,6 +12,6 @@ import lambda.rodeo.runtime.types.Atom;
 
 public class BasicModule1 {
   public static String fibonacci(BigInteger y, BigInteger x) {
-    return y + "";
+    return y + "" + BigInteger.valueOf(2L);
   }
 }

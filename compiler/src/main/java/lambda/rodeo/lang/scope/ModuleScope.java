@@ -12,6 +12,10 @@ import lombok.Getter;
 public class ModuleScope {
 
   private final ModuleAst thisModule;
+  /**
+   * Alias name of this scope, set to null if this module is the main one and not imported.
+   */
+  private final String alias;
   private final List<FunctionAst> functions;
 
   public TypedModuleScope toTypedModuleScope(List<ModuleScope> importedModules) {

@@ -50,6 +50,17 @@ public class CompileUtils {
     return compileContext.getCompileErrorCollector();
   }
 
+  public static CompileErrorCollector expectCompileErrors(List<CompileUnit> units)
+      throws IOException {
+    CompilerChain chain = CompilerChain.builder()
+        .compileUnits(units)
+        .build();
+    CompileResult compile = chain.compile();
+    assertThat(compile.getErrorCollector().getCompileErrors(), Matchers.not(empty()));
+    assertThat(compile.isSuccess(), equalTo(false));
+    return compile.getErrorCollector();
+  }
+
   public static Class<?> createClass(ModuleAst moduleAst) {
     S2CompileContextImpl compileContext = S2CompileContextImpl.builder()
         .source("test")
@@ -68,7 +79,7 @@ public class CompileUtils {
   private static CompileableModule convertToCompileableModule(ModuleAst moduleAst,
       S2CompileContextImpl compileContext) {
     // TODO: This will need to change when compiling multiple modules:
-    ModuleScope moduleScope = moduleAst.getModuleScope(compileContext);
+    ModuleScope moduleScope = moduleAst.getModuleScope(compileContext, null);
     TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(Collections.emptyList());
     TypedModule typedModule = moduleAst.toTypedModuleAst(compileContext, typedModuleScope);
     return typedModule.toCompileableModule();

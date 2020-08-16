@@ -9,21 +9,15 @@ import lombok.NonNull;
 
 @Builder
 @Getter
-public class ImportAst implements AstNode {
-  public enum ImportType {
-    MEMBER,
-    MODULE
-  }
+public class ModuleImportAst implements AstNode {
 
-  @Builder.Default
-  @NonNull
-  private final List<String> imports = new ArrayList<>();
 
   @NonNull
   private final String source;
 
   @NonNull
-  private final ImportType importType;
+  private final String alias;
+
 
   private final int startLine;
   private final int endLine;

@@ -7,10 +7,11 @@ module: 'module' moduleIdentifier ';' moduleBody;
 moduleIdentifier: IDENTIFIER | SCOPED_IDENTIFIER;
 moduleBody: (lrImport)* moduleEntry*;
 moduleEntry: functionDef | interfaceDef;
-lrImport: memberImport
-        | moduleImport;
-memberImport: 'import' '{' IDENTIFIER (',' IDENTIFIER*) '}' 'from' SCOPED_IDENTIFIER ';';
-moduleImport: 'import' SCOPED_IDENTIFIER ';';
+lrImport: moduleImport;
+alias: 'as' IDENTIFIER;
+//memberImport: 'import' '{' IDENTIFIER (',' IDENTIFIER*) '}' 'from' SCOPED_IDENTIFIER ';';
+moduleImport: 'import' SCOPED_IDENTIFIER alias? ';';
+
 
 interfaceDef: 'interface' '{' memberDecl* '}';
 memberDecl: typedVar ';';

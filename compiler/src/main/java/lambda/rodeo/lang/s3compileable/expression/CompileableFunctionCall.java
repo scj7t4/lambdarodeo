@@ -37,7 +37,7 @@ public class CompileableFunctionCall implements CompileableExpr {
       return Optional.of(typedExpression.getTypedModuleScope().getThisScope().getThisModule());
     } else {
       return typedExpression.getTypedModuleScope().getImportedModules().stream()
-          .filter(imported -> Objects.equals(imported.getSimpleModuleName(), targetModule))
+          .filter(imported -> Objects.equals(imported.getAlias(), targetModule))
           .findFirst()
           .map(ModuleScope::getThisModule);
     }

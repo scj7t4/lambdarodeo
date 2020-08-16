@@ -9,8 +9,7 @@ import lambda.rodeo.lang.S1Compiler.ModuleResult;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
-import lambda.rodeo.lang.s1ast.ImportAst;
-import lambda.rodeo.lang.s1ast.ImportAst.ImportType;
+import lambda.rodeo.lang.s1ast.ModuleImportAst;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.scope.ModuleScope;
@@ -48,24 +47,20 @@ public class S2Compiler {
           .build();
 
       @NonNull ModuleAst moduleAst = s1Module.getModuleAst();
-      ModuleScope moduleScope = moduleAst.getModuleScope(context);
+      ModuleScope moduleScope = moduleAst.getModuleScope(context, null);
 
-      List<ImportAst> moduleImports = moduleAst.getImports()
-          .stream()
-          .filter(imported -> imported.getImportType().equals(ImportType.MODULE))
-          .collect(Collectors.toList());
+      List<ModuleImportAst> moduleImports = moduleAst.getImports();
 
       List<ModuleScope> imported = new ArrayList<>();
 
-      for (ImportAst importAst : moduleImports) {
-        @NonNull String source = importAst.getSource();
+      for (ModuleImportAst moduleImportAst : moduleImports) {
+        @NonNull String source = moduleImportAst.getSource();
         ModuleAst targetModule = modules.get(source);
         if (targetModule == null) {
-          errorCollector.collect(CompileError.badImport(importAst, source));
+          errorCollector.collect(CompileError.badImport(moduleImportAst, source));
           continue;
         }
-        ModuleScope importedModuleScope = moduleScopes
-            .computeIfAbsent(source, (missingSource) -> targetModule.getModuleScope(context));
+        ModuleScope importedModuleScope = targetModule.getModuleScope(context, moduleImportAst.getAlias());
         imported.add(importedModuleScope);
       }
 

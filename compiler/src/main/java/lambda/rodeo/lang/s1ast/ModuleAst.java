@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s2typed.TypedModule;
@@ -39,7 +38,7 @@ public class ModuleAst implements AstNode {
   private final List<FunctionAst> functionAsts = new ArrayList<>();
 
   @Builder.Default
-  private final List<ImportAst> imports = new ArrayList<>();
+  private final List<ModuleImportAst> imports = new ArrayList<>();
 
   private final int startLine;
   private final int endLine;
@@ -95,9 +94,10 @@ public class ModuleAst implements AstNode {
         .build();
   }
 
-  public ModuleScope getModuleScope(S1CompileContext compileContext) {
+  public ModuleScope getModuleScope(S1CompileContext compileContext, String alias) {
     return ModuleScope.builder()
         .functions(functionAsts)
+        .alias(alias)
         .thisModule(this)
         .build();
   }

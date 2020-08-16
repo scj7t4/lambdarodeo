@@ -238,6 +238,38 @@ class FunctionCallTest {
 
   @Test
   @SneakyThrows
+  public void testFunctionCallCompilation4() {
+    String basicResource = "/test_cases/modules/basic_function_call.rdo";
+    Supplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
+    String importResource = "/test_cases/modules/alias_module_function_call.rdo";
+    Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit basicUnit = CompileUnit.builder()
+        .contents(basicSource)
+        .sourcePath(basicResource)
+        .build();
+
+    CompileUnit importUnit = CompileUnit.builder()
+        .contents(importSource)
+        .sourcePath(importResource)
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(basicUnit);
+    toCompile.add(importUnit);
+
+    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
+    Class<?> compiledModule = classes.get("testcase.ImportModuleFunctionCall");
+
+    assertThat(compiledModule.getCanonicalName(),
+        CoreMatchers.equalTo("testcase.ImportModuleFunctionCall"));
+
+    Method callAndAdd = compiledModule.getMethod("callAndAdd");
+    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+  }
+
+  @Test
+  @SneakyThrows
   public void testFunctionNotInScope() {
     String resource = "/test_cases/functions/function_not_in_scope.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);

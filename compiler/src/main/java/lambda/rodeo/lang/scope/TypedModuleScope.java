@@ -36,7 +36,7 @@ public class TypedModuleScope {
     String fnName = callTargetTokens[1];
 
     return importedModules.stream()
-        .filter(imported -> Objects.equals(imported.getSimpleModuleName(), module))
+        .filter(imported -> Objects.equals(imported.getAlias(), module))
         .flatMap(imported -> imported.getFunctions().stream())
         .filter(fn -> Objects.equals(fnName, fn.getName()))
         .filter(fn -> fn.hasSignature(argSig))

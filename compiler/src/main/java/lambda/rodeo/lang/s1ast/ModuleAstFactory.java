@@ -3,7 +3,6 @@ package lambda.rodeo.lang.s1ast;
 import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LrImportContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleImportContext;
 import lambda.rodeo.lang.s1ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
@@ -19,7 +18,7 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
   private ModuleAstBuilder builder = ModuleAst.builder();
   private final S1CompileContext compileContext;
   private final List<FunctionAst> functions = new ArrayList<>();
-  private final List<ImportAst> imports = new ArrayList<>();
+  private final List<ModuleImportAst> imports = new ArrayList<>();
 
   public ModuleAstFactory(ModuleContext module, S1CompileContext compileContext) {
     this.compileContext = compileContext;
@@ -53,6 +52,6 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterLrImport(LrImportContext ctx) {
-    imports.add(new ImportAstFactory(ctx).toAst());
+    imports.add(new ModuleImportAstFactory(ctx).toAst());
   }
 }

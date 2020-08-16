@@ -14,8 +14,12 @@ import org.hamcrest.collection.IsEmptyCollection;
 public class CompileContextUtils {
 
   public static S1CompileContext testS1CompileContext() {
+    return testS1CompileContext("test");
+  }
+
+  public static S1CompileContext testS1CompileContext(String source) {
     return S1CompileContextImpl.builder()
-        .source("test")
+        .source(source)
         .build();
   }
 

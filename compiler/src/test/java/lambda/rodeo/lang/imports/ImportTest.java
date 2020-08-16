@@ -38,16 +38,16 @@ public class ImportTest {
         CompileError.badImport(
             ExpectedLocation.builder()
                 .characterStart(0)
-                .startLine(3)
-                .endLine(3)
+                .startLine(1)
+                .endLine(1)
                 .build(),
             "testcase.BasicFunctionCall"
         ),
         CompileError.undefinedIdentifier(
             ExpectedLocation.builder()
                 .characterStart(6)
-                .startLine(6)
-                .endLine(6)
+                .startLine(4)
+                .endLine(4)
                 .build(),
             "BFC.twoptwo"
         )

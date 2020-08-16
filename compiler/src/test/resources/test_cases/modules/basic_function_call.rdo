@@ -1,5 +1,3 @@
-module testcase.BasicFunctionCall;
-
 def twoptwo() => int {
   2 + 2;
 }

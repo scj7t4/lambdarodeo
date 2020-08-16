@@ -16,6 +16,7 @@ import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.ModuleAstFactory;
 import lambda.rodeo.lang.s1ast.expressions.AtomAst;
@@ -165,7 +166,11 @@ class FunctionCallTest {
     ModuleContext module = TestUtils.parseModule(resource);
 
     ModuleAstFactory factory = new ModuleAstFactory(module,
-        CompileContextUtils.testS1CompileContext());
+        S1CompileContextImpl.builder()
+            .compileErrorCollector(new CompileErrorCollector())
+            .source("testcase/BasicFunctionCall.rdo")
+            .build()
+    );
 
     ModuleAst moduleAst = factory.toAst();
     assertThat(moduleAst.getName(), CoreMatchers.equalTo("testcase.BasicFunctionCall"));
@@ -188,7 +193,7 @@ class FunctionCallTest {
     Supplier<InputStream> inputStreamSupplier = TestUtils.supplyResource(resource);
     CompileUnit unit = CompileUnit.builder()
         .contents(inputStreamSupplier)
-        .sourcePath(resource)
+        .sourcePath("testcase/BasicFunctionCall.rdo")
         .build();
 
     Map<String, Class<?>> classes = CompileUtils.createClasses(Collections.singletonList(unit));
@@ -214,12 +219,12 @@ class FunctionCallTest {
 
     CompileUnit basicUnit = CompileUnit.builder()
         .contents(basicSource)
-        .sourcePath(basicResource)
+        .sourcePath("testcase/BasicFunctionCall.rdo")
         .build();
 
     CompileUnit importUnit = CompileUnit.builder()
         .contents(importSource)
-        .sourcePath(importResource)
+        .sourcePath("testcase/ImportModuleFunctionCall.rdo")
         .build();
 
     List<CompileUnit> toCompile = new ArrayList<>();
@@ -246,12 +251,12 @@ class FunctionCallTest {
 
     CompileUnit basicUnit = CompileUnit.builder()
         .contents(basicSource)
-        .sourcePath(basicResource)
+        .sourcePath("testcase/BasicFunctionCall.rdo")
         .build();
 
     CompileUnit importUnit = CompileUnit.builder()
         .contents(importSource)
-        .sourcePath(importResource)
+        .sourcePath("testcase/AliasModuleFunctionCall.rdo")
         .build();
 
     List<CompileUnit> toCompile = new ArrayList<>();
@@ -259,10 +264,10 @@ class FunctionCallTest {
     toCompile.add(importUnit);
 
     Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
-    Class<?> compiledModule = classes.get("testcase.ImportModuleFunctionCall");
+    Class<?> compiledModule = classes.get("testcase.AliasModuleFunctionCall");
 
     assertThat(compiledModule.getCanonicalName(),
-        CoreMatchers.equalTo("testcase.ImportModuleFunctionCall"));
+        CoreMatchers.equalTo("testcase.AliasModuleFunctionCall"));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
     assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
@@ -282,8 +287,8 @@ class FunctionCallTest {
     assertThat(compileErrorCollector.getCompileErrors(), contains(
         CompileError.undefinedIdentifier(
             ExpectedLocation.builder()
-                .startLine(4)
-                .endLine(4)
+                .startLine(2)
+                .endLine(2)
                 .characterStart(2)
                 .build(), "fibonacci")
     ));

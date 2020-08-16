@@ -1,5 +1,3 @@
-module test.AlreadyInScope;
-
 def function(v1: int) => int {
   let function = v1 + 1;
   function;

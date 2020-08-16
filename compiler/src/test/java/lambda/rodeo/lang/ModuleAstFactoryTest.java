@@ -19,7 +19,7 @@ class ModuleAstFactoryTest {
     ModuleContext module = TestUtils.parseModule(resource);
 
     ModuleAstFactory factory = new ModuleAstFactory(module,
-        CompileContextUtils.testS1CompileContext());
+        CompileContextUtils.testS1CompileContext("EmptyModule.rdo"));
 
     assertThat(factory.toAst().getName(), equalTo("EmptyModule"));
 
@@ -32,7 +32,7 @@ class ModuleAstFactoryTest {
     String resource = "/test_cases/modules/scopedempty.rdo";
     ModuleContext module = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(module,
-        CompileContextUtils.testS1CompileContext());
+        CompileContextUtils.testS1CompileContext("scope/is/cool/EmptyModule.rdo"));
 
     assertThat(factory.toAst().getName(), equalTo("scope.is.cool.EmptyModule"));
 

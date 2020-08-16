@@ -3,8 +3,7 @@ grammar LambdaRodeo;
 @header {
     package lambda.rodeo.lang.antlr;
 }
-module: 'module' moduleIdentifier ';' moduleBody;
-moduleIdentifier: IDENTIFIER | SCOPED_IDENTIFIER;
+module: moduleBody;
 moduleBody: (lrImport)* moduleEntry*;
 moduleEntry: functionDef | interfaceDef;
 lrImport: moduleImport;

@@ -2,13 +2,12 @@ package lambda.rodeo.lang.s1ast;
 
 import java.util.ArrayList;
 import java.util.List;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.LrImportContext;
-import lambda.rodeo.lang.s1ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.LrImportContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleIdentifierContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.s1ast.ModuleAst.ModuleAstBuilder;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -25,6 +24,12 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
     ParseTreeWalker.DEFAULT.walk(this, module);
     builder.functionAsts(functions);
     builder.imports(imports);
+
+    String identifier = compileContext.getSource()
+        .replaceAll("\\.rdo$", "")
+        .replace("/", ".");
+
+    builder.name(identifier);
   }
 
   public ModuleAst toAst() {
@@ -34,13 +39,14 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void enterModule(ModuleContext ctx) {
     builder.startLine(ctx.getStart().getLine());
-    builder.endLine(ctx.getStop().getLine());
-    builder.characterStart(ctx.getStart().getCharPositionInLine());
-  }
+    // Not sure why this is null for empty files...
+    if(ctx.getStop() != null) {
+      builder.endLine(ctx.getStop().getLine());
+    } else {
+      builder.endLine(ctx.getStart().getLine());
+    }
 
-  @Override
-  public void enterModuleIdentifier(ModuleIdentifierContext ctx) {
-    builder = builder.name(ctx.getText());
+    builder.characterStart(ctx.getStart().getCharPositionInLine());
   }
 
   @Override

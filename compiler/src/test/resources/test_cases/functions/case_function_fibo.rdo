@@ -1,5 +1,3 @@
-module test.Fibonacci;
-
 def fibonacci(n: int) => int {
   case (1) {
     1;

@@ -1,5 +1,3 @@
-module testcase.ImportModuleFunctionCall;
-
 import testcase.BasicFunctionCall as BFC;
 
 def callAndAdd() => int {

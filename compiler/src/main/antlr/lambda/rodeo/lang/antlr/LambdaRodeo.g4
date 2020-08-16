@@ -8,7 +8,6 @@ moduleBody: (lrImport)* moduleEntry*;
 moduleEntry: functionDef | interfaceDef;
 lrImport: moduleImport;
 alias: 'as' IDENTIFIER;
-//memberImport: 'import' '{' IDENTIFIER (',' IDENTIFIER*) '}' 'from' SCOPED_IDENTIFIER ';';
 moduleImport: 'import' SCOPED_IDENTIFIER alias? ';';
 
 

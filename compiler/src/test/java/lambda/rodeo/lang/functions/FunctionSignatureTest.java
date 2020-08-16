@@ -21,7 +21,7 @@ public class FunctionSignatureTest {
   @Test
   @SneakyThrows
   public void testSignatureDeclaresSameNameTwice() {
-    String resource = "/test_cases/functions/arg_named_twice.rdo";
+    String resource = "/test_cases/functions/ArgNamedTwice.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     S1CompileContext compileContext = CompileContextUtils.testS1CompileContext();
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,

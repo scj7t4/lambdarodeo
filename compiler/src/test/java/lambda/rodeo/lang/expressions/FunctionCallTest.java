@@ -162,7 +162,7 @@ class FunctionCallTest {
   @Test
   @SneakyThrows
   public void testFunctionCallCompilation() {
-    String resource = "/test_cases/modules/basic_function_call.rdo";
+    String resource = "/test_cases/modules/BasicFunctionCall.rdo";
     ModuleContext module = TestUtils.parseModule(resource);
 
     ModuleAstFactory factory = new ModuleAstFactory(module,
@@ -189,7 +189,7 @@ class FunctionCallTest {
   @Test
   @SneakyThrows
   public void testFunctionCallCompilation2() {
-    String resource = "/test_cases/modules/basic_function_call.rdo";
+    String resource = "/test_cases/modules/BasicFunctionCall.rdo";
     Supplier<InputStream> inputStreamSupplier = TestUtils.supplyResource(resource);
     CompileUnit unit = CompileUnit.builder()
         .contents(inputStreamSupplier)
@@ -212,9 +212,9 @@ class FunctionCallTest {
   @Test
   @SneakyThrows
   public void testFunctionCallCompilation3() {
-    String basicResource = "/test_cases/modules/basic_function_call.rdo";
+    String basicResource = "/test_cases/modules/BasicFunctionCall.rdo";
     Supplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
-    String importResource = "/test_cases/modules/import_module_function_call.rdo";
+    String importResource = "/test_cases/modules/ImportModuleFunctionCall.rdo";
     Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
     CompileUnit basicUnit = CompileUnit.builder()
@@ -244,9 +244,9 @@ class FunctionCallTest {
   @Test
   @SneakyThrows
   public void testFunctionCallCompilation4() {
-    String basicResource = "/test_cases/modules/basic_function_call.rdo";
+    String basicResource = "/test_cases/modules/BasicFunctionCall.rdo";
     Supplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
-    String importResource = "/test_cases/modules/alias_module_function_call.rdo";
+    String importResource = "/test_cases/modules/AliasModuleFunctionCall.rdo";
     Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
     CompileUnit basicUnit = CompileUnit.builder()
@@ -276,7 +276,7 @@ class FunctionCallTest {
   @Test
   @SneakyThrows
   public void testFunctionNotInScope() {
-    String resource = "/test_cases/functions/function_not_in_scope.rdo";
+    String resource = "/test_cases/functions/FunctionNotInScope.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
         CompileContextUtils.testS1CompileContext());

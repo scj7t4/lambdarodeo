@@ -24,7 +24,7 @@ public class FunctionCasesTest {
   @Test
   @SneakyThrows
   public void testIntLiteralFunctionCase() {
-    String resource = "/test_cases/functions/case_function_int.rdo";
+    String resource = "/test_cases/functions/CaseFunctionInt.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -49,7 +49,7 @@ public class FunctionCasesTest {
   @Test
   @SneakyThrows
   public void testFibonacci() {
-    String resource = "/test_cases/functions/case_function_fibo.rdo";
+    String resource = "/test_cases/functions/CaseFunctionFibo.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
         CompileContextUtils.testS1CompileContext());

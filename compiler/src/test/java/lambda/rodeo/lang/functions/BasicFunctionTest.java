@@ -33,7 +33,7 @@ public class BasicFunctionTest {
   @SneakyThrows
   @Test
   public void testNoArgsFunction() throws IOException {
-    String resource = "/test_cases/functions/no_args_function.rdo";
+    String resource = "/test_cases/functions/NoArgsFunction.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -54,7 +54,7 @@ public class BasicFunctionTest {
   @Test
   @SneakyThrows
   public void testOneArgFunction() throws IOException {
-    String resource = "/test_cases/functions/one_arg_function.rdo";
+    String resource = "/test_cases/functions/OneArgFunction.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -77,7 +77,7 @@ public class BasicFunctionTest {
   @Test
   @SneakyThrows
   public void testTwoArgFunction() throws IOException {
-    String resource = "/test_cases/functions/two_arg_function.rdo";
+    String resource = "/test_cases/functions/TwoArgFunction.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -104,7 +104,7 @@ public class BasicFunctionTest {
   @Test
   @SneakyThrows
   public void testFunctionNameReuse() {
-    String resource = "/test_cases/functions/function_already_defined.rdo";
+    String resource = "/test_cases/functions/FunctionAlreadyDefined.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
         CompileContextUtils.testS1CompileContext());

@@ -19,7 +19,7 @@ public class AssignmentCompileErrorsTest {
   @Test
   @SneakyThrows
   public void testAlreadyDeclared() {
-    String resource = "/test_cases/functions/already_in_scope.rdo";
+    String resource = "/test_cases/functions/AlreadyInScope.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
         CompileContextUtils.testS1CompileContext());
@@ -36,7 +36,7 @@ public class AssignmentCompileErrorsTest {
   @Test
   @SneakyThrows
   public void testAlreadyDeclared2() {
-    String resource = "/test_cases/functions/already_in_scope2.rdo";
+    String resource = "/test_cases/functions/AlreadyInScope2.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
         CompileContextUtils.testS1CompileContext());
@@ -53,7 +53,7 @@ public class AssignmentCompileErrorsTest {
   @Test
   @SneakyThrows
   public void testAlreadyDeclared3() {
-    String resource = "/test_cases/functions/already_in_scope3.rdo";
+    String resource = "/test_cases/functions/AlreadyInScope3.rdo";
     ModuleContext moduleDef = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
         CompileContextUtils.testS1CompileContext());

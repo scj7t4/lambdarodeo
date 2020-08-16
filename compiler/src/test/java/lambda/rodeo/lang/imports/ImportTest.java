@@ -21,7 +21,7 @@ public class ImportTest {
   @Test
   @SneakyThrows
   public void testMisingModuleImport() {
-    String importResource = "/test_cases/modules/alias_module_function_call.rdo";
+    String importResource = "/test_cases/modules/AliasModuleFunctionCall.rdo";
     Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
     CompileUnit importUnit = CompileUnit.builder()

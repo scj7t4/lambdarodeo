@@ -105,7 +105,7 @@ public class LambdaExpressionTest {
   @Test
   @SneakyThrows
   public void testClosure0() {
-    String resource = "/test_cases/functions/closure_0.rdo";
+    String resource = "/test_cases/functions/Closure0.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -129,7 +129,7 @@ public class LambdaExpressionTest {
   @Test
   @SneakyThrows
   public void testClosure1() {
-    String resource = "/test_cases/functions/closure_1.rdo";
+    String resource = "/test_cases/functions/Closure1.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -154,7 +154,7 @@ public class LambdaExpressionTest {
   @Test
   @SneakyThrows
   public void testInvoke1() {
-    String resource = "/test_cases/functions/invoke_closure_1.rdo";
+    String resource = "/test_cases/functions/InvokeClosure1.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());
@@ -177,7 +177,7 @@ public class LambdaExpressionTest {
   @Test
   @SneakyThrows
   public void testInvoke0() {
-    String resource = "/test_cases/functions/invoke_closure_0.rdo";
+    String resource = "/test_cases/functions/InvokeClosure0.rdo";
     FunctionDefContext functionDef = TestUtils.parseFunctionDef(resource);
     FunctionAstFactory factory = new FunctionAstFactory(functionDef,
         CompileContextUtils.testS1CompileContext());

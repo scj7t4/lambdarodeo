@@ -15,7 +15,7 @@ class ModuleAstFactoryTest {
 
   @Test
   public void testEmptyModule() throws IOException {
-    String resource = "/test_cases/modules/empty.rdo";
+    String resource = "/test_cases/modules/EmptyModule.rdo";
     ModuleContext module = TestUtils.parseModule(resource);
 
     ModuleAstFactory factory = new ModuleAstFactory(module,
@@ -29,7 +29,7 @@ class ModuleAstFactoryTest {
 
   @Test
   public void testEmptyScopedModule() throws IOException {
-    String resource = "/test_cases/modules/scopedempty.rdo";
+    String resource = "/test_cases/modules/ScopedEmptyModule.rdo";
     ModuleContext module = TestUtils.parseModule(resource);
     ModuleAstFactory factory = new ModuleAstFactory(module,
         CompileContextUtils.testS1CompileContext("scope/is/cool/EmptyModule.rdo"));

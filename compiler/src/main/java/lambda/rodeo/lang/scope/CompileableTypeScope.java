@@ -34,7 +34,7 @@ public class CompileableTypeScope {
 
       methodVisitor.visitLocalVariable(
           scopeEntry.getName(),
-          scopeEntry.getType().getType().getDescriptor(),
+          scopeEntry.getType().getDescriptor(),
           null,
           start,
           end,

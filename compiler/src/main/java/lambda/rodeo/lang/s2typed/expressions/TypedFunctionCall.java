@@ -7,6 +7,7 @@ import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
@@ -26,14 +27,14 @@ public class TypedFunctionCall implements TypedExpression {
   @NonNull
   private final String callTarget;
   @NonNull
-  private final LambdaRodeoType returnType;
+  private final CompileableType returnType;
   @NonNull
   private final List<TypedExpression> args;
   @NonNull
   private final TypedModuleScope typedModuleScope;
 
   @Override
-  public LambdaRodeoType getType() {
+  public CompileableType getType() {
     return returnType;
   }
 

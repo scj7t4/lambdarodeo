@@ -25,8 +25,9 @@ import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
 import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.runtime.types.CompileableLambdaType;
 import lambda.rodeo.runtime.types.IntType;
-import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.runtime.types.LambdaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ public class LambdaExpressionTest {
     compileContext = CompileContextUtils.testToTypedFunctionContext();
   }
 
-  public Class<?> compileLambda(String expr, Lambda expectedType) {
+  public Class<?> compileLambda(String expr, CompileableLambdaType expectedType) {
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
@@ -61,7 +62,8 @@ public class LambdaExpressionTest {
         typedModuleScope, CompileContextUtils.testToTypedFunctionContext()).getType(),
         equalTo(expectedType));
 
-    ModuleAst moduleAst = ExpressionTestUtils.moduleForExpression(expressionAst, expectedType);
+    ModuleAst moduleAst = ExpressionTestUtils.moduleForExpression(expressionAst,
+        expectedType.getType());
 
     Class<?> retVal = CompileUtils.createClass(moduleAst);
 
@@ -74,10 +76,11 @@ public class LambdaExpressionTest {
   @SneakyThrows
   public void testNoArgsLambda() {
     Class<?> compiledModule = compileLambda("() => 1337",
-        Lambda.builder()
+        LambdaType.builder()
             .returnType(IntType.INSTANCE)
             .args(Collections.emptyList())
             .build()
+            .toCompileableType()
     );
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
@@ -90,10 +93,11 @@ public class LambdaExpressionTest {
   @SneakyThrows
   public void testOneArgLambda() {
     Class<?> compiledModule = compileLambda("(a::ok) => 1337",
-        Lambda.builder()
+        LambdaType.builder()
             .returnType(IntType.INSTANCE)
             .args(Collections.singletonList(new Atom("ok")))
             .build()
+            .toCompileableType()
     );
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);

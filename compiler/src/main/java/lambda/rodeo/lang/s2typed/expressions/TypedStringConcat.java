@@ -3,6 +3,7 @@ package lambda.rodeo.lang.s2typed.expressions;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableStringConcat;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lambda.rodeo.runtime.types.StringType;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class TypedStringConcat implements TypedExpression {
   private final ExpressionAst expr;
 
   @Override
-  public LambdaRodeoType getType() {
+  public CompileableType getType() {
     return StringType.INSTANCE;
   }
 

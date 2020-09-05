@@ -5,6 +5,7 @@ import lambda.rodeo.lang.s3compileable.expression.Compileable;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,7 @@ public class SimpleTypedExpression implements TypedExpression {
   private final ExpressionAst expr;
 
   @NonNull
-  private final LambdaRodeoType type;
+  private final CompileableType type;
 
   private final @NonNull Supplier<Compileable> toCompileable;
 

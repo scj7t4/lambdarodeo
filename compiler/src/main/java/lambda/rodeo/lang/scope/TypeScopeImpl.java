@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class TypeScopeImpl implements TypeScope {
   }
 
   @Override
-  public TypeScopeImpl declare(String varName, LambdaRodeoType type) {
+  public TypeScopeImpl declare(String varName, CompileableType type) {
     TypeScopeImpl out = new TypeScopeImpl();
     out.scope.addAll(this.scope);
     int slot = -1;

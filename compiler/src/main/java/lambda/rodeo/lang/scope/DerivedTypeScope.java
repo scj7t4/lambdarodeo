@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 
 public class DerivedTypeScope implements TypeScope {
@@ -28,7 +29,7 @@ public class DerivedTypeScope implements TypeScope {
   }
 
   @Override
-  public TypeScope declare(String varName, LambdaRodeoType type) {
+  public TypeScope declare(String varName, CompileableType type) {
     TypeScope declare = parent.declare(varName, type);
     Set<Integer> newAllowed = new HashSet<>(allowedEntries);
     if (type.allocateSlot()) {

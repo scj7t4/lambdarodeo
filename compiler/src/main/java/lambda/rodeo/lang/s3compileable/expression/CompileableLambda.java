@@ -9,6 +9,7 @@ import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +35,8 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     String objectDescriptor = Type.getDescriptor(Object.class);
     StringBuilder bootstrapArgs = new StringBuilder("(");
-    for (LambdaRodeoType type : typedExpression.getType().getArgs()) {
+    for (CompileableType type : typedExpression.getType().getArgs()) {
+      // This needs to be Object because of the type erasure onto the lambda interfaces.
       bootstrapArgs.append(objectDescriptor);
     }
     bootstrapArgs.append(")").append(objectDescriptor);

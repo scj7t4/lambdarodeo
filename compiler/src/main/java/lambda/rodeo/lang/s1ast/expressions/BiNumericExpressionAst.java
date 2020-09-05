@@ -13,6 +13,7 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import org.objectweb.asm.MethodVisitor;
 
@@ -63,17 +64,17 @@ public interface BiNumericExpressionAst extends ExpressionAst {
       TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     TypedExpression typedLhs = getLhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    LambdaRodeoType left = typedLhs.getType();
+    CompileableType left = typedLhs.getType();
     TypedExpression typedRhs = getRhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    LambdaRodeoType right = typedRhs.getType();
+    CompileableType right = typedRhs.getType();
 
     return getTypedExpression(compileContext, typedLhs, left, typedRhs, right);
   }
 
   default TypedExpression getTypedExpression(ToTypedFunctionContext compileContext,
-      TypedExpression typedLhs, LambdaRodeoType left, TypedExpression typedRhs,
-      LambdaRodeoType right) {
+      TypedExpression typedLhs, CompileableType left, TypedExpression typedRhs,
+      CompileableType right) {
     if (AstUtils.isAnyUndefined(left, right)) {
       return AtomAst.undefinedAtomExpression();
     } else if (AstUtils.bothIntType(left, right)) {

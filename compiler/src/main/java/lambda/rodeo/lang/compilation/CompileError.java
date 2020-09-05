@@ -2,6 +2,7 @@ package lambda.rodeo.lang.compilation;
 
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -54,7 +55,7 @@ public class CompileError {
   }
 
   public static CompileError calledFunctionWithWrongArgs(AstNode astNode,
-      List<? extends LambdaRodeoType> expected, List<? extends LambdaRodeoType> actual) {
+      List<CompileableType> expected, List<CompileableType> actual) {
     StringBuilder sb = new StringBuilder("Function called with wrong number/type of args.")
         .append(" Expected: <");
     for(int i = 0; i < expected.size(); i++) {
@@ -102,7 +103,7 @@ public class CompileError {
   }
 
   public static CompileError mathOperationWithNonNumeric(AstNode astNode,
-      String operation, LambdaRodeoType lhsType, LambdaRodeoType rhsType) {
+      String operation, CompileableType lhsType, CompileableType rhsType) {
     return CompileError.builder()
         .errorType(ILLEGAL_MATH_OPERATION)
         .errorMsg("Cannot do " + operation + " with '" + lhsType + "' and '" + rhsType + "'")
@@ -113,7 +114,7 @@ public class CompileError {
   }
 
   public static CompileError mathOperationWithNonNumeric(AstNode astNode,
-      String operation, LambdaRodeoType type) {
+      String operation, CompileableType type) {
     return CompileError.builder()
         .errorType(ILLEGAL_MATH_OPERATION)
         .errorMsg("Cannot do " + operation + " with '" + type)
@@ -134,6 +135,17 @@ public class CompileError {
   }
 
   public static CompileError returnTypeMismatch(AstNode astNode, LambdaRodeoType declared, LambdaRodeoType actual) {
+    return CompileError.builder()
+        .errorType(RETURN_TYPE_MISMATCH)
+        .errorMsg(
+            "Pattern case returns '" + actual + "'; it cannot be assigned to '" + declared + "'")
+        .startLine(astNode.getStartLine())
+        .endLine(astNode.getEndLine())
+        .characterStart(astNode.getCharacterStart())
+        .build();
+  }
+
+  public static CompileError returnTypeMismatch(AstNode astNode, CompileableType declared, CompileableType actual) {
     return CompileError.builder()
         .errorType(RETURN_TYPE_MISMATCH)
         .errorMsg(

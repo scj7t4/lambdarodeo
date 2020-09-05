@@ -24,7 +24,7 @@ public class TypedFunction {
       Map<TypedCaseArg, TypedStaticPattern> staticPatterns) {
     return CompileableFunction.builder()
         .functionBody(functionBody.toCompileableFunctionBody(staticPatterns))
-        .functionSigAst(functionSigAst)
+        .functionSignature(functionSigAst.toTypedFunctionSignature())
         .typedFunction(this)
         .build();
   }

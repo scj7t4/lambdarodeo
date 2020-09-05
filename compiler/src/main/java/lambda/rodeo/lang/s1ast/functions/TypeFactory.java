@@ -2,7 +2,6 @@ package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntTypeContext;
@@ -11,10 +10,9 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.IntType;
-import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.runtime.types.LambdaType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lambda.rodeo.runtime.types.StringType;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class TypeFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
 
@@ -44,7 +42,7 @@ public class TypeFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
     List<LambdaRodeoType> types = ctx.typeExpression().stream()
         .map(this::visit)
         .collect(Collectors.toList());
-    return Lambda.builder()
+    return LambdaType.builder()
         .args(types.subList(0, types.size() - 1))
         .returnType(types.get(types.size() - 1))
         .build();

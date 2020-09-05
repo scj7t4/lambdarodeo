@@ -13,6 +13,7 @@ import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;
@@ -52,8 +53,10 @@ public class FunctionAst implements AstNode {
 
     List<TypedPatternCase> patternCases = typedFunctionBody.getPatternCases();
     for (TypedPatternCase typedPatternCase : patternCases) {
-      LambdaRodeoType returnedType = typedPatternCase.getReturnedType();
-      LambdaRodeoType declaredReturnedType = functionSignature.getDeclaredReturnType();
+      CompileableType returnedType = typedPatternCase.getReturnedType();
+      CompileableType declaredReturnedType = functionSignature
+          .getDeclaredReturnType()
+          .toCompileableType();
 
       if (!declaredReturnedType.assignableFrom(returnedType) &&
           !Objects.equals(returnedType, Atom.UNDEFINED)) {
@@ -84,15 +87,15 @@ public class FunctionAst implements AstNode {
     return getName() + "\\\\" + getArguments().size();
   }
 
-  public boolean hasSignature(List<LambdaRodeoType> callArguments) {
+  public boolean hasSignature(List<CompileableType> callArguments) {
     List<TypedVar> sigArguments = functionSignature.getArguments();
     if (callArguments.size() != sigArguments.size()) {
       return false;
     }
 
     for (int i = 0; i < callArguments.size(); i++) {
-      LambdaRodeoType sigArg = sigArguments.get(0).getType();
-      if (!sigArg.assignableFrom(callArguments.get(0))) {
+      LambdaRodeoType sigArg = sigArguments.get(i).getType();
+      if (!sigArg.assignableFrom(callArguments.get(i).getType())) {
         return false;
       }
     }

@@ -13,6 +13,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -57,22 +58,17 @@ public class CompileableFunctionCall implements CompileableExpr {
   public String getCallDescriptor() {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
-    List<LambdaRodeoType> callSignature = new ArrayList<>();
+    List<CompileableType> callSignature = new ArrayList<>();
 
     for (CompileableExpr arg : args) {
-      LambdaRodeoType type = arg.getTypedExpression().getType();
+      CompileableType type = arg.getTypedExpression().getType();
       sb.append(type.getDescriptor());
       callSignature.add(type);
     }
     sb.append(")");
 
-    String returnTypeDescriptor = typedExpression.getTypedModuleScope()
-        .getCallTarget(typedExpression.getCallTarget(), callSignature)
-        .map(fn -> fn.getFunctionSignature().getDeclaredReturnType())
-        .map(LambdaRodeoType::getDescriptor)
-        .orElseThrow(() -> new CriticalLanguageException(
-            "Function '" + getTargetMethod() +"' didn't have a return type descriptor"
-        ));
+    String returnTypeDescriptor = typedExpression.getReturnType()
+        .getDescriptor();
     sb.append(returnTypeDescriptor);
     return sb.toString();
   }

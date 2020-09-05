@@ -12,12 +12,13 @@ import lambda.rodeo.lang.s1ast.functions.TypedVar;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
-import lambda.rodeo.lang.s2typed.expressions.TypedVariable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableLambda;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.runtime.types.CompileableLambdaType;
+import lambda.rodeo.runtime.types.CompileableType;
+import lambda.rodeo.runtime.types.LambdaType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -44,14 +45,14 @@ public class FunctionCallAst implements ExpressionAst {
         .map(arg -> arg.toTypedExpression(typeScope, typedModuleScope, compileContext))
         .collect(Collectors.toList());
 
-    final List<LambdaRodeoType> argSig = typedArgs.stream()
+    final List<CompileableType> argSig = typedArgs.stream()
         .map(TypedExpression::getType)
         .collect(Collectors.toList());
 
     if (callTarget instanceof VariableAst) {
       return handleVariableAst(typeScope, typedModuleScope, compileContext, typedArgs, argSig);
     } else {
-      final List<? extends LambdaRodeoType> callArgTypes = typedArgs.stream()
+      final List<CompileableType> callArgTypes = typedArgs.stream()
           .map(TypedExpression::getType)
           .collect(Collectors.toList());
       return createInvokeForExpr(
@@ -69,12 +70,12 @@ public class FunctionCallAst implements ExpressionAst {
       TypedModuleScope typedModuleScope,
       ToTypedFunctionContext compileContext,
       List<TypedExpression> typedArgs,
-      List<LambdaRodeoType> argSig) {
+      List<CompileableType> argSig) {
     // Get the call target Name
     String callTargetName = ((VariableAst) callTarget).getName();
     // Check to see if its in the typedModuleScope (holds functions)
     Optional<FunctionAst> calledFn = typedModuleScope.getCallTarget(callTargetName, argSig);
-    final List<? extends LambdaRodeoType> callArgTypes = typedArgs.stream()
+    final List<CompileableType> callArgTypes = typedArgs.stream()
         .map(TypedExpression::getType)
         .collect(Collectors.toList());
     if (calledFn.isEmpty()) {
@@ -91,10 +92,11 @@ public class FunctionCallAst implements ExpressionAst {
       LambdaRodeoType declaredReturnType = functionAst
           .getFunctionSignature()
           .getDeclaredReturnType();
-      List<? extends LambdaRodeoType> argTypes = functionAst.getFunctionSignature()
+      List<CompileableType> argTypes = functionAst.getFunctionSignature()
           .getArguments()
           .stream()
           .map(TypedVar::getType)
+          .map(type -> type.toCompileableType())
           .collect(Collectors.toList());
       if (!checkCallMatchesSignature(compileContext, callArgTypes, argTypes)) {
         return AtomAst.undefinedAtomExpression();
@@ -104,7 +106,7 @@ public class FunctionCallAst implements ExpressionAst {
           .typedModuleScope(typedModuleScope)
           .functionCallAst(this)
           .callTarget(callTargetName)
-          .returnType(declaredReturnType)
+          .returnType(declaredReturnType.toCompileableType())
           .typeScope(typeScope)
           .build();
     }
@@ -112,12 +114,12 @@ public class FunctionCallAst implements ExpressionAst {
 
   public TypedExpression createInvokeForExpr(TypeScope typeScope, TypedModuleScope typedModuleScope,
       ToTypedFunctionContext compileContext, String callTargetName, List<TypedExpression> typedArgs,
-      List<? extends LambdaRodeoType> callArgTypes) {
+      List<CompileableType> callArgTypes) {
     TypedExpression variable = callTarget
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
     // Check to see if the variable is a lambda of the correct arity:
-    LambdaRodeoType varType = variable.getType();
-    if (!(varType instanceof Lambda)) {
+    CompileableType varType = variable.getType();
+    if (!(varType instanceof CompileableLambdaType)) {
       if (!(Objects.equals(varType, Atom.UNDEFINED))) {
         compileContext.getCompileErrorCollector().collect(
             CompileError.triedToCallNonFunction(callTarget, callTargetName)
@@ -126,8 +128,8 @@ public class FunctionCallAst implements ExpressionAst {
       return AtomAst.undefinedAtomExpression();
     }
     // Check to make sure the arity of the call lines up
-    Lambda asLambda = (Lambda) varType;
-    List<? extends LambdaRodeoType> argTypes = asLambda.getArgs();
+    CompileableLambdaType asLambda = (CompileableLambdaType) varType;
+    List<CompileableType> argTypes = asLambda.getArgs();
     if (argTypes.size() != typedArgs.size()) {
       compileContext.getCompileErrorCollector().collect(
           CompileError.calledFunctionWithWrongArgs(this, argTypes, callArgTypes)
@@ -150,10 +152,10 @@ public class FunctionCallAst implements ExpressionAst {
   }
 
   public boolean checkCallMatchesSignature(ToTypedFunctionContext compileContext,
-      List<? extends LambdaRodeoType> callArgTypes, List<? extends LambdaRodeoType> argTypes) {
+      List<CompileableType> callArgTypes, List<CompileableType> argTypes) {
     for (int i = 0; i < argTypes.size(); i++) {
-      LambdaRodeoType argType = argTypes.get(i);
-      LambdaRodeoType calledArg = callArgTypes.get(i);
+      CompileableType argType = argTypes.get(i);
+      CompileableType calledArg = callArgTypes.get(i);
       if (!argType.assignableFrom(calledArg)) {
         compileContext.getCompileErrorCollector().collect(
             CompileError.calledFunctionWithWrongArgs(this, argTypes, callArgTypes)

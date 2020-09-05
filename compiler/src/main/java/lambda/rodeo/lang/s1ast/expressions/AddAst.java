@@ -11,6 +11,7 @@ import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat.TypedStringConcat
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lambda.rodeo.runtime.types.StringType;
 import lombok.Builder;
@@ -45,10 +46,10 @@ public class AddAst implements BiNumericExpressionAst {
       ToTypedFunctionContext compileContext) {
     TypedExpression typedLhs = getLhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    LambdaRodeoType left = typedLhs.getType();
+    CompileableType left = typedLhs.getType();
     TypedExpression typedRhs = getRhs()
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    LambdaRodeoType right = typedRhs.getType();
+    CompileableType right = typedRhs.getType();
     if (Objects.equals(StringType.INSTANCE, left) || Objects.equals(StringType.INSTANCE, right)) {
       TypedStringConcatBuilder builder = TypedStringConcat.builder()
           .expr(this)

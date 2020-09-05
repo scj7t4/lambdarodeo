@@ -5,10 +5,10 @@ import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
-import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.runtime.types.CompileableLambdaType;
+import lambda.rodeo.runtime.types.LambdaType;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
@@ -31,14 +31,14 @@ public class CompileableLambdaInvoke implements CompileableExpr, LambdaLiftable 
       arg.compile(methodVisitor, compileContext);
     }
     // Then invoke the lambda:
-    Lambda lamda = typedExpression.getLambda();
+    CompileableLambdaType lambda = typedExpression.getLambda();
     methodVisitor.visitMethodInsn(INVOKEINTERFACE,
-        Type.getInternalName(lamda.functionalRep()),
+        Type.getInternalName(lambda.functionalRep()),
         "apply",
-        lamda.getGenericFunctionDescriptor(),
+        lambda.getGenericFunctionDescriptor(),
         true);
     // And check to make sure it returns what it says it would.
-    methodVisitor.visitTypeInsn(CHECKCAST, lamda.getReturnType().getInternalName());
+    methodVisitor.visitTypeInsn(CHECKCAST, lambda.getReturnType().getInternalName());
   }
 
 

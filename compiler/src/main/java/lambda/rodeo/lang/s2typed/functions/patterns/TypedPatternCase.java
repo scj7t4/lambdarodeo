@@ -7,6 +7,7 @@ import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -37,7 +38,7 @@ public class TypedPatternCase {
     return typedStatements.get(typedStatements.size() - 1).getAfterTypeScope();
   }
 
-  public LambdaRodeoType getReturnedType() {
+  public CompileableType getReturnedType() {
     return typedStatements.get(typedStatements.size() - 1).getTypedExpression().getType();
   }
 }

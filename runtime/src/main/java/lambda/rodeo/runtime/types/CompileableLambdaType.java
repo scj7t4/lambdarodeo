@@ -8,14 +8,25 @@ import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 
 @Builder
 @Getter
 @EqualsAndHashCode
-public class Lambda implements LambdaRodeoType, CompileableType {
+public class CompileableLambdaType implements CompileableType {
 
-  private final List<? extends LambdaRodeoType> args;
-  private final LambdaRodeoType returnType;
+  @NonNull
+  private final List<CompileableType> args;
+
+  @NonNull
+  private final CompileableType returnType;
+
+  private final LambdaRodeoType from;
+
+  @Override
+  public LambdaRodeoType getType() {
+    return from;
+  }
 
   @Override
   public String getDescriptor() {
@@ -32,11 +43,29 @@ public class Lambda implements LambdaRodeoType, CompileableType {
     StringBuilder sb = new StringBuilder("L");
     sb.append(AsmType.getInternalName(functionalRep()));
     sb.append("<");
-    for (LambdaRodeoType arg : args) {
+    for (CompileableType arg : args) {
       sb.append(arg.getSignature());
     }
     sb.append(returnType.getSignature());
     sb.append(">;");
+    return sb.toString();
+  }
+
+  public String getFunctionDescriptor() {
+    StringBuilder sb = new StringBuilder("(");
+    for (CompileableType arg : args) {
+      sb.append(arg.getDescriptor());
+    }
+    sb.append(")").append(returnType.getDescriptor());
+    return sb.toString();
+  }
+
+  public String getGenericFunctionDescriptor() {
+    StringBuilder sb = new StringBuilder("(");
+    for (CompileableType arg : args) {
+      sb.append(AsmType.getDescriptor(Object.class));
+    }
+    sb.append(")").append(AsmType.getDescriptor(Object.class));
     return sb.toString();
   }
 
@@ -51,39 +80,11 @@ public class Lambda implements LambdaRodeoType, CompileableType {
         "Lambda function had too many arguments (" + args.size() + ")");
   }
 
-  public String getFunctionDescriptor() {
-    StringBuilder sb = new StringBuilder("(");
-    for (LambdaRodeoType arg : args) {
-      sb.append(arg.getDescriptor());
-    }
-    sb.append(")").append(returnType.getDescriptor());
-    return sb.toString();
-  }
-
-  public String getGenericFunctionDescriptor() {
-    StringBuilder sb = new StringBuilder("(");
-    for (LambdaRodeoType arg : args) {
-      sb.append(AsmType.getDescriptor(Object.class));
-    }
-    sb.append(")").append(AsmType.getDescriptor(Object.class));
-    return sb.toString();
-  }
-
-  @Override
-  public CompileableType toCompileableType() {
-    return this;
-  }
-
-  @Override
-  public LambdaRodeoType getType() {
-    return this;
-  }
-
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("<lambda>(");
+    StringBuilder sb = new StringBuilder("<*lambda>(");
     for(int i = 0; i < args.size(); i++) {
-      LambdaRodeoType arg = args.get(i);
+      CompileableType arg = args.get(i);
       sb.append(arg);
       if(i < args.size() - 1) {
         sb.append(",");

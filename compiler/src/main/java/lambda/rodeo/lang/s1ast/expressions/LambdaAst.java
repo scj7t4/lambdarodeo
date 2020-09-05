@@ -16,14 +16,14 @@ import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
-import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Lambda;
+import lambda.rodeo.runtime.types.CompileableType;
+import lambda.rodeo.runtime.types.LambdaType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,7 +65,7 @@ public class LambdaAst implements ExpressionAst {
 
     // Then we add the arguments of the function itself:
     for (TypedVar typedVar : arguments) {
-      lambdaScope = lambdaScope.declare(typedVar.getName(), typedVar.getType());
+      lambdaScope = lambdaScope.declare(typedVar.getName(), typedVar.getType().toCompileableType());
     }
 
     // Now we produce a list of the typed statements.
@@ -79,7 +79,7 @@ public class LambdaAst implements ExpressionAst {
         .map(TypedVar::getType)
         .collect(Collectors.toList());
 
-    LambdaRodeoType returnType = typedStatements
+    CompileableType returnType = typedStatements
         .get(typedStatements.size() - 1)
         .getTypedExpression()
         .getType();
@@ -89,14 +89,14 @@ public class LambdaAst implements ExpressionAst {
             .arguments(Stream.concat(
                 scopeArgs.stream().map(entry -> TypedVar.builder()
                     .name(entry.getName())
-                    .type(entry.getType())
+                    .type(entry.getType().getType())
                     .build()),
                 getArguments().stream())
                 .collect(Collectors.toList()))
             .startLine(getStartLine())
             .endLine(getEndLine())
             .characterStart(getCharacterStart())
-            .declaredReturnType(returnType)
+            .declaredReturnType(returnType.getType())
             .name("lambda$" + compileContext.allocateLambda())
             .build())
         .functionBodyAst(FunctionBodyAst.builder()
@@ -120,10 +120,11 @@ public class LambdaAst implements ExpressionAst {
         .expr(this)
         .typedModuleScope(typedModuleScope)
         .scopeArgs(scopeArgs)
-        .type(Lambda.builder()
+        .type(LambdaType.builder()
             .args(argTypes)
-            .returnType(returnType)
-            .build())
+            .returnType(returnType.getType())
+            .build()
+            .toCompileableType())
         .typedFunction(lambdaFn)
         .build();
   }

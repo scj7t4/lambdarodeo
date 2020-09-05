@@ -11,6 +11,7 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,7 @@ public class UnaryMinusAst implements ExpressionAst {
       TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     TypedExpression typedOperand = operand
         .toTypedExpression(typeScope, typedModuleScope, compileContext);
-    LambdaRodeoType type = typedOperand.getType();
+    CompileableType type = typedOperand.getType();
 
     if (AstUtils.isAnyUndefined(type)) {
       return AtomAst.undefinedAtomExpression();

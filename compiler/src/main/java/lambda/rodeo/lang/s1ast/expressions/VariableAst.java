@@ -13,6 +13,7 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.runtime.types.CompileableType;
 import lambda.rodeo.runtime.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,7 @@ public class VariableAst implements ExpressionAst {
       TypeScope typeScope,
       TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     Optional<Entry> entry = typeScope.get(name).findFirst();
-    LambdaRodeoType type = entry
+    CompileableType type = entry
         .map(TypeScope.Entry::getType)
         .orElse(UNDEFINED);
     if (Objects.equals(UNDEFINED, type)) {

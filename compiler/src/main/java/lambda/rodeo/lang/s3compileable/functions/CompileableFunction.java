@@ -4,12 +4,11 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
 
-import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.compilation.S2CompileContext;
-import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s2typed.functions.S2TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
+import lambda.rodeo.lang.s2typed.functions.TypedFunctionSignature;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,27 +23,27 @@ import org.objectweb.asm.MethodVisitor;
 public class CompileableFunction {
   private final TypedFunction typedFunction;
   private final CompileableFunctionBody functionBody;
-  private final FunctionSigAst functionSigAst;
+  private final TypedFunctionSignature functionSignature;
 
   public String generateFunctionDescriptor() {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
-    for (TypedVar var : functionSigAst.getArguments()) {
+    for (S2TypedVar var : functionSignature.getArguments()) {
       String descriptor = var.getType().getDescriptor();
       sb.append(descriptor);
     }
-    sb.append(")").append(functionSigAst.getDeclaredReturnType().getDescriptor());
+    sb.append(")").append(functionSignature.getDeclaredReturnType().getDescriptor());
     return sb.toString();
   }
 
   public String generateFunctionSignature() {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
-    for (TypedVar var : functionSigAst.getArguments()) {
+    for (S2TypedVar var : functionSignature.getArguments()) {
       String descriptor = var.getType().getSignature();
       sb.append(descriptor);
     }
-    sb.append(")").append(functionSigAst.getDeclaredReturnType().getSignature());
+    sb.append(")").append(functionSignature.getDeclaredReturnType().getSignature());
     return sb.toString();
   }
 
@@ -57,7 +56,7 @@ public class CompileableFunction {
     MethodVisitor methodVisitor = cw
         .visitMethod(
             access,
-            functionSigAst.getName(),
+            functionSignature.getName(),
             generateFunctionDescriptor(),
             generateFunctionSignature(),
             null);
@@ -78,7 +77,7 @@ public class CompileableFunction {
   }
 
   public String getName() {
-    return getFunctionSigAst().getName();
+    return getFunctionSignature().getName();
   }
 
   public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalJavaName) {

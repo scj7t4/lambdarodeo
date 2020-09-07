@@ -6,8 +6,7 @@ import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.statements.TypedAssignment;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 
 public interface AssigmentAst extends AstNode {
 

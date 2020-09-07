@@ -6,7 +6,7 @@ import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.VariableTypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class VariableCaseArgAst implements CaseArgAst {
 
           return (TypedCaseArg) AtomCaseArgAst
               .builder()
-              .atom(Atom.UNDEFINED)
+              .atom(CompileableAtom.UNDEFINED)
               .build();
         });
   }

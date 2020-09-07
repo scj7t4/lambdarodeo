@@ -16,7 +16,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.IntType;
+import lambda.rodeo.lang.types.IntType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

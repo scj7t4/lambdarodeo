@@ -4,17 +4,15 @@ import java.util.List;
 import java.util.Objects;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContext;
-import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,7 +57,7 @@ public class FunctionAst implements AstNode {
           .toCompileableType();
 
       if (!declaredReturnedType.assignableFrom(returnedType) &&
-          !Objects.equals(returnedType, Atom.UNDEFINED)) {
+          !Objects.equals(returnedType, CompileableAtom.UNDEFINED)) {
         compileContext.getCompileErrorCollector().collect(
             CompileError
                 .returnTypeMismatch(typedPatternCase.getPatternCaseAst(), declaredReturnedType,

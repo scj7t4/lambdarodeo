@@ -1,4 +1,4 @@
-package lambda.rodeo.runtime.types;
+package lambda.rodeo.lang.types;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -10,7 +10,7 @@ import lambda.rodeo.lang.s3compileable.expression.CompileableLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.CompileableLambdaType;
+import lambda.rodeo.lang.types.CompileableLambdaType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

@@ -4,8 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 
 public class DerivedTypeScope implements TypeScope {
 

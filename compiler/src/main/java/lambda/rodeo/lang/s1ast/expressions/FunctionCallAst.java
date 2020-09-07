@@ -12,14 +12,12 @@ import lambda.rodeo.lang.s1ast.functions.TypedVar;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
-import lambda.rodeo.lang.s3compileable.expression.CompileableLambda;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.CompileableLambdaType;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.CompileableLambdaType;
+import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -120,7 +118,7 @@ public class FunctionCallAst implements ExpressionAst {
     // Check to see if the variable is a lambda of the correct arity:
     CompileableType varType = variable.getType();
     if (!(varType instanceof CompileableLambdaType)) {
-      if (!(Objects.equals(varType, Atom.UNDEFINED))) {
+      if (!(Objects.equals(varType, CompileableAtom.UNDEFINED))) {
         compileContext.getCompileErrorCollector().collect(
             CompileError.triedToCallNonFunction(callTarget, callTargetName)
         );

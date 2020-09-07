@@ -24,10 +24,11 @@ import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.CompileableLambdaType;
+import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.types.LambdaType;
 import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.CompileableLambdaType;
-import lambda.rodeo.runtime.types.IntType;
-import lambda.rodeo.runtime.types.LambdaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,7 +96,7 @@ public class LambdaExpressionTest {
     Class<?> compiledModule = compileLambda("(a::ok) => 1337",
         LambdaType.builder()
             .returnType(IntType.INSTANCE)
-            .args(Collections.singletonList(new Atom("ok")))
+            .args(Collections.singletonList(new CompileableAtom("ok")))
             .build()
             .toCompileableType()
     );

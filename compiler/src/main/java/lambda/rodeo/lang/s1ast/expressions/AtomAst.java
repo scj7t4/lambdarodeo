@@ -12,7 +12,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,14 +23,14 @@ import org.objectweb.asm.MethodVisitor;
 @EqualsAndHashCode
 public class AtomAst implements ExpressionAst, Compileable {
 
-  private final Atom atom;
+  private final CompileableAtom atom;
   private final int startLine;
   private final int endLine;
   private final int characterStart;
 
   public static SimpleTypedExpression undefinedAtomExpression() {
     return builder()
-        .atom(Atom.UNDEFINED)
+        .atom(CompileableAtom.UNDEFINED)
         .build()
         .toTypedExpression();
   }

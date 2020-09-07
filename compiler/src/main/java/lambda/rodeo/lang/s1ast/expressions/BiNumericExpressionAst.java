@@ -13,8 +13,7 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import org.objectweb.asm.MethodVisitor;
 
 /**

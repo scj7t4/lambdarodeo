@@ -23,8 +23,9 @@ import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.IntType;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +63,7 @@ public class BasicFunctionTest {
     assertThat(functionAst.getName(), equalTo("nillify"));
     assertThat(functionAst.getArguments(), hasSize(1));
     assertThat(functionAst.getArguments().get(0).getName(), equalTo("inp"));
-    assertThat(functionAst.getArguments().get(0).getType(), equalTo(new Atom("nil")));
+    assertThat(functionAst.getArguments().get(0).getType(), equalTo(new CompileableAtom("nil")));
 
     Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
         .functionAsts(Collections.singletonList(functionAst))

@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
 
-import static lambda.rodeo.runtime.types.Atom.UNDEFINED;
+import static lambda.rodeo.lang.types.CompileableAtom.UNDEFINED;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -13,8 +13,7 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -5,12 +5,10 @@ import static org.objectweb.asm.Opcodes.IFEQ;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s3compileable.statement.CompileableStatement;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

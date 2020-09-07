@@ -5,7 +5,7 @@ import lambda.rodeo.lang.s2typed.functions.patterns.AtomTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 public class AtomCaseArgAst implements CaseArgAst {
-  private final Atom atom;
+  private final CompileableAtom atom;
   private final int startLine;
   private final int endLine;
   private final int characterStart;

@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.Getter;
 

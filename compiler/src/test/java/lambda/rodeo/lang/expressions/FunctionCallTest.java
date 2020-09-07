@@ -36,8 +36,8 @@ import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.IntType;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.IntType;
 import lombok.SneakyThrows;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
@@ -99,7 +99,7 @@ class FunctionCallTest {
     List<TypedVar> arguments = new ArrayList<>();
     arguments.add(TypedVar.builder()
         .name("v1")
-        .type(Atom.NULL)
+        .type(CompileableAtom.NULL)
         .build()
     );
     arguments.add(TypedVar.builder()
@@ -139,7 +139,7 @@ class FunctionCallTest {
         .args(List.of(
             AtomAst
                 .builder()
-                .atom(Atom.NULL)
+                .atom(CompileableAtom.NULL)
                 .build()
                 .toTypedExpression(),
             IntConstantAst.builder()

@@ -1,11 +1,10 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
 import java.util.Objects;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.CompileableLambdaType;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.IntType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Getter;
 
 @Getter
@@ -27,7 +26,7 @@ public class AstUtils {
 
   public static boolean isAnyUndefined(LambdaRodeoType... types) {
     for (LambdaRodeoType type : types) {
-      if (Objects.equals(Atom.UNDEFINED, type)) {
+      if (Objects.equals(CompileableAtom.UNDEFINED, type)) {
         return true;
       }
     }
@@ -36,7 +35,7 @@ public class AstUtils {
 
   public static boolean isAnyUndefined(CompileableType... types) {
     for (CompileableType type : types) {
-      if (Objects.equals(Atom.UNDEFINED, type)) {
+      if (Objects.equals(CompileableAtom.UNDEFINED, type)) {
         return true;
       }
     }

@@ -1,4 +1,4 @@
-package lambda.rodeo.runtime.types;
+package lambda.rodeo.lang.types;
 
 import java.math.BigInteger;
 import lambda.rodeo.runtime.types.asm.AsmType;

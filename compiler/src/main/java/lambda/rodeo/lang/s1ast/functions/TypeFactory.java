@@ -8,11 +8,11 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaTypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.IntType;
-import lambda.rodeo.runtime.types.LambdaType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
-import lambda.rodeo.runtime.types.StringType;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.types.LambdaType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.StringType;
 
 public class TypeFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
 
@@ -34,7 +34,7 @@ public class TypeFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
   @Override
   public LambdaRodeoType visitAtom(AtomContext ctx) {
     String atomIdentifier = ctx.IDENTIFIER().getText();
-    return new Atom(atomIdentifier);
+    return new CompileableAtom(atomIdentifier);
   }
 
   @Override

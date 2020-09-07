@@ -2,8 +2,7 @@ package lambda.rodeo.lang.s2typed.expressions;
 
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 
 public interface TypedExpression {
 

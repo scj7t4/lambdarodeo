@@ -2,7 +2,6 @@ package lambda.rodeo.lang.s3compileable.expression;
 
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +12,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,8 +1,7 @@
 package lambda.rodeo.lang.scope;
 
 import java.util.stream.Stream;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.Getter;
 

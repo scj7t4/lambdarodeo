@@ -17,7 +17,7 @@ import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
-import lambda.rodeo.runtime.types.StringType;
+import lambda.rodeo.lang.types.StringType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

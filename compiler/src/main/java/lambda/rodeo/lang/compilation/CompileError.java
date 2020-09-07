@@ -2,8 +2,8 @@ package lambda.rodeo.lang.compilation;
 
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

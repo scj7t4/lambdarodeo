@@ -15,7 +15,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst.PatternCaseAstBuilder;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -57,7 +57,7 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     AtomContext atom = literal.atom();
     if (atom != null) {
       caseArg.add(AtomCaseArgAst.builder()
-          .atom(new Atom(atom.IDENTIFIER().getText()))
+          .atom(new CompileableAtom(atom.IDENTIFIER().getText()))
           .startLine(ctx.getStart().getLine())
           .endLine(ctx.getStop().getLine())
           .characterStart(ctx.getStart().getCharPositionInLine())

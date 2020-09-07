@@ -14,7 +14,7 @@ import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import org.junit.jupiter.api.Test;
 
 public class ReturnTypesTest {
@@ -29,7 +29,7 @@ public class ReturnTypesTest {
         exprContext, CompileContextUtils.testS1CompileContext());
     ExpressionAst expressionAst = expressionAstFactory.toAst();
 
-    ModuleAst testCase = ExpressionTestUtils.moduleForExpression(expressionAst, Atom.NULL);
+    ModuleAst testCase = ExpressionTestUtils.moduleForExpression(expressionAst, CompileableAtom.NULL);
     CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(testCase);
 
     assertThat("There were compile errors: \n" + compileErrors,

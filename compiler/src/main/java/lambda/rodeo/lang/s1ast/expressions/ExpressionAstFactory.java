@@ -15,7 +15,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.ParentheticalContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -115,7 +115,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
 
   @Override
   public ExpressionAst visitAtom(AtomContext ctx) {
-    Atom value = new Atom(ctx.IDENTIFIER().getText());
+    CompileableAtom value = new CompileableAtom(ctx.IDENTIFIER().getText());
     return AtomAst.builder()
         .atom(value)
         .characterStart(ctx.getStart().getCharPositionInLine())
@@ -167,7 +167,7 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
           .build();
     } else {
       return AtomAst.builder()
-          .atom(Atom.UNDEFINED)
+          .atom(CompileableAtom.UNDEFINED)
           .build();
     }
   }

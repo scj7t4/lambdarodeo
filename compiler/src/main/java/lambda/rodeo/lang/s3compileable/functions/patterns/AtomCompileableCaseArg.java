@@ -15,7 +15,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.AtomTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.runtime.patterns.matchers.AtomMatcher;
-import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.lang.types.CompileableAtom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -67,7 +67,7 @@ public class AtomCompileableCaseArg implements CompileableCaseArg {
     final String atomMatcherInternal = Type.getInternalName(AtomMatcher.class);
     methodVisitor.visitTypeInsn(NEW, atomMatcherInternal);
     methodVisitor.visitInsn(DUP);
-    final String atomInternal = Type.getInternalName(Atom.class);
+    final String atomInternal = Type.getInternalName(CompileableAtom.class);
     methodVisitor.visitTypeInsn(NEW, atomInternal);
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(typedCaseArg.getCaseArgAst().getAtom());

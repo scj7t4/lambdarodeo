@@ -11,15 +11,13 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ExprContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S2CompileContext;
-import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAstFactory;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.IntType;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -319,7 +317,7 @@ class MathExpressionTest {
 
     ToTypedFunctionContext fnCompileContext = CompileContextUtils.testToTypedFunctionContext();
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, fnCompileContext).getType(), equalTo(Atom.UNDEFINED));
+        typedModuleScope, fnCompileContext).getType(), equalTo(CompileableAtom.UNDEFINED));
     List<CompileError> compileErrors = fnCompileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 
@@ -345,7 +343,7 @@ class MathExpressionTest {
 
     ToTypedFunctionContext fnCompileContext = CompileContextUtils.testToTypedFunctionContext();
     assertThat(expressionAst.toTypedExpression(TypeScope.EMPTY,
-        typedModuleScope, fnCompileContext).getType(), equalTo(Atom.UNDEFINED));
+        typedModuleScope, fnCompileContext).getType(), equalTo(CompileableAtom.UNDEFINED));
     List<CompileError> compileErrors = fnCompileContext.getCompileErrorCollector().getCompileErrors();
     assertThat(compileErrors, hasSize(1));
 

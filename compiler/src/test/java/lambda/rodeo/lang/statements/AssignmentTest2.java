@@ -16,7 +16,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.utils.CompileContextUtils;
-import lambda.rodeo.runtime.types.IntType;
+import lambda.rodeo.lang.types.IntType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

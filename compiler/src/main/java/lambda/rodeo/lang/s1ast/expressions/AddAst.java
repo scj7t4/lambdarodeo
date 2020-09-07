@@ -11,9 +11,8 @@ import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat.TypedStringConcat
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
-import lambda.rodeo.runtime.types.StringType;
+import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.types.StringType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

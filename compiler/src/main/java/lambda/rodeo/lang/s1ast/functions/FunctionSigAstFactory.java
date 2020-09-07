@@ -14,7 +14,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class FunctionSigAstFactory extends LambdaRodeoBaseListener {

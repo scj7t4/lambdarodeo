@@ -3,14 +3,12 @@ package lambda.rodeo.lang.s3compileable.expression;
 import static org.objectweb.asm.Opcodes.ALOAD;
 
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
-import lambda.rodeo.runtime.types.CompileableType;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

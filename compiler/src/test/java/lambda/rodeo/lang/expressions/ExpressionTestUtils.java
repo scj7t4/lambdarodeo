@@ -11,7 +11,7 @@ import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.utils.CompileUtils;
-import lambda.rodeo.runtime.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.SneakyThrows;
 
 public class ExpressionTestUtils {

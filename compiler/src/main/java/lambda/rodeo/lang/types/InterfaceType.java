@@ -1,4 +1,4 @@
-package lambda.rodeo.runtime.types;
+package lambda.rodeo.lang.types;
 
 public class InterfaceType implements LambdaRodeoType {
 

@@ -4,11 +4,11 @@ import java.util.List;
 import lambda.rodeo.runtime.exceptions.RuntimeCriticalLanguageException;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
-import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
@@ -30,18 +30,18 @@ public class CompileableLambdaType implements CompileableType {
 
   @Override
   public String getDescriptor() {
-    return AsmType.getDescriptor(functionalRep());
+    return Type.getDescriptor(functionalRep());
   }
 
   @Override
   public String getInternalName() {
-    return AsmType.getInternalName(functionalRep());
+    return Type.getInternalName(functionalRep());
   }
 
   @Override
   public String getSignature() {
     StringBuilder sb = new StringBuilder("L");
-    sb.append(AsmType.getInternalName(functionalRep()));
+    sb.append(Type.getInternalName(functionalRep()));
     sb.append("<");
     for (CompileableType arg : args) {
       sb.append(arg.getSignature());
@@ -63,9 +63,10 @@ public class CompileableLambdaType implements CompileableType {
   public String getGenericFunctionDescriptor() {
     StringBuilder sb = new StringBuilder("(");
     for (CompileableType arg : args) {
-      sb.append(AsmType.getDescriptor(Object.class));
+      // Object because type erasure erases args.
+      sb.append(Type.getDescriptor(Object.class));
     }
-    sb.append(")").append(AsmType.getDescriptor(Object.class));
+    sb.append(")").append(Type.getDescriptor(Object.class));
     return sb.toString();
   }
 

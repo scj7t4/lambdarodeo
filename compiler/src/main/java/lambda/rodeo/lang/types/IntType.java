@@ -1,8 +1,8 @@
 package lambda.rodeo.lang.types;
 
 import java.math.BigInteger;
-import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.EqualsAndHashCode;
+import org.objectweb.asm.Type;
 
 @EqualsAndHashCode
 public class IntType implements LambdaRodeoType, CompileableType {
@@ -19,12 +19,12 @@ public class IntType implements LambdaRodeoType, CompileableType {
 
   @Override
   public String getDescriptor() {
-    return AsmType.getDescriptor(BigInteger.class);
+    return Type.getDescriptor(BigInteger.class);
   }
 
   @Override
   public String getInternalName() {
-    return AsmType.getInternalName(BigInteger.class);
+    return Type.getInternalName(BigInteger.class);
   }
 
   @Override

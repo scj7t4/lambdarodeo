@@ -1,8 +1,8 @@
 package lambda.rodeo.lang.types;
 
 import lambda.rodeo.runtime.types.Atom;
-import lambda.rodeo.runtime.types.asm.AsmType;
 import lombok.EqualsAndHashCode;
+import org.objectweb.asm.Type;
 
 @EqualsAndHashCode
 public class CompileableAtom implements LambdaRodeoType, CompileableType {
@@ -27,12 +27,12 @@ public class CompileableAtom implements LambdaRodeoType, CompileableType {
 
   @Override
   public String getDescriptor() {
-    return AsmType.getDescriptor(Atom.class);
+    return Type.getDescriptor(Atom.class);
   }
 
   @Override
   public String getInternalName() {
-    return AsmType.getInternalName(Atom.class);
+    return Type.getInternalName(Atom.class);
   }
 
   @Override

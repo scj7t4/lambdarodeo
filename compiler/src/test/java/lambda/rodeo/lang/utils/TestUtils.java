@@ -29,7 +29,7 @@ public class TestUtils {
     return moduleParser.functionDef();
   }
 
-  private static LambdaRodeoParser parseResource(String resource) throws IOException {
+  public static LambdaRodeoParser parseResource(String resource) throws IOException {
     CharStream cs = openSourceFile(resource);
 
     LambdaRodeoLexer moduleLexer = new LambdaRodeoLexer(cs);

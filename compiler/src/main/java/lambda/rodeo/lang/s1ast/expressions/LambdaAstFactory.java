@@ -7,8 +7,8 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaStatementContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
-import lambda.rodeo.lang.s1ast.functions.TypedVarFactory;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVarFactory;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 

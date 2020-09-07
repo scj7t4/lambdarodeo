@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;

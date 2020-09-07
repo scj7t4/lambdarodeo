@@ -14,6 +14,9 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.s1ast.type.TypeExpressionFactory;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVarFactory;
 import lambda.rodeo.lang.types.LambdaRodeoType;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -69,7 +72,7 @@ public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
   @Override
   public void enterReturnType(ReturnTypeContext ctx) {
     TypeExpressionContext typeExpressionContext = ctx.typeExpression();
-    returnType = new TypeFactory(typeExpressionContext).toAst();
+    returnType = new TypeExpressionFactory(typeExpressionContext).toAst();
   }
 
   public FunctionSigAst toAst() {

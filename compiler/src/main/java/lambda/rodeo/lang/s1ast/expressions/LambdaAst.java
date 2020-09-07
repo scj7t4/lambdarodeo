@@ -13,7 +13,7 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;

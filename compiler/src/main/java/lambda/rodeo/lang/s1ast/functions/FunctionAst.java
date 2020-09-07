@@ -5,6 +5,7 @@ import java.util.Objects;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S2CompileContext;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;

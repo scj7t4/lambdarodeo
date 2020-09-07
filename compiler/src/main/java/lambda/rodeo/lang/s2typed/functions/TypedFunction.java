@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;

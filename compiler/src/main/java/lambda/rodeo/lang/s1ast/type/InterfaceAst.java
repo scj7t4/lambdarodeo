@@ -2,7 +2,6 @@ package lambda.rodeo.lang.s1ast.type;
 
 import java.util.List;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

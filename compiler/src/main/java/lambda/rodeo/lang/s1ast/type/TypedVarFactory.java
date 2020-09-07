@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s1ast.functions;
+package lambda.rodeo.lang.s1ast.type;
 
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaTypedVarContext;
@@ -38,7 +38,7 @@ public class TypedVarFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterTypeExpression(TypeExpressionContext ctx) {
-    TypeFactory typeFactory = new TypeFactory(ctx);
-    builder.type(typeFactory.toAst());
+    TypeExpressionFactory typeExpressionFactory = new TypeExpressionFactory(ctx);
+    builder.type(typeExpressionFactory.toAst());
   }
 }

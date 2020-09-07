@@ -1,0 +1,4 @@
+interface Tree {
+  left: Tree;
+  right: Tree;
+}

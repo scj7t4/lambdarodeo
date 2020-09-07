@@ -3,7 +3,7 @@ package lambda.rodeo.lang.s2typed.expressions;
 import java.util.Collections;
 import java.util.List;
 import lambda.rodeo.lang.s1ast.expressions.LambdaAst;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableLambda;

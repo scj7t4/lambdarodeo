@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s1ast.functions;
+package lambda.rodeo.lang.s1ast.type;
 
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.s2typed.functions.S2TypedVar;

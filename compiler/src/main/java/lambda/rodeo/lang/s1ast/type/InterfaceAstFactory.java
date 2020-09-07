@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.InterfaceDefContext;
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
-import lambda.rodeo.lang.s1ast.functions.TypedVarFactory;
 
 public class InterfaceAstFactory extends LambdaRodeoBaseVisitor<InterfaceAst> {
 

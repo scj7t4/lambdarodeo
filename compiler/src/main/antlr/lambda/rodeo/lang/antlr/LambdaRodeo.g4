@@ -29,10 +29,12 @@ returnType: typeExpression;
 typeExpression: intType
   | stringType
   | atom
-  | lambdaTypeExpression;
+  | lambdaTypeExpression
+  | definedType;
 intType: 'int';
 stringType: 'string';
 lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeExpression;
+definedType: identifier;
 
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
 caseArg: caseLiteral

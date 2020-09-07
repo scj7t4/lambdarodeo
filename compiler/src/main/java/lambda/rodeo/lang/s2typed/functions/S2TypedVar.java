@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.s2typed.functions;
 
-import lambda.rodeo.lang.s1ast.functions.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.Getter;

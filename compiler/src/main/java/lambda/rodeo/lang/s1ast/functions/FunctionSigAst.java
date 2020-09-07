@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S2CompileContext;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionSignature;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;

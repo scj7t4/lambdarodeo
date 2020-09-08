@@ -1,4 +1,4 @@
-package lambda.rodeo.lang.s2typed.functions;
+package lambda.rodeo.lang.s2typed.types;
 
 import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.types.CompileableType;

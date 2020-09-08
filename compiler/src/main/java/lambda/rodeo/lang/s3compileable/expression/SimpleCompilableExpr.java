@@ -17,7 +17,7 @@ public class SimpleCompilableExpr implements CompileableExpr {
   @NonNull
   TypedExpression typedExpression;
   @NonNull
-  private final Compileable compileable;
+  private final CompileableExpression compileable;
 
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     compileable.compile(methodVisitor, compileContext);

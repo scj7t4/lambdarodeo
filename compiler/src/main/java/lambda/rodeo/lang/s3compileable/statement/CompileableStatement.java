@@ -1,9 +1,8 @@
 package lambda.rodeo.lang.s3compileable.statement;
 
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.compilation.S2CompileContext;
-import lambda.rodeo.lang.s3compileable.expression.Compileable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s3compileable.expression.LambdaLiftable;
@@ -17,7 +16,7 @@ import org.objectweb.asm.MethodVisitor;
 @Builder
 @Getter
 @EqualsAndHashCode
-public class CompileableStatement implements Compileable {
+public class CompileableStatement implements CompileableExpression {
 
   private final TypedStatement typedStatement;
   private final CompileableTypeScope beforeTypeScope;

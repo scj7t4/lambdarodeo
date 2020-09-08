@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.s1ast.type;
 
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.s2typed.functions.S2TypedVar;
+import lambda.rodeo.lang.s2typed.types.S2TypedVar;
 import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;

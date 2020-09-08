@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Set;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s3compileable.expression.Compileable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -26,7 +26,7 @@ import org.objectweb.asm.Type;
 @Builder
 @Getter
 @EqualsAndHashCode
-public class IntConstantAst implements ExpressionAst, Compileable {
+public class IntConstantAst implements ExpressionAst, CompileableExpression {
 
   private final String literal;
   private final int startLine;

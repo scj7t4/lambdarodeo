@@ -6,7 +6,7 @@ import java.util.Set;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s3compileable.expression.Compileable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -58,7 +58,7 @@ public class UnaryMinusAst implements ExpressionAst {
   }
 
   public void compile(
-      Compileable operand,
+      CompileableExpression operand,
       MethodVisitor methodVisitor,
       S1CompileContext compileContext) {
     operand.compile(methodVisitor, compileContext);

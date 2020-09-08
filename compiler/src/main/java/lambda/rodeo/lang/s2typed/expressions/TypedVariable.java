@@ -5,7 +5,7 @@ import static org.objectweb.asm.Opcodes.ALOAD;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.VariableAst;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.s3compileable.expression.Compileable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
@@ -18,7 +18,7 @@ import org.objectweb.asm.MethodVisitor;
 @Getter
 @Builder
 @EqualsAndHashCode
-public class TypedVariable implements TypedExpression, Compileable {
+public class TypedVariable implements TypedExpression, CompileableExpression {
 
   private final VariableAst variableAst;
   private final Entry scopeEntry;

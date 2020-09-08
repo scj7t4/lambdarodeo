@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class Atom {
+public class Atom implements LRType {
   private final String atom;
 
   public static final Atom UNDEFINED = new Atom("$UNDEFINED");
@@ -18,5 +18,10 @@ public class Atom {
   @Override
   public String toString() {
     return ":" + atom;
+  }
+
+  @Override
+  public boolean assignableFrom(LRType type) {
+    return equals(type);
   }
 }

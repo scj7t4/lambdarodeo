@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.s2typed.expressions;
 
 import java.util.function.Supplier;
-import lambda.rodeo.lang.s3compileable.expression.Compileable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
@@ -24,7 +24,7 @@ public class SimpleTypedExpression implements TypedExpression {
   @NonNull
   private final CompileableType type;
 
-  private final @NonNull Supplier<Compileable> toCompileable;
+  private final @NonNull Supplier<CompileableExpression> toCompileable;
 
 
   @Override

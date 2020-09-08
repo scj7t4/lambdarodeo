@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s3compileable.expression.Compileable;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
@@ -38,7 +38,7 @@ public interface BiNumericExpressionAst extends ExpressionAst {
   void compile(CompileableExpr lhs, CompileableExpr rhs, MethodVisitor methodVisitor,
       S1CompileContext compileContext);
 
-  static Supplier<Compileable> toCompilable(
+  static Supplier<CompileableExpression> toCompilable(
       TypedExpression lhs,
       TypedExpression rhs,
       BiNumericExpressionAst expr) {

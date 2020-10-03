@@ -66,4 +66,21 @@ public class AssignmentCompileErrorsTest {
     assertThat(compileErrors.getCompileErrors().get(0).getErrorType(),
         equalTo(CompileError.IDENTIFIER_ALREADY_IN_SCOPE));
   }
+
+  @Test
+  @SneakyThrows
+  public void testAlreadyDeclared4() {
+    String resource = "/test_cases/functions/AlreadyInScope4.rdo";
+    ModuleContext moduleDef = TestUtils.parseModule(resource);
+    ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
+        CompileContextUtils.testS1CompileContext());
+    ModuleAst testCase = factory.toAst();
+
+    CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(testCase);
+
+    assertThat("There were compile errors: \n" + compileErrors,
+        compileErrors.getCompileErrors().size(), equalTo(1));
+    assertThat(compileErrors.getCompileErrors().get(0).getErrorType(),
+        equalTo(CompileError.IDENTIFIER_ALREADY_IN_SCOPE));
+  }
 }

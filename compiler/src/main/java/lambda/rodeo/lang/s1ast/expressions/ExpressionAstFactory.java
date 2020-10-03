@@ -11,6 +11,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.IdentifierContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.MultiDivContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.ObjectContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ParentheticalContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.UnaryMinusContext;
@@ -176,5 +177,11 @@ public class ExpressionAstFactory extends LambdaRodeoBaseVisitor<ExpressionAst> 
   public ExpressionAst visitLambda(LambdaContext ctx) {
     LambdaAstFactory lambdaAstFactory = new LambdaAstFactory(ctx, compileContext);
     return lambdaAstFactory.toAst();
+  }
+
+  @Override
+  public ExpressionAst visitObject(ObjectContext ctx) {
+    ObjectAstFactory objectAstFactory = new ObjectAstFactory(ctx, compileContext);
+    return objectAstFactory.toAst();
   }
 }

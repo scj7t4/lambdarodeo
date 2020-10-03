@@ -1,0 +1,5 @@
+def function(v1: int) => int {
+  let v2 = v1 + 1;
+  let v2 = 4;
+  v2;
+}

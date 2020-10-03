@@ -56,7 +56,8 @@ expr
   | expr addSubOp expr #addSub
   | literal #literalExpr
   | identifier #identifierExpr
-  | lambda #lambdaFn;
+  | lambda #lambdaFn
+  | object #objectCreate;
 literal: atom
        | intLiteral
        | stringLiteral;
@@ -72,6 +73,12 @@ lambda: '(' (lambdaTypedVar (',' lambdaTypedVar)*)? ')' '=>' ('{' lambdaStatemen
 lambdaTypedVar: varName ':' varType;
 lambdaStatement: assignment? expr ';';
 lambdaExpr: expr;
+
+object: '{' objectExpr* '}';
+objectExpr
+  : objectMember;
+  // TODO: spread operator
+objectMember: IDENTIFIER ':' expr;
 
 assignment: 'let' IDENTIFIER '=';
 

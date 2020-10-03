@@ -104,6 +104,7 @@ public class ModuleAst implements AstNode {
   public ModuleScope getModuleScope(S1CompileContext compileContext, String alias) {
     return ModuleScope.builder()
         .functions(functionAsts)
+        .interfaces(interfaces)
         .alias(alias)
         .thisModule(this)
         .build();

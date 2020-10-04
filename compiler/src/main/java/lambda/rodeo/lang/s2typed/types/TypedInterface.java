@@ -9,6 +9,8 @@ public interface TypedInterface extends LambdaRodeoType {
 
   java.util.List<S2TypedVar> getMembers();
 
+  // TODO: Test me
+  // TODO: Refactor to make good error reporting possible.
   default boolean assignableFrom(LambdaRodeoType other) {
     if (!(other instanceof TypedInterface)) {
       return false;

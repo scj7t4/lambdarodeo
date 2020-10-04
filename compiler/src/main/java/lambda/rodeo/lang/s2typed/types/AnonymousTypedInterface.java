@@ -7,6 +7,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class AnonymousTypedInterface implements TypedInterface{
+public class AnonymousTypedInterface implements TypedInterface {
   private final List<S2TypedVar> members;
 }

@@ -1,32 +1,14 @@
 package lambda.rodeo.lang.s2typed.types;
 
-import lambda.rodeo.lang.s1ast.type.TypedVar;
-import lambda.rodeo.lang.types.CompileableType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
+public interface S2TypedVar {
 
-@Builder
-@Getter
-public class S2TypedVar {
-  @NonNull
-  private final TypedVar from;
+  String getName();
 
-  private final CompileableType type;
+  int getStartLine();
 
-  public String getName() {
-    return getFrom().getName();
-  }
+  int getEndLine();
 
-  public int getStartLine() {
-    return getFrom().getStartLine();
-  }
+  int getCharacterStart();
 
-  public int getEndLine() {
-    return getFrom().getEndLine();
-  }
-
-  public int getCharacterStart() {
-    return getFrom().getCharacterStart();
-  }
+  lambda.rodeo.lang.types.CompileableType getType();
 }

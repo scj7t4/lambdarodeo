@@ -16,4 +16,6 @@ public class TypedInterface {
 
   @NonNull
   private final List<S2TypedVar> members;
+
+
 }

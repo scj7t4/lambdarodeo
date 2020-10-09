@@ -74,11 +74,11 @@ lambdaTypedVar: varName ':' varType;
 lambdaStatement: assignment? expr ';';
 lambdaExpr: expr;
 
-object: '{' objectExpr* '}';
+object: '{' (objectExpr ';')* '}';
 objectExpr
   : objectMember;
   // TODO: spread operator
-objectMember: IDENTIFIER ':' expr;
+objectMember: IDENTIFIER ':' expr ;
 
 assignment: 'let' IDENTIFIER '=';
 

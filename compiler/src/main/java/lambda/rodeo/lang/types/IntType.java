@@ -1,7 +1,11 @@
 package lambda.rodeo.lang.types;
 
+import static org.objectweb.asm.Opcodes.GETSTATIC;
+
 import java.math.BigInteger;
+import lambda.rodeo.runtime.types.LRInteger;
 import lombok.EqualsAndHashCode;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 @EqualsAndHashCode
@@ -25,6 +29,14 @@ public class IntType implements LambdaRodeoType, CompileableType {
   @Override
   public String getInternalName() {
     return Type.getInternalName(BigInteger.class);
+  }
+
+  @Override
+  public void provideRuntimeType(MethodVisitor methodVisitor) {
+    methodVisitor.visitFieldInsn(GETSTATIC,
+        Type.getInternalName(LRInteger.class),
+        "INSTANCE",
+        Type.getDescriptor(LRInteger.class));
   }
 
   @Override

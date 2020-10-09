@@ -26,10 +26,10 @@ public class LambdaType implements LambdaRodeoType {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("<lambda>(");
-    for(int i = 0; i < args.size(); i++) {
+    for (int i = 0; i < args.size(); i++) {
       LambdaRodeoType arg = args.get(i);
       sb.append(arg);
-      if(i < args.size() - 1) {
+      if (i < args.size() - 1) {
         sb.append(",");
       }
     }
@@ -39,9 +39,10 @@ public class LambdaType implements LambdaRodeoType {
 
   @Override
   public boolean assignableFrom(LambdaRodeoType other) {
-    if(this.equals(other)) {
+    if (this.equals(other)) {
       return true;
-    } else if(other instanceof CompileableLambdaType && this.assignableFrom(((CompileableLambdaType) other).getFrom())) {
+    } else if (other instanceof CompileableLambdaType && this
+        .assignableFrom(((CompileableLambdaType) other).getFrom())) {
       return true;
     }
     return false;

@@ -3,7 +3,7 @@ package lambda.rodeo.lang.s1ast.type;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
-import lambda.rodeo.lang.s2typed.types.TypedInterface;
+import lambda.rodeo.lang.types.LRInterface;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,8 +21,8 @@ public class InterfaceAst implements AstNode {
   @NonNull
   private final List<TypedVar> members;
 
-  public TypedInterface toTypedInterface() {
-    return TypedInterface.builder()
+  public LRInterface toTypedInterface() {
+    return LRInterface.builder()
         .from(this)
         .members(members.stream()
           .map(TypedVar::toS2TypedVar)

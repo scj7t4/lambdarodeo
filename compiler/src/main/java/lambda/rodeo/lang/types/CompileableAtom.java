@@ -1,7 +1,12 @@
 package lambda.rodeo.lang.types;
 
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+
 import lambda.rodeo.runtime.types.Atom;
 import lombok.EqualsAndHashCode;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 @EqualsAndHashCode
@@ -33,6 +38,18 @@ public class CompileableAtom implements LambdaRodeoType, CompileableType {
   @Override
   public String getInternalName() {
     return Type.getInternalName(Atom.class);
+  }
+
+  @Override
+  public void provideRuntimeType(MethodVisitor methodVisitor) {
+    methodVisitor.visitTypeInsn(NEW, "lambda/rodeo/runtime/types/Atom");
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitLdcInsn(atom);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+        Type.getInternalName(Atom.class),
+        "<init>",
+        "(Ljava/lang/String;)V",
+        false);
   }
 
   @Override

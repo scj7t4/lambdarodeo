@@ -1,5 +1,7 @@
 package lambda.rodeo.lang.types;
 
+import org.objectweb.asm.MethodVisitor;
+
 public interface CompileableType {
   LambdaRodeoType getType();
 
@@ -17,4 +19,6 @@ public interface CompileableType {
   default boolean allocateSlot() {
     return true;
   }
+
+  public void provideRuntimeType(MethodVisitor methodVisitor);
 }

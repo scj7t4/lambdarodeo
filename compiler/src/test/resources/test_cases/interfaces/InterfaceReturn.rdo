@@ -1,0 +1,18 @@
+interface MyCoolInterface {
+  member1: int;
+  member2: :null;
+}
+
+interface Empty {
+}
+//TODO: make this test
+def test() => Empty {
+  {}
+}
+
+def test2() => MyCoolInterface {
+  {
+    member1: 3;
+    member2: :null;
+  }
+}

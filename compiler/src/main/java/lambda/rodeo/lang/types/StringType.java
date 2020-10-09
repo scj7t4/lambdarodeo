@@ -1,6 +1,11 @@
 package lambda.rodeo.lang.types;
 
 
+import static org.objectweb.asm.Opcodes.GETSTATIC;
+
+import lambda.rodeo.runtime.types.LRInteger;
+import lambda.rodeo.runtime.types.LRString;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 public class StringType implements LambdaRodeoType, CompileableType {
@@ -14,6 +19,14 @@ public class StringType implements LambdaRodeoType, CompileableType {
   @Override
   public String getInternalName() {
     return Type.getInternalName(String.class);
+  }
+
+  @Override
+  public void provideRuntimeType(MethodVisitor methodVisitor) {
+    methodVisitor.visitFieldInsn(GETSTATIC,
+        Type.getInternalName(LRString.class),
+        "INSTANCE",
+        Type.getDescriptor(LRString.class));
   }
 
   @Override

@@ -14,8 +14,12 @@ public class TypedVar implements AstNode {
 
   private final String name;
   private final LambdaRodeoType type;
+
+  @EqualsAndHashCode.Exclude
   private final int startLine;
+  @EqualsAndHashCode.Exclude
   private final int endLine;
+  @EqualsAndHashCode.Exclude
   private final int characterStart;
 
   public S2TypedVar toS2TypedVar() {

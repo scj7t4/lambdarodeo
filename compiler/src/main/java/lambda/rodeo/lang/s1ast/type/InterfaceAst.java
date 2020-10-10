@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.types.LRInterface;
+import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,9 +15,6 @@ public class InterfaceAst implements AstNode {
   private final int startLine;
   private final int endLine;
   private final int characterStart;
-
-  @NonNull
-  private final String name;
 
   @NonNull
   private final List<TypedVar> members;

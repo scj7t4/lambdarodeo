@@ -68,7 +68,7 @@ public class CompileableLambdaType implements CompileableType {
     // Push a number onto the stack
     methodVisitor.visitLdcInsn(args.size());
     methodVisitor.visitTypeInsn(ANEWARRAY, Type.getInternalName(LRType.class));
-    // Load all the arg types in...
+    // Load all the arg type in...
     for (int i = 0; i < args.size(); i++) {
       methodVisitor.visitInsn(DUP);
       methodVisitor.visitLdcInsn(i);
@@ -85,7 +85,7 @@ public class CompileableLambdaType implements CompileableType {
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
         Type.getInternalName(LRLambda.LRLambdaBuilder.class),
         "arguments",
-        "(Ljava/util/List;)Llambda/rodeo/runtime/types/LRLambda$LRLambdaBuilder;",
+        "(Ljava/util/List;)Llambda/rodeo/runtime/type/LRLambda$LRLambdaBuilder;",
         false);
     // Then load the return type:
     returnType.provideRuntimeType(methodVisitor);
@@ -93,13 +93,13 @@ public class CompileableLambdaType implements CompileableType {
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
         Type.getInternalName(LRLambda.LRLambdaBuilder.class),
         "returnType",
-        "(Llambda/rodeo/runtime/types/LRType;)Llambda/rodeo/runtime/types/LRLambda$LRLambdaBuilder;",
+        "(Llambda/rodeo/runtime/type/LRType;)Llambda/rodeo/runtime/type/LRLambda$LRLambdaBuilder;",
         false);
     // Then invoke the build method
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
         Type.getInternalName(LRLambda.LRLambdaBuilder.class),
         "build",
-        "()Llambda/rodeo/runtime/types/LRLambda;",
+        "()Llambda/rodeo/runtime/type/LRLambda;",
         false);
   }
 

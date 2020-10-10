@@ -13,7 +13,7 @@ import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
-import lambda.rodeo.lang.s1ast.type.InterfaceAst;
+import lambda.rodeo.lang.s1ast.type.TypeDef;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
@@ -45,13 +45,13 @@ public class ModuleAst implements AstNode {
 
   @Builder.Default
   @NonNull
-  private final List<InterfaceAst> interfaces = new ArrayList<>();
+  private final List<TypeDef> types = new ArrayList<>();
 
   private final int startLine;
   private final int endLine;
   private final int characterStart;
 
-  public TypedModule toTypedModuleAst(
+  public TypedModule toTypedModule(
       S2CompileContextImpl compileContext,
       TypedModuleScope typedModuleScope) {
 
@@ -96,6 +96,10 @@ public class ModuleAst implements AstNode {
     return TypedModule.builder()
         .moduleAst(this)
         .typedModuleScope(typedModuleScope)
+        .typeDefs(types.stream()
+          .map(TypeDef::toTypedTypeDef)
+          .collect(Collectors.toList())
+        )
         .functionAsts(typedFunctions)
         .staticPatterns(staticPatterns)
         .build();
@@ -104,7 +108,7 @@ public class ModuleAst implements AstNode {
   public ModuleScope getModuleScope(S1CompileContext compileContext, String alias) {
     return ModuleScope.builder()
         .functions(functionAsts)
-        .interfaces(interfaces)
+        .types(types)
         .alias(alias)
         .thisModule(this)
         .build();

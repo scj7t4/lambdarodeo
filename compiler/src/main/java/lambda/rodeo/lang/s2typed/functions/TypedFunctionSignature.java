@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
-import lambda.rodeo.lang.s2typed.types.S2TypedVar;
+import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;

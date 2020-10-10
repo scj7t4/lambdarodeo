@@ -68,7 +68,8 @@ public class CompileUtils {
     CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
 
     Class<?> compiledClass = new TestClassLoader(CompileUtils.class.getClassLoader())
-        .defineClass(compileableModule.getName(), compileableModule.compile(compileContext));
+        .defineClass(compileableModule.getName(),
+            compileableModule.compile(compileContext).get(null));
     assertThat(
         "There were compile errors: \n" + compileContext.getCompileErrorCollector(),
         compileContext.getCompileErrorCollector().getCompileErrors(),
@@ -81,7 +82,7 @@ public class CompileUtils {
     // TODO: This will need to change when compiling multiple modules:
     ModuleScope moduleScope = moduleAst.getModuleScope(compileContext, null);
     TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(Collections.emptyList());
-    TypedModule typedModule = moduleAst.toTypedModuleAst(compileContext, typedModuleScope);
+    TypedModule typedModule = moduleAst.toTypedModule(compileContext, typedModuleScope);
     return typedModule.toCompileableModule();
   }
 
@@ -90,7 +91,7 @@ public class CompileUtils {
     ASMifier asMifier = new ASMifier();
     ClassReader classReader = new ClassReader(
         convertToCompileableModule(moduleAst, compileContext)
-            .compile(compileContext));
+            .compile(compileContext).get(null));
     PrintWriter printWriter = new PrintWriter(System.out);
     TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, asMifier, printWriter);
     classReader.accept(traceClassVisitor, 0);

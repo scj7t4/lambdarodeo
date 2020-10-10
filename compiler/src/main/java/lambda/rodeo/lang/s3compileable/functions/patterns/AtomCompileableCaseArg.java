@@ -81,7 +81,7 @@ public class AtomCompileableCaseArg implements CompileableCaseArg {
         INVOKESPECIAL,
         atomMatcherInternal,
         "<init>",
-        "(Llambda/rodeo/runtime/types/Atom;)V",
+        "(Llambda/rodeo/runtime/type/Atom;)V",
         false);
     methodVisitor.visitFieldInsn(PUTSTATIC,
         internalModuleName,

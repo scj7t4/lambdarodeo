@@ -1,4 +1,4 @@
-interface Tree {
+type Tree => {
   left: Tree;
   right: Tree;
 }

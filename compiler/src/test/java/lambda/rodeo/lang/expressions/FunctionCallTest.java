@@ -68,7 +68,7 @@ class FunctionCallTest {
     TypedModuleScope typedModuleScope = ModuleScope.builder()
         .thisModule(moduleAst)
         .functions(moduleAst.getFunctionAsts())
-        .interfaces(moduleAst.getInterfaces())
+        .types(moduleAst.getTypes())
         .build()
         .toTypedModuleScope(Collections.emptyList());
 
@@ -126,7 +126,7 @@ class FunctionCallTest {
     TypedModuleScope typedModuleScope = ModuleScope.builder()
         .thisModule(moduleAst)
         .functions(moduleAst.getFunctionAsts())
-        .interfaces(moduleAst.getInterfaces())
+        .types(moduleAst.getTypes())
         .build()
         .toTypedModuleScope(Collections.emptyList());
 

@@ -3,8 +3,7 @@ package lambda.rodeo.lang.scope;
 import java.util.List;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
-import lambda.rodeo.lang.s1ast.type.InterfaceAst;
-import lambda.rodeo.lang.s2typed.functions.TypedFunction;
+import lambda.rodeo.lang.s1ast.type.TypeDef;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,7 +20,7 @@ public class ModuleScope {
   @NonNull
   private final List<FunctionAst> functions;
   @NonNull
-  private final List<InterfaceAst> interfaces;
+  private final List<TypeDef> types;
 
   public TypedModuleScope toTypedModuleScope(List<ModuleScope> importedModules) {
     return TypedModuleScope.builder()

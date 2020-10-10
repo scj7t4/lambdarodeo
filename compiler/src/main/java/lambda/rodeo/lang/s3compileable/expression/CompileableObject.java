@@ -42,7 +42,7 @@ public class CompileableObject implements CompileableExpr {
     methodVisitor.visitMethodInsn(INVOKESTATIC,
         Type.getInternalName(LRObject.class),
         "create",
-        "()Llambda/rodeo/runtime/types/LRObject;",
+        "()Llambda/rodeo/runtime/type/LRObject;",
         false);
     for (CompileableObjectEntry entry : members) {
       methodVisitor.visitLdcInsn(entry.getIdentifier());
@@ -51,13 +51,13 @@ public class CompileableObject implements CompileableExpr {
       methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
           Type.getInternalName(LRObjectSetter.class),
           "set",
-          "(Ljava/lang/String;Ljava/lang/Object;Llambda/rodeo/runtime/types/LRType;)Llambda/rodeo/runtime/types/LRObjectSetter;",
+          "(Ljava/lang/String;Ljava/lang/Object;Llambda/rodeo/runtime/type/LRType;)Llambda/rodeo/runtime/type/LRObjectSetter;",
           false);
     }
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
         Type.getInternalName(LRObjectSetter.class),
         "done",
-        "()Llambda/rodeo/runtime/types/LRObject;",
+        "()Llambda/rodeo/runtime/type/LRObject;",
         false);
 
   }

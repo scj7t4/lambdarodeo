@@ -5,7 +5,7 @@ import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
 
 import lambda.rodeo.lang.compilation.S2CompileContext;
-import lambda.rodeo.lang.s2typed.types.S2TypedVar;
+import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionSignature;
 import lambda.rodeo.lang.scope.CompileableTypeScope;

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
+import lambda.rodeo.lang.s2typed.type.TypedTypeDef;
 import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableStaticPattern;
@@ -24,9 +25,15 @@ import lombok.NonNull;
 @EqualsAndHashCode
 public class TypedModule {
 
+  @NonNull
   private final ModuleAst moduleAst;
+  @NonNull
   private final List<TypedFunction> functionAsts;
+  @NonNull
+  private final List<TypedTypeDef> typeDefs;
+  @NonNull
   private final TypedModuleScope typedModuleScope;
+  @NonNull
   private final Map<TypedCaseArg, TypedStaticPattern> staticPatterns;
 
   public CompileableModule toCompileableModule() {

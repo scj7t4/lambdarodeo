@@ -33,7 +33,7 @@ public class S3Compiler {
           .source(result.getSource())
           .build();
       CompileableModule compileableModule = module.toCompileableModule();
-      byte[] compiled = compileableModule.compile(context);
+      byte[] compiled = compileableModule.compile(context).get(null);
 
       compiledUnits.add(CompiledUnit.builder()
           .byteCode(compiled)

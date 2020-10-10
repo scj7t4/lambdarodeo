@@ -24,7 +24,6 @@ public class InterfaceAstFactory extends LambdaRodeoBaseVisitor<InterfaceAst> {
         .collect(Collectors.toList());
 
     return InterfaceAst.builder()
-        .name(ctx.IDENTIFIER().getText())
         .members(members)
         .build();
   }

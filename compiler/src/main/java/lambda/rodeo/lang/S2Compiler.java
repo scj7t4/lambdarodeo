@@ -65,7 +65,7 @@ public class S2Compiler {
       }
 
       TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(imported);
-      TypedModule typedModule = moduleAst.toTypedModuleAst(context, typedModuleScope);
+      TypedModule typedModule = moduleAst.toTypedModule(context, typedModuleScope);
       typedModules.add(TypedModuleResult.builder()
           .module(typedModule)
           .source(s1Module.getSource())

@@ -5,14 +5,11 @@ grammar LambdaRodeo;
 }
 module: moduleBody;
 moduleBody: (lrImport)* moduleEntry*;
-moduleEntry: functionDef | interfaceDef;
+moduleEntry: functionDef | typeDef;
 lrImport: moduleImport;
 alias: 'as' IDENTIFIER;
 moduleImport: 'import' SCOPED_IDENTIFIER alias? ';';
-
-
-interfaceDef: 'interface' IDENTIFIER '{' memberDecl* '}';
-memberDecl: typedVar ';';
+typeDef: 'type' IDENTIFIER '=>' typeExpression ';';
 
 functionDef: 'def' functionSig functionBody;
 functionSig: functionName functionArgs '=>' returnType;
@@ -30,10 +27,15 @@ typeExpression: intType
   | stringType
   | atom
   | lambdaTypeExpression
-  | definedType;
+  | definedType
+  | interfaceDef;
+
 intType: 'int';
 stringType: 'string';
 lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeExpression;
+interfaceDef: '{' memberDecl* '}';
+memberDecl: typedVar ';';
+
 definedType: identifier;
 
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';

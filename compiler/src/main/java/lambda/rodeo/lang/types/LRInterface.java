@@ -1,5 +1,9 @@
 package lambda.rodeo.lang.types;
 
+import static org.objectweb.asm.Opcodes.ACC_ABSTRACT;
+import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
@@ -13,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
-import lambda.rodeo.lang.s2typed.types.S2TypedVar;
+import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.runtime.types.LRObject;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
@@ -33,8 +38,19 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
   @NonNull
   private final List<S2TypedVar> members;
 
-  public void compile() {
+  public void declare(String name, ClassWriter classWriter) {
+    classWriter.visitNestMember(name);
+  }
 
+  public void compile(String internalName,
+      String parentInternalName,
+      String name,
+      ClassWriter classWriter) {
+    classWriter.visitInnerClass(
+        internalName,
+        parentInternalName,
+        name,
+        ACC_PUBLIC | ACC_STATIC | ACC_ABSTRACT | ACC_INTERFACE);
   }
 
   @Override
@@ -55,7 +71,7 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
   @Override
   public void provideRuntimeType(MethodVisitor methodVisitor) {
     // Start the builder
-    methodVisitor.visitMethodInsn(INVOKESTATIC, "lambda/rodeo/runtime/types/LRInterface", "builder", "()Llambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder;", false);
+    methodVisitor.visitMethodInsn(INVOKESTATIC, "lambda/rodeo/runtime/types/LRInterface", "builder", "()Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
 
     // Start the map
     methodVisitor.visitTypeInsn(NEW, "java/util/HashMap");
@@ -80,10 +96,10 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
     }
 
     // Invoke setting the type map
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder", "typeMap", "(Ljava/util/Map;)Llambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder;", false);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder", "typeMap", "(Ljava/util/Map;)Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
 
     // Invoke build();
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder", "build", "()Llambda/rodeo/runtime/types/LRInterface;", false);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder", "build", "()Llambda/rodeo/runtime/type/LRInterface;", false);
   }
 
   @Override

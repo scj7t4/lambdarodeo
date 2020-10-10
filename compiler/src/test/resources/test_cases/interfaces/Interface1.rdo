@@ -1,4 +1,4 @@
-interface MyCoolInterface {
+type MyCoolInterface => {
   member1: int;
   member2: :null;
 }

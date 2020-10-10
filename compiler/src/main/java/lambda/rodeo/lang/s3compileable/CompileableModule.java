@@ -7,6 +7,7 @@ import static org.objectweb.asm.Opcodes.ACC_SUPER;
 import static org.objectweb.asm.Opcodes.RETURN;
 import static org.objectweb.asm.Opcodes.V11;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,7 +37,13 @@ public class CompileableModule {
   private final List<CompileableFunction> compileableFunctions;
   private final Map<CompileableCaseArg, CompileableStaticPattern> staticPatterns;
 
-  public byte[] compile(S2CompileContext compileContext) {
+  public Map<String, byte[]> compile(S2CompileContext compileContext) {
+    HashMap<String, byte[]> compiledModule = new HashMap<>();
+    compiledModule.put(null, compileSelf(compileContext));
+    return compiledModule;
+  }
+
+  public byte[] compileSelf(S2CompileContext compileContext) {
     // Tell ASM we want it to compute max stack and frames.
     ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
     cw.visit(
@@ -115,7 +122,8 @@ public class CompileableModule {
     }
 
     cw.visitEnd();
-    return cw.toByteArray();
+    byte[] byteCode = cw.toByteArray();
+    return byteCode;
   }
 
   public Optional<CompileableFunction> getFunction(String funcName) {

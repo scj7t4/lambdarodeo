@@ -10,7 +10,12 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @EqualsAndHashCode
-public final class LRObject {
+public final class LRObject implements LRPackaged {
+
+  @Override
+  public LRObject unpack$() {
+    return this;
+  }
 
   @Builder
   @Getter

@@ -19,6 +19,7 @@ public class InterfaceAstFactory extends LambdaRodeoBaseVisitor<InterfaceAst> {
 
   @Override
   public InterfaceAst visitInterfaceDef(InterfaceDefContext ctx) {
+    //TODO: Compile error for declaring same member multiple times
     List<TypedVar> members = ctx.memberDecl().stream()
         .map(decl -> new TypedVarFactory(decl.typedVar()).toAst())
         .collect(Collectors.toList());

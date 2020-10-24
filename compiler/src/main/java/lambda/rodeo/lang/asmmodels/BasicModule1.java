@@ -5,7 +5,7 @@ import lambda.rodeo.runtime.types.LRObject;
 import lambda.rodeo.runtime.types.LRPackaged;
 import lambda.rodeo.runtime.types.LRString;
 
-public interface BasicModule1 {
+public interface BasicModule1 extends LRPackaged {
 
   public interface MyInterface {
 

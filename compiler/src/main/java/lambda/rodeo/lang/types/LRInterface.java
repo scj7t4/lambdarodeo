@@ -11,6 +11,7 @@ import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.V11;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.runtime.types.LRObject;
+import lambda.rodeo.runtime.types.LRPackaged;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -28,7 +30,7 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
-public class LRInterface implements LambdaRodeoType, CompileableType {
+public class LRInterface implements LambdaRodeoType, CompileableType, CompilesToInnerClass {
 
   /**
    * Can be null if the source of the interface is anonymous (like the result of an exprssion)
@@ -38,11 +40,13 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
   @NonNull
   private final List<S2TypedVar> members;
 
-  public void declare(String name, ClassWriter classWriter) {
+  @Override
+  public void forwardDeclare(String name, ClassWriter classWriter) {
     classWriter.visitNestMember(name);
   }
 
-  public void compile(String internalName,
+  @Override
+  public Map<String, byte[]> declareAndCompile(String internalName,
       String parentInternalName,
       String name,
       ClassWriter classWriter) {
@@ -51,6 +55,31 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
         parentInternalName,
         name,
         ACC_PUBLIC | ACC_STATIC | ACC_ABSTRACT | ACC_INTERFACE);
+
+    ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+    cw.visit(
+        V11,
+        ACC_PUBLIC | ACC_ABSTRACT | ACC_INTERFACE,
+        internalName,
+        null,
+        "java/lang/Object",
+        new String[]{Type.getInternalName(LRPackaged.class)});
+
+    MethodVisitor methodVisitor;
+
+    for (S2TypedVar member : members) {
+      String memberName =
+          "get" + member.getName().substring(0, 1).toUpperCase() + member.getName().substring(1);
+      if (member.getType() instanceof CompileableLambdaType) {
+        memberName = member.getName();
+      }
+      // Figure out the name...
+      methodVisitor = classWriter
+          .visitMethod(ACC_PUBLIC | ACC_ABSTRACT, "someMethod", "()V", null, null);
+      methodVisitor.visitEnd();
+    }
+
+    return null;
   }
 
   @Override
@@ -71,7 +100,8 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
   @Override
   public void provideRuntimeType(MethodVisitor methodVisitor) {
     // Start the builder
-    methodVisitor.visitMethodInsn(INVOKESTATIC, "lambda/rodeo/runtime/types/LRInterface", "builder", "()Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
+    methodVisitor.visitMethodInsn(INVOKESTATIC, "lambda/rodeo/runtime/types/LRInterface", "builder",
+        "()Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
 
     // Start the map
     methodVisitor.visitTypeInsn(NEW, "java/util/HashMap");
@@ -96,10 +126,15 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
     }
 
     // Invoke setting the type map
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder", "typeMap", "(Ljava/util/Map;)Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
+    methodVisitor
+        .visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder",
+            "typeMap",
+            "(Ljava/util/Map;)Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
 
     // Invoke build();
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder", "build", "()Llambda/rodeo/runtime/type/LRInterface;", false);
+    methodVisitor
+        .visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder",
+            "build", "()Llambda/rodeo/runtime/type/LRInterface;", false);
   }
 
   @Override

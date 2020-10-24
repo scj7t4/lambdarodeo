@@ -28,7 +28,7 @@ public class S2Compiler {
   private final CompileErrorCollector errorCollector;
 
   public TypedFinalResult compile() {
-    // TODO: Compile each unit with its own error collector, deterimine if module errored,
+    // TODO: Compile each unit with its own error collector, determine if module errored,
     // TODO: Pass enough for S3 to make an S2 context.
     Map<String, ModuleAst> modules = s1CompileResult.getModules()
         .stream()

@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.type;
 
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
+import lambda.rodeo.lang.s2typed.type.SourcedTypedVar;
 import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class TypedVar implements AstNode {
   private final int characterStart;
 
   public S2TypedVar toS2TypedVar() {
-    return S2TypedVar.builder()
+    return SourcedTypedVar.builder()
         .from(this)
         .type(type.toCompileableType())
         .build();

@@ -13,10 +13,12 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.runtime.types.Atom;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
@@ -57,12 +59,12 @@ public class AtomAst implements ExpressionAst, CompileableExpression {
   @Override
   public void compile(MethodVisitor methodVisitor,
       S1CompileContext compileContext) {
-    methodVisitor.visitTypeInsn(NEW, "lambda/rodeo/runtime/types/Atom");
+    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(Atom.class));
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(atom.getNameLiteral());
     methodVisitor.visitMethodInsn(
         INVOKESPECIAL,
-        "lambda/rodeo/runtime/types/Atom",
+        Type.getInternalName(Atom.class),
         "<init>",
         "(Ljava/lang/String;)V",
         false);

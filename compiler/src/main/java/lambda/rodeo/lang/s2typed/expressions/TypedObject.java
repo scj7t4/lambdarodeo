@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.s1ast.expressions.ObjectAst;
 import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
+import lambda.rodeo.lang.s2typed.type.SourcedTypedVar;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.types.LRInterface;
@@ -33,7 +34,7 @@ public class TypedObject implements TypedExpression {
   @Override
   public CompileableType getType() {
     List<S2TypedVar> members = this.members.stream()
-        .map(entry -> S2TypedVar.builder()
+        .map(entry -> SourcedTypedVar.builder()
             .from(TypedVar.builder()
                 .type(entry.getExpression().getType().getType())
                 .name(entry.getIdentifier())

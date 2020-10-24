@@ -1,14 +1,10 @@
 package lambda.rodeo.lang.s2typed.type;
 
+import lambda.rodeo.lang.types.CompileableType;
+
 public interface S2TypedVar {
 
   String getName();
 
-  int getStartLine();
-
-  int getEndLine();
-
-  int getCharacterStart();
-
-  lambda.rodeo.lang.types.CompileableType getType();
+  CompileableType getType();
 }

@@ -2,13 +2,16 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.math.BigInteger;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @ToString
 @Builder
@@ -37,9 +40,9 @@ public class SubtractAst implements BiNumericExpressionAst {
     rhs.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
-        "java/math/BigInteger",
+        Type.getInternalName(BigInteger.class),
         "subtract",
-        "(Ljava/math/BigInteger;)Ljava/math/BigInteger;",
+        FunctionDescriptorBuilder.args(BigInteger.class).returns(BigInteger.class),
         false);
   }
 

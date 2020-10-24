@@ -38,7 +38,6 @@ public class S1Compiler {
     for (CompileUnit unit : sources) {
       ModuleResult result = compileUnit(unit);
       noCompileErrors &= result.isSuccess();
-      //TODO duplicate module names
       modules.add(result);
     }
 

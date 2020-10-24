@@ -34,7 +34,6 @@ public class ObjectAst implements ExpressionAst {
   @Override
   public TypedExpression toTypedExpression(TypeScope scope, TypedModuleScope typedModuleScope,
       ToTypedFunctionContext compileContext) {
-    //TODO: Pick up here and make typed expression for our object!
 
     List<TypedObjectMember> entries = objectAstMember.stream()
         .map(entry -> {

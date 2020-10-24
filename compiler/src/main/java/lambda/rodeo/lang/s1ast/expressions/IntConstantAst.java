@@ -58,7 +58,7 @@ public class IntConstantAst implements ExpressionAst, CompileableExpression {
       S1CompileContext compileContext) {
     byte[] asBytes = new BigInteger(literal).toByteArray();
 
-    methodVisitor.visitTypeInsn(NEW, "java/math/BigInteger"); // Start creating the new type
+    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(BigInteger.class)); // Start creating the new type
     methodVisitor.visitInsn(DUP); // Duplicate the new object on the stack
     methodVisitor.visitLdcInsn(asBytes.length);
     methodVisitor.visitIntInsn(NEWARRAY, T_BYTE);

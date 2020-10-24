@@ -2,6 +2,11 @@ package lambda.rodeo.lang.s3compileable.expression;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
@@ -9,6 +14,7 @@ import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -56,9 +62,15 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
         "apply",
         invokeDynamicDescriptor.toString(),
         new Handle(Opcodes.H_INVOKESTATIC,
-            "java/lang/invoke/LambdaMetafactory",
+            Type.getInternalName(LambdaMetafactory.class),
             "metafactory",
-            "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;",
+            FunctionDescriptorBuilder.args(
+                MethodHandles.Lookup.class,
+                String.class,
+                MethodType.class,
+                MethodType.class,
+                MethodHandle.class,
+                MethodType.class).returns(CallSite.class),
             false),
         // This seems to be just the general number of args and return of the lambda:
         Type.getType(bootstrapArgs.toString()),

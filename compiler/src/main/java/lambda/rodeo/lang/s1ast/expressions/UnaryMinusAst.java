@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.math.BigInteger;
 import java.util.Set;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
@@ -12,11 +13,13 @@ import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @ToString
 @Builder
@@ -64,9 +67,9 @@ public class UnaryMinusAst implements ExpressionAst {
     operand.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(
         INVOKEVIRTUAL,
-        "java/math/BigInteger",
+        Type.getInternalName(BigInteger.class),
         "negate",
-        "()Ljava/math/BigInteger;",
+        FunctionDescriptorBuilder.args().returns(BigInteger.class),
         false);
   }
 

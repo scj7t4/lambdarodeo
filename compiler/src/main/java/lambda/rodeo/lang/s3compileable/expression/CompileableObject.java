@@ -7,8 +7,10 @@ import java.util.List;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedObject;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lambda.rodeo.runtime.types.LRObjectSetter;
+import lambda.rodeo.runtime.types.LRType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,6 +24,7 @@ public class CompileableObject implements CompileableExpr {
   @Builder
   @Getter
   public static class CompileableObjectEntry {
+
     private final CompileableExpr expr;
     private final String identifier;
   }
@@ -42,7 +45,7 @@ public class CompileableObject implements CompileableExpr {
     methodVisitor.visitMethodInsn(INVOKESTATIC,
         Type.getInternalName(LRObject.class),
         "create",
-        "()Llambda/rodeo/runtime/type/LRObject;",
+        FunctionDescriptorBuilder.args().returns(LRObject.class),
         false);
     for (CompileableObjectEntry entry : members) {
       methodVisitor.visitLdcInsn(entry.getIdentifier());
@@ -51,7 +54,9 @@ public class CompileableObject implements CompileableExpr {
       methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
           Type.getInternalName(LRObjectSetter.class),
           "set",
-          "(Ljava/lang/String;Ljava/lang/Object;Llambda/rodeo/runtime/type/LRType;)Llambda/rodeo/runtime/type/LRObjectSetter;",
+          FunctionDescriptorBuilder
+              .args(String.class, Object.class, LRType.class)
+              .returns(LRObjectSetter.class),
           false);
     }
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,

@@ -112,4 +112,7 @@ public class InterfaceTest {
     LRObject asLRObject = (LRObject) invoke;
     assertThat(asLRObject.getEntries(), IsArrayWithSize.emptyArray());
   }
+
+  // TODO: Test to make sure that there's a compile error when the return type doesn't match
+  // With what the expression makes.
 }

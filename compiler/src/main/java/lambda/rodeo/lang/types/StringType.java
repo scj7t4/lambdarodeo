@@ -3,7 +3,8 @@ package lambda.rodeo.lang.types;
 
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 
-import lambda.rodeo.runtime.types.LRInteger;
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LRString;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -30,7 +31,9 @@ public class StringType implements LambdaRodeoType, CompileableType {
   }
 
   @Override
-  public CompileableType toCompileableType() {
+  public CompileableType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext) {
     return this;
   }
 

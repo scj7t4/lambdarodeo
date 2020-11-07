@@ -4,13 +4,13 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
-import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
@@ -45,8 +45,8 @@ public interface BiNumericExpressionAst extends ExpressionAst {
 
     return () ->
         (methodVisitor, compileContext) -> expr.compile(
-            lhs.toCompileableExpr(),
-            rhs.toCompileableExpr(),
+            lhs.toCompileableExpr(compileContext),
+            rhs.toCompileableExpr(compileContext),
             methodVisitor, compileContext);
   }
 

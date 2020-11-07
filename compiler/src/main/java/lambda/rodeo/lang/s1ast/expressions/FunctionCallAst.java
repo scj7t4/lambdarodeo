@@ -94,7 +94,9 @@ public class FunctionCallAst implements ExpressionAst {
           .getArguments()
           .stream()
           .map(TypedVar::getType)
-          .map(type -> type.toCompileableType())
+          .map(type -> type.toCompileableType(
+              typedModuleScope,
+              compileContext.getCompileContext()))
           .collect(Collectors.toList());
       if (!checkCallMatchesSignature(compileContext, callArgTypes, argTypes)) {
         return AtomAst.undefinedAtomExpression();
@@ -104,7 +106,9 @@ public class FunctionCallAst implements ExpressionAst {
           .typedModuleScope(typedModuleScope)
           .functionCallAst(this)
           .callTarget(callTargetName)
-          .returnType(declaredReturnType.toCompileableType())
+          .returnType(declaredReturnType.toCompileableType(
+              typedModuleScope,
+              compileContext.getCompileContext()))
           .typeScope(typeScope)
           .build();
     }

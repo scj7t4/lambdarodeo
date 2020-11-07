@@ -4,11 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
-import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
+import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
@@ -27,11 +28,12 @@ public class TypedFunctionBody {
 
 
   public CompileableFunctionBody toCompileableFunctionBody(
-      Map<TypedCaseArg, TypedStaticPattern> staticPatterns) {
+      Map<TypedCaseArg, TypedStaticPattern> staticPatterns,
+      CollectsErrors compileContext) {
 
     List<CompileablePatternCase> compileablePatternCases = patternCases
         .stream()
-        .map(patternCase -> patternCase.toCompileablePatternCase(staticPatterns))
+        .map(patternCase -> patternCase.toCompileablePatternCase(staticPatterns, compileContext))
         .collect(Collectors.toList());
 
     return CompileableFunctionBody.builder()

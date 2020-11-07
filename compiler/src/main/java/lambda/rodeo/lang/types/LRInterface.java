@@ -17,8 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LRObject;
 import lambda.rodeo.runtime.types.LRPackaged;
 import lombok.Builder;
@@ -138,12 +140,14 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
   }
 
   @Override
-  public CompileableType toCompileableType() {
+  public CompileableType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext) {
     return this;
   }
 
   @Override
-  public boolean assignableFrom(LambdaRodeoType other) {
+  public boolean assignableFrom(CompileableType other) {
     // TODO refactor to provide better reasoning for failures.
     if (!(other instanceof LRInterface)) {
       return false;

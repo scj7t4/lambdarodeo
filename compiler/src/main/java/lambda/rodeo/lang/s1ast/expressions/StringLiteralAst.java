@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.expressions;
 
 import java.util.Collections;
 import java.util.Set;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
@@ -44,7 +45,8 @@ public class StringLiteralAst implements ExpressionAst, TypedExpression, Compile
   }
 
   @Override
-  public CompileableExpr toCompileableExpr() {
+  public CompileableExpr toCompileableExpr(
+      CollectsErrors compileContext) {
     return this;
   }
 

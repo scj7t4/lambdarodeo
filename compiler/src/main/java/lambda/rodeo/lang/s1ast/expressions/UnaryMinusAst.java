@@ -4,12 +4,12 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.math.BigInteger;
 import java.util.Set;
-import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
@@ -43,7 +43,8 @@ public class UnaryMinusAst implements ExpressionAst {
       return AtomAst.undefinedAtomExpression();
     } else if (AstUtils.isIntType(type)) {
       return SimpleTypedExpression.builder()
-          .toCompileable(() -> (mv, cc) -> this.compile(typedOperand.toCompileableExpr(), mv, cc))
+          .toCompileable(() -> (mv, cc) -> this.compile(
+              typedOperand.toCompileableExpr(compileContext.getCompileContext()), mv, cc))
           .type(type)
           .expr(this)
           .build();

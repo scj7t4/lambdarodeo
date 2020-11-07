@@ -1,20 +1,23 @@
 type MyCoolInterface => {
   member1: int;
   member2: :null;
-}
+};
 
-interface Empty => {
-}
+type Empty => {
+};
+
 //TODO: make this test
 //TODO: Can we seal the LRObject to an actual interface, and then seal it to a different type for
 //TODO: function calls!?
 def test() => Empty {
-  {}
+  {};
 }
 
 def test2() => MyCoolInterface {
   {
     member1: 3;
     member2: :null;
-  }
+  };
 }
+
+// 

@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s2typed.expressions;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableLambdaInvoke;
@@ -30,10 +31,14 @@ public class TypedLambdaInvoke implements TypedExpression {
   private final TypedExpression invokeTarget;
 
   @Override
-  public CompileableExpr toCompileableExpr() {
+  public CompileableExpr toCompileableExpr(
+      CollectsErrors compileContext) {
     return CompileableLambdaInvoke.builder()
-        .invokeTarget(invokeTarget.toCompileableExpr())
-        .args(args.stream().map(TypedExpression::toCompileableExpr).collect(Collectors.toList()))
+        .invokeTarget(invokeTarget.toCompileableExpr(compileContext))
+        .args(args.stream().map(
+            typedExpression -> typedExpression
+                .toCompileableExpr(compileContext))
+            .collect(Collectors.toList()))
         .typedExpression(this)
         .build();
   }

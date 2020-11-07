@@ -16,6 +16,7 @@ import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S1CompileContextImpl;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s1ast.ModuleAstFactory;
@@ -32,12 +33,12 @@ import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
-import lambda.rodeo.lang.types.CompileableAtom;
-import lambda.rodeo.lang.types.IntType;
 import lombok.SneakyThrows;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
@@ -153,7 +154,10 @@ class FunctionCallTest {
         .callTarget(functionToCall)
         .build();
 
-    CompileableFunctionCall cfc = (CompileableFunctionCall) tfc.toCompileableExpr();
+    S1CompileContext cc = S1CompileContextImpl.builder()
+        .compileErrorCollector(new CompileErrorCollector())
+        .build();
+    CompileableFunctionCall cfc = (CompileableFunctionCall) tfc.toCompileableExpr(cc);
 
     String callDescriptor = cfc.getCallDescriptor();
     assertThat(callDescriptor,

@@ -34,6 +34,7 @@ public class CompilerChain {
         .errorCollector(errorCollector)
         .build()
         .compile();
+
     return CompileResult.builder()
         .success(s1Output.isSuccess() && s2Output.isSuccess() && s3Output.isSuccess())
         .compiledUnits(s3Output.getCompiledUnits())

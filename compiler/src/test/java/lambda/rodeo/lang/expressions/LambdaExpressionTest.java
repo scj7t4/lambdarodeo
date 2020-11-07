@@ -19,15 +19,15 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.types.CompileableAtom;
+import lambda.rodeo.lang.types.CompileableLambdaType;
+import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.types.LambdaType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
-import lambda.rodeo.lang.types.CompileableAtom;
-import lambda.rodeo.lang.types.CompileableLambdaType;
-import lambda.rodeo.lang.types.IntType;
-import lambda.rodeo.lang.types.LambdaType;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +81,7 @@ public class LambdaExpressionTest {
             .returnType(IntType.INSTANCE)
             .args(Collections.emptyList())
             .build()
-            .toCompileableType()
+            .toCompileableType(typedModuleScope, compileContext.getCompileContext())
     );
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
@@ -98,7 +98,7 @@ public class LambdaExpressionTest {
             .returnType(IntType.INSTANCE)
             .args(Collections.singletonList(new CompileableAtom("ok")))
             .build()
-            .toCompileableType()
+            .toCompileableType(typedModuleScope, compileContext.getCompileContext())
     );
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);

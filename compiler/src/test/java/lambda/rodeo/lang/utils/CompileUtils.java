@@ -17,8 +17,8 @@ import lambda.rodeo.lang.S3Compiler.CompiledUnit;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.ModuleAst;
-import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.s2typed.TypedModule;
+import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import org.hamcrest.Matchers;
@@ -83,7 +83,7 @@ public class CompileUtils {
     ModuleScope moduleScope = moduleAst.getModuleScope(compileContext, null);
     TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(Collections.emptyList());
     TypedModule typedModule = moduleAst.toTypedModule(compileContext, typedModuleScope);
-    return typedModule.toCompileableModule();
+    return typedModule.toCompileableModule(compileContext);
   }
 
   public static void asmifyModule(ModuleAst moduleAst) {

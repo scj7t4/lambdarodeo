@@ -3,6 +3,8 @@ package lambda.rodeo.lang.types;
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 
 import java.math.BigInteger;
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LRInteger;
 import lombok.EqualsAndHashCode;
 import org.objectweb.asm.MethodVisitor;
@@ -40,7 +42,9 @@ public class IntType implements LambdaRodeoType, CompileableType {
   }
 
   @Override
-  public CompileableType toCompileableType() {
+  public CompileableType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext) {
     return this;
   }
 

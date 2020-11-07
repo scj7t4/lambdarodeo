@@ -1,10 +1,11 @@
 package lambda.rodeo.lang.types;
 
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.TypedModuleScope;
+
 public interface LambdaRodeoType {
 
-  CompileableType toCompileableType();
-
-  default boolean assignableFrom(LambdaRodeoType other) {
-    return this.equals(other);
-  }
+  CompileableType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext);
 }

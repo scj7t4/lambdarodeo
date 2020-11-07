@@ -2,11 +2,12 @@ package lambda.rodeo.lang.s2typed.expressions;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.VariableAst;
-import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.types.CompileableType;
@@ -34,7 +35,8 @@ public class TypedVariable implements TypedExpression, CompileableExpression {
   }
 
   @Override
-  public CompileableExpr toCompileableExpr() {
+  public CompileableExpr toCompileableExpr(
+      CollectsErrors compileContext) {
     return SimpleCompilableExpr.builder()
         .typedExpression(this)
         .compileable(this)

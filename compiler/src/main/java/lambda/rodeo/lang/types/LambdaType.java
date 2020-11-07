@@ -2,6 +2,8 @@ package lambda.rodeo.lang.types;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,11 +17,16 @@ public class LambdaType implements LambdaRodeoType {
   private final LambdaRodeoType returnType;
 
   @Override
-  public CompileableLambdaType toCompileableType() {
+  public CompileableLambdaType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext) {
     return CompileableLambdaType.builder()
         .from(this)
-        .args(args.stream().map(arg -> arg.toCompileableType()).collect(Collectors.toList()))
-        .returnType(returnType.toCompileableType())
+        .args(args.stream()
+            .map(arg -> arg.toCompileableType(typedModuleScope, compileContext))
+            .collect(Collectors.toList())
+        )
+        .returnType(returnType.toCompileableType(typedModuleScope, compileContext))
         .build();
   }
 
@@ -35,16 +42,5 @@ public class LambdaType implements LambdaRodeoType {
     }
     sb.append(")=>").append(returnType);
     return sb.toString();
-  }
-
-  @Override
-  public boolean assignableFrom(LambdaRodeoType other) {
-    if (this.equals(other)) {
-      return true;
-    } else if (other instanceof CompileableLambdaType && this
-        .assignableFrom(((CompileableLambdaType) other).getFrom())) {
-      return true;
-    }
-    return false;
   }
 }

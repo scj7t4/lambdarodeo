@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s2typed.expressions;
 
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableStringConcat;
@@ -25,10 +26,11 @@ public class TypedStringConcat implements TypedExpression {
   }
 
   @Override
-  public CompileableExpr toCompileableExpr() {
+  public CompileableExpr toCompileableExpr(
+      CollectsErrors compileContext) {
     return CompileableStringConcat.builder()
-        .lhs(lhs.toCompileableExpr())
-        .rhs(rhs.toCompileableExpr())
+        .lhs(lhs.toCompileableExpr(compileContext))
+        .rhs(rhs.toCompileableExpr(compileContext))
         .typedExpression(this)
         .build();
   }

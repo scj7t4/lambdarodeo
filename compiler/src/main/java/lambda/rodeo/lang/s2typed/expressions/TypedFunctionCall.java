@@ -2,13 +2,14 @@ package lambda.rodeo.lang.s2typed.expressions;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
+import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
-import lambda.rodeo.lang.scope.TypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,13 +43,13 @@ public class TypedFunctionCall implements TypedExpression {
     return functionCallAst;
   }
 
-
   @Override
-  public CompileableExpr toCompileableExpr() {
+  public CompileableExpr toCompileableExpr(
+      CollectsErrors compileContext) {
     return CompileableFunctionCall.builder()
         .typedExpression(this)
         .args(args.stream()
-            .map(TypedExpression::toCompileableExpr)
+            .map(typedExpression -> typedExpression.toCompileableExpr(compileContext))
             .collect(Collectors.toList()))
         .build();
   }

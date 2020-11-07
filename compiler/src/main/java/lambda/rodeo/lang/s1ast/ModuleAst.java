@@ -97,7 +97,7 @@ public class ModuleAst implements AstNode {
         .moduleAst(this)
         .typedModuleScope(typedModuleScope)
         .typeDefs(types.stream()
-          .map(TypeDef::toTypedTypeDef)
+            .map(typeDef -> typeDef.toTypedTypeDef(typedModuleScope, compileContext))
           .collect(Collectors.toList())
         )
         .functionAsts(typedFunctions)

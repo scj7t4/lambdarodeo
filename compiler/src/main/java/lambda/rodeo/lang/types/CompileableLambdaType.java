@@ -3,8 +3,6 @@ package lambda.rodeo.lang.types;
 import static org.objectweb.asm.Opcodes.AASTORE;
 import static org.objectweb.asm.Opcodes.ANEWARRAY;
 import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.ICONST_0;
-import static org.objectweb.asm.Opcodes.ICONST_2;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
@@ -145,5 +143,15 @@ public class CompileableLambdaType implements CompileableType {
     }
     sb.append(")=>").append(returnType);
     return sb.toString();
+  }
+
+  @Override
+  public boolean assignableFrom(CompileableType other) {
+    if (this.equals(other)) {
+      return true;
+    } else if (other instanceof CompileableLambdaType && this.assignableFrom(other)) {
+      return true;
+    }
+    return false;
   }
 }

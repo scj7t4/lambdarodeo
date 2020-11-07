@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s2typed.expressions;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.expressions.ObjectAst;
 import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
@@ -53,7 +54,8 @@ public class TypedObject implements TypedExpression {
   }
 
   @Override
-  public CompileableExpr toCompileableExpr() {
+  public CompileableExpr toCompileableExpr(
+      CollectsErrors compileContext) {
     return null;
   }
 }

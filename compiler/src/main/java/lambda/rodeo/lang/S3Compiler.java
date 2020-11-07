@@ -32,7 +32,8 @@ public class S3Compiler {
           .modules(s2CompilerResult.getModules())
           .source(result.getSource())
           .build();
-      CompileableModule compileableModule = module.toCompileableModule();
+
+      CompileableModule compileableModule = module.toCompileableModule(context);
       byte[] compiled = compileableModule.compile(context).get(null);
 
       compiledUnits.add(CompiledUnit.builder()

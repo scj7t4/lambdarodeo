@@ -40,8 +40,10 @@ public class TypedFunctionSignature {
   }
 
   public TypeScope getInitialTypeScope(
-      TypeScope moduleScope) {
-    return getFrom().getInitialTypeScope(moduleScope);
+      TypeScope moduleScope,
+      TypedModuleScope typedModuleScope,
+      S2CompileContext compileContext) {
+    return getFrom().getInitialTypeScope(moduleScope, typedModuleScope, compileContext);
   }
 
   public void checkCollisionAgainstModule(TypedModuleScope typedModuleScope,

@@ -95,4 +95,14 @@ public final class LRObject implements LRPackaged {
         .map(LRObjectEntry::getKey)
         .collect(Collectors.toSet());
   }
+
+  public String toString() {
+    StringBuilder out = new StringBuilder("{");
+    for (LRObjectEntry entry : entries) {
+      out.append(entry.getKey()).append(": ").append(entry.getValue()).append(", ");
+    }
+    out.substring(0, out.length() - 2);
+    out.append("}");
+    return out.toString();
+  }
 }

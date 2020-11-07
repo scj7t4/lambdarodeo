@@ -13,9 +13,9 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionBodyAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
-import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
@@ -23,8 +23,8 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
-import lambda.rodeo.lang.types.LambdaType;
 import lambda.rodeo.lang.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.LambdaType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -65,7 +65,12 @@ public class LambdaAst implements ExpressionAst {
 
     // Then we add the arguments of the function itself:
     for (TypedVar typedVar : arguments) {
-      lambdaScope = lambdaScope.declare(typedVar.getName(), typedVar.getType().toCompileableType());
+      lambdaScope = lambdaScope.declare(
+          typedVar.getName(),
+          typedVar.getType().toCompileableType(
+              typedModuleScope,
+              compileContext.getCompileContext())
+      );
     }
 
     // Now we produce a list of the typed statements.
@@ -124,7 +129,9 @@ public class LambdaAst implements ExpressionAst {
             .args(argTypes)
             .returnType(returnType.getType())
             .build()
-            .toCompileableType())
+            .toCompileableType(
+                typedModuleScope,
+                compileContext.getCompileContext()))
         .typedFunction(lambdaFn)
         .build();
   }

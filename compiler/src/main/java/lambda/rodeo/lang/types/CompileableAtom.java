@@ -4,6 +4,8 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.EqualsAndHashCode;
 import org.objectweb.asm.MethodVisitor;
@@ -53,7 +55,9 @@ public class CompileableAtom implements LambdaRodeoType, CompileableType {
   }
 
   @Override
-  public CompileableType toCompileableType() {
+  public CompileableType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext) {
     return this;
   }
 

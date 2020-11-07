@@ -11,11 +11,13 @@ import lambda.rodeo.lang.s1ast.expressions.ObjectAst.ObjectAstMember;
 
 public class ObjectAstFactory {
 
+  private final ObjectAst ast;
+
   public ObjectAstFactory(ObjectContext ctx, S1CompileContext compileContext) {
     List<ObjectExprContext> objectExprContexts = ctx.objectExpr();
 
     List<ObjectAstMember> entries = new ArrayList<>();
-    for(ObjectExprContext objectExprContext : objectExprContexts) {
+    for (ObjectExprContext objectExprContext : objectExprContexts) {
       ObjectMemberContext objectMemberContext = objectExprContext.objectMember();
       String identifier = objectMemberContext.IDENTIFIER().getText();
       ExprContext expr = objectMemberContext.expr();
@@ -26,9 +28,16 @@ public class ObjectAstFactory {
           .expression(expressionAst)
           .build());
     }
+
+    ast = ObjectAst.builder()
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStart().getLine())
+        .objectAstMember(entries)
+        .build();
   }
 
   public ExpressionAst toAst() {
-    return null;
+    return ast;
   }
 }

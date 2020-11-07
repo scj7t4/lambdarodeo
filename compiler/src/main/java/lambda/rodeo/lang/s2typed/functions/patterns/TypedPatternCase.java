@@ -3,6 +3,7 @@ package lambda.rodeo.lang.s2typed.functions.patterns;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
@@ -22,13 +23,14 @@ public class TypedPatternCase {
   private final PatternCaseAst patternCaseAst;
 
   public CompileablePatternCase toCompileablePatternCase(
-      Map<TypedCaseArg, TypedStaticPattern> staticPatterns) {
+      Map<TypedCaseArg, TypedStaticPattern> staticPatterns,
+      CollectsErrors compileContext) {
     return CompileablePatternCase.builder()
         .caseArgs(typedCaseArgs.stream()
             .map(caseArg -> caseArg.toCompileableCaseArg(staticPatterns.get(caseArg)))
             .collect(Collectors.toList()))
         .statements(typedStatements.stream()
-            .map(TypedStatement::toCompileableStatement)
+            .map(typedStatement -> typedStatement.toCompileableStatement(compileContext))
             .collect(Collectors.toList()))
         .build();
   }

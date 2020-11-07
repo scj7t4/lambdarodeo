@@ -1,15 +1,16 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.List;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
 import lambda.rodeo.lang.s2typed.expressions.TypedObject;
+import lambda.rodeo.lang.s2typed.expressions.TypedObject.TypedObjectMember;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lambda.rodeo.runtime.types.LRObjectSetter;
+import lambda.rodeo.runtime.types.LRObjectSetterImpl;
 import lambda.rodeo.runtime.types.LRType;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,17 +24,20 @@ public class CompileableObject implements CompileableExpr {
 
   @Builder
   @Getter
-  public static class CompileableObjectEntry {
+  public static class CompileableObjectMember {
 
+    @NonNull
     private final CompileableExpr expr;
+    @NonNull
     private final String identifier;
+    private final TypedObjectMember from;
   }
 
   @NonNull
   private final TypedObject from;
 
   @NonNull
-  private final List<CompileableObjectEntry> members;
+  private final List<CompileableObjectMember> members;
 
   @Override
   public TypedObject getTypedExpression() {
@@ -47,23 +51,26 @@ public class CompileableObject implements CompileableExpr {
         "create",
         FunctionDescriptorBuilder.args().returns(LRObject.class),
         false);
-    for (CompileableObjectEntry entry : members) {
+    for (CompileableObjectMember entry : members) {
       methodVisitor.visitLdcInsn(entry.getIdentifier());
       entry.getExpr().compile(methodVisitor, compileContext);
       entry.getExpr().getTypedExpression().getType().provideRuntimeType(methodVisitor);
-      methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+      methodVisitor.visitMethodInsn(INVOKEINTERFACE,
           Type.getInternalName(LRObjectSetter.class),
           "set",
           FunctionDescriptorBuilder
               .args(String.class, Object.class, LRType.class)
-              .returns(LRObjectSetter.class),
-          false);
+              .returns(LRObjectSetterImpl.class),
+          true);
     }
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-        Type.getInternalName(LRObjectSetter.class),
-        "done",
-        "()Llambda/rodeo/runtime/type/LRObject;",
-        false);
-
+    if (!members.isEmpty()) {
+      methodVisitor.visitMethodInsn(INVOKEINTERFACE,
+          Type.getInternalName(LRObjectSetter.class),
+          "done",
+          FunctionDescriptorBuilder
+              .args()
+              .returns(LRObject.class),
+          true);
+    }
   }
 }

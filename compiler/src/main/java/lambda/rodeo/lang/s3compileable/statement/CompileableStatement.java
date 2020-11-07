@@ -2,14 +2,15 @@ package lambda.rodeo.lang.s3compileable.statement;
 
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContext;
-import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
-import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.LambdaLiftable;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
@@ -18,9 +19,13 @@ import org.objectweb.asm.MethodVisitor;
 @EqualsAndHashCode
 public class CompileableStatement implements CompileableExpression {
 
+  @NonNull
   private final TypedStatement typedStatement;
+  @NonNull
   private final CompileableTypeScope beforeTypeScope;
+  @NonNull
   private final CompileableTypeScope afterTypeScope;
+  @NonNull
   private final CompileableExpr compileableExpr;
   private final CompileableAssignment compileableAssignment;
 

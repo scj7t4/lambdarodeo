@@ -22,8 +22,10 @@ import lambda.rodeo.lang.types.DefinedType;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
+import lambda.rodeo.runtime.types.LRObject;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
+import org.hamcrest.collection.IsArrayWithSize;
 import org.junit.jupiter.api.Test;
 
 public class InterfaceTest {
@@ -96,7 +98,7 @@ public class InterfaceTest {
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
-        .sourcePath(importResource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
         .build();
 
     List<CompileUnit> toCompile = new ArrayList<>();
@@ -107,6 +109,7 @@ public class InterfaceTest {
 
     Method test = aClass.getMethod("test");
     Object invoke = test.invoke(null);
-    System.out.println(invoke);
+    LRObject asLRObject = (LRObject) invoke;
+    assertThat(asLRObject.getEntries(), IsArrayWithSize.emptyArray());
   }
 }

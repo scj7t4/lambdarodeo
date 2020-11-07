@@ -10,12 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @EqualsAndHashCode
-public final class LRObject implements LRPackaged {
-
-  @Override
-  public LRObject unpack$() {
-    return this;
-  }
+public final class LRObject implements LRObjectSetter {
 
   @Builder
   @Getter
@@ -51,8 +46,14 @@ public final class LRObject implements LRPackaged {
     Arrays.sort(this.entries);
   }
 
+  @Override
   public LRObjectSetter set(String key, Object value, LRType type) {
-    return new LRObjectSetter(this, key, value, type);
+    return new LRObjectSetterImpl(this, key, value, type);
+  }
+
+  @Override
+  public LRObject done() {
+    return this;
   }
 
   public Optional<LRObjectEntry> getEntry(String key) {
@@ -97,12 +98,14 @@ public final class LRObject implements LRPackaged {
   }
 
   public String toString() {
-    StringBuilder out = new StringBuilder("{");
+    StringBuilder out = new StringBuilder("LRObject<{");
     for (LRObjectEntry entry : entries) {
       out.append(entry.getKey()).append(": ").append(entry.getValue()).append(", ");
     }
-    out.substring(0, out.length() - 2);
-    out.append("}");
+    if (entries.length > 0) {
+      out.substring(0, out.length() - 2);
+    }
+    out.append("}>");
     return out.toString();
   }
 }

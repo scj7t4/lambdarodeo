@@ -8,6 +8,8 @@ import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.s2typed.type.SourcedTypedVar;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
+import lambda.rodeo.lang.s3compileable.expression.CompileableObject;
+import lambda.rodeo.lang.s3compileable.expression.CompileableObject.CompileableObjectMember;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.types.LRInterface;
 import lombok.Builder;
@@ -21,10 +23,20 @@ public class TypedObject implements TypedExpression {
   @Builder
   @Getter
   public static class TypedObjectMember {
+
     @NonNull
     private final String identifier;
     @NonNull
     private final TypedExpression expression;
+
+    public CompileableObjectMember toCompileable(
+        CollectsErrors compileContext) {
+      return CompileableObjectMember.builder()
+          .expr(expression.toCompileableExpr(compileContext))
+          .identifier(identifier)
+          .from(this)
+          .build();
+    }
   }
 
   @NonNull
@@ -56,6 +68,12 @@ public class TypedObject implements TypedExpression {
   @Override
   public CompileableExpr toCompileableExpr(
       CollectsErrors compileContext) {
-    return null;
+    return CompileableObject.builder()
+        .from(this)
+        .members(members.stream()
+            .map(member -> member
+                .toCompileable(compileContext))
+            .collect(Collectors.toList()))
+        .build();
   }
 }

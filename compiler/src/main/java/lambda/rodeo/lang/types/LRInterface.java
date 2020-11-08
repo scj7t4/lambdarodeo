@@ -21,6 +21,7 @@ import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lambda.rodeo.runtime.types.LRPackaged;
 import lombok.Builder;
@@ -102,8 +103,13 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
   @Override
   public void provideRuntimeType(MethodVisitor methodVisitor) {
     // Start the builder
-    methodVisitor.visitMethodInsn(INVOKESTATIC, "lambda/rodeo/runtime/types/LRInterface", "builder",
-        "()Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(LRInterface.class),
+        "builder",
+        FunctionDescriptorBuilder
+            .args()
+            .returns(LRInterfaceBuilder.class),
+        false);
 
     // Start the map
     methodVisitor.visitTypeInsn(NEW, "java/util/HashMap");
@@ -122,21 +128,31 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
       methodVisitor.visitMethodInsn(INVOKEINTERFACE,
           Type.getInternalName(Map.class),
           "put",
-          "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+          FunctionDescriptorBuilder
+              .args(Object.class, Object.class)
+              .returns(Object.class),
           true);
       methodVisitor.visitInsn(POP); // Pop because map put returns an item
     }
 
     // Invoke setting the type map
     methodVisitor
-        .visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder",
+        .visitMethodInsn(INVOKEVIRTUAL,
+            Type.getInternalName(LRInterfaceBuilder.class),
             "typeMap",
-            "(Ljava/util/Map;)Llambda/rodeo/runtime/type/LRInterface$LRInterfaceBuilder;", false);
+            FunctionDescriptorBuilder
+                .args(Map.class)
+                .returns(LRInterfaceBuilder.class),
+            false);
 
     // Invoke build();
     methodVisitor
-        .visitMethodInsn(INVOKEVIRTUAL, "lambda/rodeo/runtime/types/LRInterface$LRInterfaceBuilder",
-            "build", "()Llambda/rodeo/runtime/type/LRInterface;", false);
+        .visitMethodInsn(
+            INVOKEVIRTUAL,
+            Type.getInternalName(LRInterfaceBuilder.class),
+            "build",
+            FunctionDescriptorBuilder.args().returns(LRInterface.class),
+            false);
   }
 
   @Override

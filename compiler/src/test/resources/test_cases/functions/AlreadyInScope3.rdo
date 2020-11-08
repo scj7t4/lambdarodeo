@@ -1,4 +1,4 @@
-def function(function: int) => int {
+def function(function: Int) => Int {
   let v1 = function + 1;
   v1;
 }

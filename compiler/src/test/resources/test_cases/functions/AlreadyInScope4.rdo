@@ -1,4 +1,4 @@
-def function(v1: int) => int {
+def function(v1: Int) => Int {
   let v2 = v1 + 1;
   let v2 = 4;
   v2;

@@ -1,5 +1,5 @@
 import testcase.BasicFunctionCall as BFC;
 
-def callAndAdd() => int {
+def callAndAdd() => Int {
   3 + BFC.twoptwo();
 }

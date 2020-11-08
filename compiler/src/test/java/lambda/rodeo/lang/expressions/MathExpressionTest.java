@@ -327,7 +327,7 @@ class MathExpressionTest {
     assertThat(compileError.getEndLine(), equalTo(1));
     assertThat(compileError.getErrorType(), equalTo(CompileError.ILLEGAL_MATH_OPERATION));
     assertThat(compileError.getErrorMsg(), containsString(":atom"));
-    assertThat(compileError.getErrorMsg(), containsString("int"));
+    assertThat(compileError.getErrorMsg(), containsString("Int"));
     assertThat(compileError.getErrorMsg(), containsString("addition"));
   }
 

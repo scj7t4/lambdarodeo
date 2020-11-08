@@ -1,5 +1,5 @@
 type MyCoolInterface => {
-  member1: int;
+  member1: Int;
   member2: :null;
 };
 

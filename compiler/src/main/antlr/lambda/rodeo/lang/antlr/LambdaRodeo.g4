@@ -30,8 +30,8 @@ typeExpression: intType
   | definedType
   | interfaceDef;
 
-intType: 'int';
-stringType: 'string';
+intType: 'Int';
+stringType: 'String';
 lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeExpression;
 interfaceDef: '{' memberDecl* '}';
 memberDecl: typedVar ';';

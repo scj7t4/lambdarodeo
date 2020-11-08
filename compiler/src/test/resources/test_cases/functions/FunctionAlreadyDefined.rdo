@@ -1,7 +1,7 @@
-def fibonacci(n: int) => int {
+def fibonacci(n: Int) => Int {
   fibonacci(n+1);
 }
 
-def fibonacci(n: int) => int {
+def fibonacci(n: Int) => Int {
   3;
 }

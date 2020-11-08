@@ -20,7 +20,7 @@ public class IntType implements LambdaRodeoType, CompileableType {
 
   @Override
   public String toString() {
-    return "int";
+    return "Int";
   }
 
   @Override

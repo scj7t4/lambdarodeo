@@ -1,4 +1,4 @@
-def fibonacci(n: int) => int {
+def fibonacci(n: Int) => Int {
   case (1) {
     1;
   }
@@ -10,7 +10,7 @@ def fibonacci(n: int) => int {
   }
 }
 
-def fibonacci(n: int, current: int, fn1: int, fn2: int) => int {
+def fibonacci(n: Int, current: Int, fn1: Int, fn2: Int) => Int {
   case(n, n, *, *) {
     fn1 + fn2;
   }

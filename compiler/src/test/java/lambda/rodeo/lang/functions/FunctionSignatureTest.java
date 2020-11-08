@@ -4,15 +4,21 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
-import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
-import lambda.rodeo.lang.utils.CompileContextUtils;
-import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.utils.CompileContextUtils;
+import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.TestUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -39,5 +45,27 @@ public class FunctionSignatureTest {
         compileErrors.getCompileErrors().size(), equalTo(1));
     assertThat(compileErrors.getCompileErrors().get(0).getErrorType(),
         equalTo(CompileError.IDENTIFIER_ALREADY_IN_SCOPE));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testCallsRightArityWrongType() {
+    String resource = "/test_cases/functions/CallRightArityWrongSignature.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+    CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(toCompile);
+
+    assertThat("There were compile errors: \n" + compileErrors,
+        compileErrors.getCompileErrors().size(), equalTo(1));
+    assertThat(compileErrors.getCompileErrors().get(0).getErrorType(),
+        equalTo(CompileError.CALLED_WITH_WRONG_ARGS));
+    System.out.println(compileErrors);
   }
 }

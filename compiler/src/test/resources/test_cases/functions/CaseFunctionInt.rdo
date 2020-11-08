@@ -1,4 +1,4 @@
-def somefunc(arg0: int) => int {
+def somefunc(arg0: Int) => Int {
   case (1) {
     1;
   }

@@ -1,0 +1,7 @@
+def funcWithArg(arg: Int) => Int {
+  arg;
+}
+
+def funcMakingBadCall() => Int {
+  funcWithArg("Hello World!");
+}

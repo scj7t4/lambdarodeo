@@ -41,4 +41,8 @@ public class StringType implements LambdaRodeoType, CompileableType {
   public LambdaRodeoType getType() {
     return this;
   }
+
+  public String toString() {
+    return "String";
+  }
 }

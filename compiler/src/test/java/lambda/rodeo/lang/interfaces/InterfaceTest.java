@@ -189,7 +189,7 @@ public class InterfaceTest {
             .endLine(8)
             .errorType(CompileError.RETURN_TYPE_MISMATCH)
             .errorMsg(
-                "Pattern case returns 'LRInterface<{}>'; it cannot be assigned to 'LRInterface<{member1: int; member2: :null}>'")
+                "Pattern case returns 'LRInterface<{}>'; it cannot be assigned to 'LRInterface<{member1: Int; member2: :null}>'")
             .build()
     ));
   }

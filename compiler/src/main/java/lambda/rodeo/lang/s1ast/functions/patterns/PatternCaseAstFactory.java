@@ -40,7 +40,7 @@ public class PatternCaseAstFactory extends LambdaRodeoBaseListener {
     astBuilder = PatternCaseAst.builder()
         .startLine(startToken.getLine())
         .characterStart(startToken.getCharPositionInLine())
-        .endLine(endToken.getCharPositionInLine());
+        .endLine(endToken.getLine());
   }
 
   public PatternCaseAst toAst() {

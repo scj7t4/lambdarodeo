@@ -60,7 +60,9 @@ public class FunctionAst implements AstNode {
           !Objects.equals(returnedType, CompileableAtom.UNDEFINED)) {
         compileContext.getCompileErrorCollector().collect(
             CompileError
-                .returnTypeMismatch(typedPatternCase.getPatternCaseAst(), declaredReturnedType,
+                .returnTypeMismatch(
+                    typedPatternCase.getPatternCaseAst(),
+                    declaredReturnedType,
                     returnedType)
         );
       }

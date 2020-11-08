@@ -9,6 +9,7 @@ import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
+import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -27,12 +28,17 @@ public class TypedFunction {
       Map<TypedCaseArg, TypedStaticPattern> staticPatterns,
       TypedModuleScope typedModuleScope,
       CollectsErrors compileContext) {
+    TypedFunctionSignature functionSignature = functionSigAst.toTypedFunctionSignature(
+        typedModuleScope,
+        compileContext);
+
+    CompileableFunctionBody functionBody = this.functionBody
+        .toCompileableFunctionBody(staticPatterns, compileContext);
+
     return CompileableFunction.builder()
-        .functionBody(functionBody.toCompileableFunctionBody(staticPatterns, compileContext))
+        .functionBody(functionBody)
         .functionSignature(
-            functionSigAst.toTypedFunctionSignature(
-                typedModuleScope,
-                compileContext))
+            functionSignature)
         .typedFunction(this)
         .build();
   }

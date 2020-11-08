@@ -1,0 +1,8 @@
+type MyCoolInterface => {
+  member1: int;
+  member2: :null;
+};
+
+def test2() => MyCoolInterface {
+  {};
+}

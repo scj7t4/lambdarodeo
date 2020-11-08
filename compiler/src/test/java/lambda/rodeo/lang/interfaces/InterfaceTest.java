@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeDefContext;
+import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s1ast.type.TypeDef;
 import lambda.rodeo.lang.s1ast.type.TypeDefAstFactory;
@@ -140,6 +142,55 @@ public class InterfaceTest {
     assertThat(asLRObject.get("member2"), Matchers.equalTo(Atom.NULL));
   }
 
-  // TODO: Test to make sure that there's a compile error when the return type doesn't match
-  // With what the expression makes.
+  @Test
+  @SneakyThrows
+  public void testInterfaceReturn3() {
+    String importResource = "/test_cases/interfaces/InterfaceReturn.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+
+    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
+    Class<?> aClass = classes.get(interfaceUnit.getSourcePath());
+
+    Method test = aClass.getMethod("test3");
+    Object invoke = test.invoke(null);
+    LRObject asLRObject = (LRObject) invoke;
+    assertThat(asLRObject.getEntries(), IsArrayWithSize.arrayWithSize(2));
+    assertThat(asLRObject.get("member1"), Matchers.equalTo(BigInteger.valueOf(3L)));
+    assertThat(asLRObject.get("member2"), Matchers.equalTo(Atom.NULL));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testInterfaceReturn4() {
+    String importResource = "/test_cases/interfaces/InterfaceReturn2.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+    CompileErrorCollector compileErrorCollector = CompileUtils.expectCompileErrors(toCompile);
+
+    assertThat(compileErrorCollector.getCompileErrors(), Matchers.contains(
+        CompileError.builder()
+            .characterStart(31)
+            .startLine(6)
+            .endLine(8)
+            .errorType(CompileError.RETURN_TYPE_MISMATCH)
+            .errorMsg(
+                "Pattern case returns 'LRInterface<{}>'; it cannot be assigned to 'LRInterface<{member1: int; member2: :null}>'")
+            .build()
+    ));
+  }
 }

@@ -17,4 +17,9 @@ def test2() => MyCoolInterface {
   };
 }
 
-// 
+def test3() => Empty {
+  {
+    member1: 3;
+    member2: :null;
+  };
+}

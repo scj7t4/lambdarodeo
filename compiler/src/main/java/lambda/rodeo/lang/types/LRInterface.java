@@ -179,4 +179,15 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
     }
     return true;
   }
+
+  public String toString() {
+    StringBuilder sb = new StringBuilder("LRInterface<{");
+    for (S2TypedVar member : members) {
+      sb.append(member.getName()).append(": ").append(member.getType()).append("; ");
+    }
+    if (!members.isEmpty()) {
+      sb.setLength(sb.length() - 2);
+    }
+    return sb.append("}>").toString();
+  }
 }

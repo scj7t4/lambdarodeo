@@ -10,7 +10,6 @@ import lambda.rodeo.lang.s2typed.expressions.TypedObject.TypedObjectMember;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lambda.rodeo.runtime.types.LRObjectSetter;
-import lambda.rodeo.runtime.types.LRObjectSetterImpl;
 import lambda.rodeo.runtime.types.LRType;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,7 +59,7 @@ public class CompileableObject implements CompileableExpr {
           "set",
           FunctionDescriptorBuilder
               .args(String.class, Object.class, LRType.class)
-              .returns(LRObjectSetterImpl.class),
+              .returns(LRObjectSetter.class),
           true);
     }
     if (!members.isEmpty()) {

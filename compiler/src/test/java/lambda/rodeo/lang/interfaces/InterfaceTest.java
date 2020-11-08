@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.contains;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import lambda.rodeo.lang.types.DefinedType;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
+import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.LRObject;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
@@ -111,6 +113,31 @@ public class InterfaceTest {
     Object invoke = test.invoke(null);
     LRObject asLRObject = (LRObject) invoke;
     assertThat(asLRObject.getEntries(), IsArrayWithSize.emptyArray());
+  }
+
+  @Test
+  @SneakyThrows
+  public void testInterfaceReturn2() {
+    String importResource = "/test_cases/interfaces/InterfaceReturn.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+
+    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
+    Class<?> aClass = classes.get(interfaceUnit.getSourcePath());
+
+    Method test = aClass.getMethod("test2");
+    Object invoke = test.invoke(null);
+    LRObject asLRObject = (LRObject) invoke;
+    assertThat(asLRObject.getEntries(), IsArrayWithSize.arrayWithSize(2));
+    assertThat(asLRObject.get("member1"), Matchers.equalTo(BigInteger.valueOf(3L)));
+    assertThat(asLRObject.get("member2"), Matchers.equalTo(Atom.NULL));
   }
 
   // TODO: Test to make sure that there's a compile error when the return type doesn't match

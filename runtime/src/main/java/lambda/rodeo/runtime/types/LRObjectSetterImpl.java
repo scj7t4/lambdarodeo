@@ -38,10 +38,12 @@ public final class LRObjectSetterImpl implements LRObjectSetter {
     this.setting = setting;
   }
 
+  @Override
   public LRObjectSetter set(String key, Object value, LRType type) {
     return new LRObjectSetterImpl(this, setting, key, value, type);
   }
 
+  @Override
   public LRObject done() {
     Map<String, LRObjectEntry> packer = new HashMap<>();
     pack(packer);

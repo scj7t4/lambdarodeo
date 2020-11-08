@@ -1,0 +1,11 @@
+type Iface => {
+  check: Int;
+};
+
+def funcWithArg(arg: Iface) => Iface {
+  arg;
+}
+
+def funcMakingBadCall() => Int {
+  funcWithArg({});
+}

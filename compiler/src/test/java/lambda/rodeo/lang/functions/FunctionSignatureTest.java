@@ -68,4 +68,48 @@ public class FunctionSignatureTest {
         equalTo(CompileError.CALLED_WITH_WRONG_ARGS));
     System.out.println(compileErrors);
   }
+
+  @Test
+  @SneakyThrows
+  public void testCallsRightArityWrongType2() {
+    String resource = "/test_cases/functions/CallRightArityWrongSignature2.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+    CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(toCompile);
+
+    assertThat("There were compile errors: \n" + compileErrors,
+        compileErrors.getCompileErrors().size(), equalTo(1));
+    assertThat(compileErrors.getCompileErrors().get(0).getErrorType(),
+        equalTo(CompileError.CALLED_WITH_WRONG_ARGS));
+    System.out.println(compileErrors);
+  }
+
+  @Test
+  @SneakyThrows
+  public void testCallsRightArityWrongType3() {
+    String resource = "/test_cases/functions/CallRightArityWrongSignature3.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.InterfaceReturn")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+    CompileErrorCollector compileErrors = CompileUtils.expectCompileErrors(toCompile);
+
+    assertThat("There were compile errors: \n" + compileErrors,
+        compileErrors.getCompileErrors().size(), equalTo(1));
+    assertThat(compileErrors.getCompileErrors().get(0).getErrorType(),
+        equalTo(CompileError.CALLED_WITH_WRONG_ARGS));
+    System.out.println(compileErrors);
+  }
 }

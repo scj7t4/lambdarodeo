@@ -33,8 +33,9 @@ typeExpression: intType
 intType: 'Int';
 stringType: 'String';
 lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeExpression;
-interfaceDef: '{' memberDecl* '}';
-memberDecl: typedVar ';';
+interfaceDef: '{' '}'
+  | '{' memberDecl (';' memberDecl)* ';'? '}';
+memberDecl: typedVar;
 
 definedType: identifier;
 

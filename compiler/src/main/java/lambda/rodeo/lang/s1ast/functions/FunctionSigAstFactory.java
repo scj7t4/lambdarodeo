@@ -5,57 +5,56 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lambda.rodeo.lang.antlr.LambdaRodeoBaseListener;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionArgsContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionNameContext;
+import java.util.stream.Collectors;
+import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionSigContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.ReturnTypeContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
-import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.type.TypeExpressionFactory;
 import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s1ast.type.TypedVarFactory;
-import lambda.rodeo.lang.types.LambdaRodeoType;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
+public class FunctionSigAstFactory extends LambdaRodeoBaseVisitor<FunctionSigAst> {
 
   private final S1CompileContext compileContext;
-  private FunctionSigAst.FunctionSigAstBuilder builder = FunctionSigAst.builder();
-  private final List<TypedVar> arguments = new ArrayList<>();
-  private LambdaRodeoType returnType;
+  private final FunctionSigAst ast;
 
   public FunctionSigAstFactory(FunctionSigContext ctx, S1CompileContext compileContext) {
     this.compileContext = compileContext;
-    builder.arguments(arguments);
-    ParseTreeWalker.DEFAULT.walk(this, ctx);
+    ast = visit(ctx);
   }
 
   @Override
-  public void enterFunctionSig(FunctionSigContext ctx) {
-    builder.startLine(ctx.getStart().getLine());
-    builder.endLine(ctx.getStop().getLine());
-    builder.characterStart(ctx.getStart().getLine());
+  public FunctionSigAst visitFunctionSig(FunctionSigContext ctx) {
+    TypeExpressionFactory returnTypeFactory = new TypeExpressionFactory(
+        ctx
+            .returnType()
+            .typeExpression());
+
+    List<TypedVar> arguments = ctx
+        .functionArgs()
+        .typedVar()
+        .stream()
+        .map(TypedVarFactory::new)
+        .map(TypedVarFactory::toAst)
+        .collect(Collectors.toList());
+
+    checkForDuplicateArgNames(arguments);
+
+    return FunctionSigAst.builder()
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .name(ctx.functionName().getText())
+        .arguments(arguments)
+        .declaredReturnType(returnTypeFactory.toAst())
+        .build();
   }
 
-  @Override
-  public void enterFunctionName(FunctionNameContext ctx) {
-    builder = builder.name(ctx.getText());
-  }
-
-
-  @Override
-  public void enterTypedVar(TypedVarContext ctx) {
-    arguments.add(new TypedVarFactory(ctx).toAst());
-  }
-
-  @Override
-  public void exitFunctionArgs(FunctionArgsContext ctx) {
+  private void checkForDuplicateArgNames(List<TypedVar> arguments) {
     Map<String, List<TypedVar>> namingCount = new HashMap<>();
 
-    for(TypedVar var : arguments) {
+    for (TypedVar var : arguments) {
       String name = var.getName();
       namingCount.computeIfAbsent(name, key -> new ArrayList<>()).add(var);
     }
@@ -69,15 +68,7 @@ public class FunctionSigAstFactory extends LambdaRodeoBaseListener {
         ));
   }
 
-  @Override
-  public void enterReturnType(ReturnTypeContext ctx) {
-    TypeExpressionContext typeExpressionContext = ctx.typeExpression();
-    returnType = new TypeExpressionFactory(typeExpressionContext).toAst();
-  }
-
   public FunctionSigAst toAst() {
-    return builder
-        .declaredReturnType(returnType)
-        .build();
+    return ast;
   }
 }

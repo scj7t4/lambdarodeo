@@ -79,7 +79,6 @@ public class CompileUtils {
 
   private static CompileableModule convertToCompileableModule(ModuleAst moduleAst,
       S2CompileContextImpl compileContext) {
-    // TODO: This will need to change when compiling multiple modules:
     ModuleScope moduleScope = moduleAst.getModuleScope(compileContext, null);
     TypedModuleScope typedModuleScope = moduleScope.toTypedModuleScope(Collections.emptyList());
     TypedModule typedModule = moduleAst.toTypedModule(compileContext, typedModuleScope);

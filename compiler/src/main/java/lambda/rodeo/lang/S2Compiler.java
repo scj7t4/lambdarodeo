@@ -9,8 +9,8 @@ import lambda.rodeo.lang.S1Compiler.ModuleResult;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.compilation.S2CompileContextImpl;
-import lambda.rodeo.lang.s1ast.ModuleImportAst;
 import lambda.rodeo.lang.s1ast.ModuleAst;
+import lambda.rodeo.lang.s1ast.ModuleImportAst;
 import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
@@ -28,8 +28,7 @@ public class S2Compiler {
   private final CompileErrorCollector errorCollector;
 
   public TypedFinalResult compile() {
-    // TODO: Compile each unit with its own error collector, determine if module errored,
-    // TODO: Pass enough for S3 to make an S2 context.
+    // TODO: Test referencing Ifaces from other modules
     Map<String, ModuleAst> modules = s1CompileResult.getModules()
         .stream()
         .collect(Collectors.toMap(

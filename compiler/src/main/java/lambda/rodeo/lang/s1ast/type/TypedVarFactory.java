@@ -3,17 +3,23 @@ package lambda.rodeo.lang.s1ast.type;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaTypedVarContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypedVarContext;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 
 public class TypedVarFactory extends LambdaRodeoBaseVisitor<TypedVar> {
 
-  private TypedVar ast;
+  private final TypedVar ast;
+  private final CollectsErrors compileContext;
 
-  public TypedVarFactory(TypedVarContext ctx) {
+  public TypedVarFactory(TypedVarContext ctx,
+      CollectsErrors compileContext) {
     ast = visit(ctx);
+    this.compileContext = compileContext;
   }
 
-  public TypedVarFactory(LambdaTypedVarContext ctx) {
+  public TypedVarFactory(LambdaTypedVarContext ctx,
+      CollectsErrors compileContext) {
     ast = visit(ctx);
+    this.compileContext = compileContext;
   }
 
   public TypedVar toAst() {
@@ -23,7 +29,7 @@ public class TypedVarFactory extends LambdaRodeoBaseVisitor<TypedVar> {
   @Override
   public TypedVar visitTypedVar(TypedVarContext ctx) {
     TypeExpressionFactory typeExpressionFactory
-        = new TypeExpressionFactory(ctx.varType().typeExpression());
+        = new TypeExpressionFactory(ctx.varType().typeExpression(), compileContext);
 
     return TypedVar.builder()
         .startLine(ctx.getStart().getLine())
@@ -37,7 +43,7 @@ public class TypedVarFactory extends LambdaRodeoBaseVisitor<TypedVar> {
   @Override
   public TypedVar visitLambdaTypedVar(LambdaTypedVarContext ctx) {
     TypeExpressionFactory typeExpressionFactory
-        = new TypeExpressionFactory(ctx.varType().typeExpression());
+        = new TypeExpressionFactory(ctx.varType().typeExpression(), compileContext);
 
     return TypedVar.builder()
         .startLine(ctx.getStart().getLine())

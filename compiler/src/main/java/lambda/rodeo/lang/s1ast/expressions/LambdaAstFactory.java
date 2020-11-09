@@ -7,10 +7,10 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaExprContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaStatementContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
-import lambda.rodeo.lang.s1ast.type.TypedVar;
-import lambda.rodeo.lang.s1ast.type.TypedVarFactory;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
+import lambda.rodeo.lang.s1ast.type.TypedVar;
+import lambda.rodeo.lang.s1ast.type.TypedVarFactory;
 
 public class LambdaAstFactory {
 
@@ -21,7 +21,7 @@ public class LambdaAstFactory {
       S1CompileContext compileContext) {
     args = ctx.lambdaTypedVar()
         .stream()
-        .map(varContext -> new TypedVarFactory(varContext).toAst())
+        .map(varContext -> new TypedVarFactory(varContext, compileContext).toAst())
         .collect(Collectors.toList());
 
     List<LambdaStatementContext> lambdaStatementContexts = ctx.lambdaStatement();

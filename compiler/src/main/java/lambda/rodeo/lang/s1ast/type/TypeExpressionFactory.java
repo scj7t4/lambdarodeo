@@ -10,6 +10,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.InterfaceDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaTypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
+import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.DefinedType;
 import lambda.rodeo.lang.types.IntType;
@@ -20,8 +21,11 @@ import lambda.rodeo.lang.types.StringType;
 public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
 
   private final LambdaRodeoType ast;
+  private final CollectsErrors compileContext;
 
-  public TypeExpressionFactory(TypeExpressionContext ctx) {
+  public TypeExpressionFactory(TypeExpressionContext ctx,
+      CollectsErrors compileContext) {
+    this.compileContext = compileContext;
     ast = visit(ctx);
   }
 
@@ -68,7 +72,7 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
 
   @Override
   public LambdaRodeoType visitInterfaceDef(InterfaceDefContext ctx) {
-    InterfaceAstFactory interfaceAstFactory = new InterfaceAstFactory(ctx);
+    InterfaceAstFactory interfaceAstFactory = new InterfaceAstFactory(ctx, compileContext);
     return interfaceAstFactory.getAst();
   }
 }

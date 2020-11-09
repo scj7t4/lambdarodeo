@@ -29,13 +29,13 @@ public class FunctionSigAstFactory extends LambdaRodeoBaseVisitor<FunctionSigAst
     TypeExpressionFactory returnTypeFactory = new TypeExpressionFactory(
         ctx
             .returnType()
-            .typeExpression());
+            .typeExpression(), compileContext);
 
     List<TypedVar> arguments = ctx
         .functionArgs()
         .typedVar()
         .stream()
-        .map(TypedVarFactory::new)
+        .map(ctx1 -> new TypedVarFactory(ctx1, compileContext))
         .map(TypedVarFactory::toAst)
         .collect(Collectors.toList());
 

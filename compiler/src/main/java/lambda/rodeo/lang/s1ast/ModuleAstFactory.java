@@ -70,7 +70,7 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
 
   @Override
   public void enterTypeDef(TypeDefContext ctx) {
-    TypeDefAstFactory typeDefAstFactory = new TypeDefAstFactory(ctx);
+    TypeDefAstFactory typeDefAstFactory = new TypeDefAstFactory(ctx, compileContext);
     types.add(typeDefAstFactory.toAst());
   }
 }

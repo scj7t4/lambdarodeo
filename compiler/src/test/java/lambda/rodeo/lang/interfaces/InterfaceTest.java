@@ -16,6 +16,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeDefContext;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.compilation.S2CompileContextImpl;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s1ast.type.TypeDef;
 import lambda.rodeo.lang.s1ast.type.TypeDefAstFactory;
@@ -23,6 +24,7 @@ import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.DefinedType;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.types.Atom;
@@ -40,8 +42,10 @@ public class InterfaceTest {
     String interfaceResource = "/test_cases/interfaces/Interface1.rdo";
     LambdaRodeoParser parser = parseResource(interfaceResource);
     TypeDefContext interfaceDefContext = parser.typeDef();
+    S2CompileContextImpl compileContext = CompileContextUtils.testS2CompileContext();
 
-    TypeDefAstFactory typeDefAstFactory = new TypeDefAstFactory(interfaceDefContext);
+    TypeDefAstFactory typeDefAstFactory = new TypeDefAstFactory(interfaceDefContext,
+        compileContext);
     TypeDef ast = typeDefAstFactory.toAst();
 
     assertThat(ast.getIdentifier(), Matchers.equalTo("MyCoolInterface"));
@@ -70,8 +74,10 @@ public class InterfaceTest {
     String interfaceResource = "/test_cases/interfaces/Interface2.rdo";
     LambdaRodeoParser parser = parseResource(interfaceResource);
     TypeDefContext interfaceDefContext = parser.typeDef();
+    S2CompileContextImpl compileContext = CompileContextUtils.testS2CompileContext();
 
-    TypeDefAstFactory typeDefAstFactory = new TypeDefAstFactory(interfaceDefContext);
+    TypeDefAstFactory typeDefAstFactory = new TypeDefAstFactory(interfaceDefContext,
+        compileContext);
     TypeDef ast = typeDefAstFactory.toAst();
 
     assertThat(ast.getIdentifier(), Matchers.equalTo("Tree"));
@@ -190,6 +196,32 @@ public class InterfaceTest {
             .errorType(CompileError.RETURN_TYPE_MISMATCH)
             .errorMsg(
                 "Pattern case returns 'LRInterface<{}>'; it cannot be assigned to 'LRInterface<{member1: Int; member2: :null}>'")
+            .build()
+    ));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testInterfaceDuplicatedMember() {
+    String importResource = "/test_cases/interfaces/DuplicateMember.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.DuplicateMember")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+    CompileErrorCollector compileErrorCollector = CompileUtils.expectCompileErrors(toCompile);
+
+    assertThat(compileErrorCollector.getCompileErrors(), Matchers.contains(
+        CompileError.builder()
+            .characterStart(2)
+            .startLine(3)
+            .endLine(3)
+            .errorType(CompileError.IDENTIFIER_ALREADY_IN_SCOPE)
+            .errorMsg("Cannot declare 'member1' it is already defined in this scope")
             .build()
     ));
   }

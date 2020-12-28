@@ -1,11 +1,14 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.math.BigInteger;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.fn.IntegerFunctions;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,11 +38,9 @@ public class MultiplyAst implements BiNumericExpressionAst {
       S1CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);
     rhs.compile(methodVisitor, compileContext);
-    methodVisitor.visitMethodInsn(
-        INVOKEVIRTUAL,
-        Type.getInternalName(BigInteger.class),
-        "multiply",
-        FunctionDescriptorBuilder.args(BigInteger.class).returns(BigInteger.class),
-        false);
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(IntegerFunctions.class), "makeMultiply",
+        FunctionDescriptorBuilder.args(Lambda0.class, Lambda0.class)
+            .returns(Lambda0.class), false);
   }
 }

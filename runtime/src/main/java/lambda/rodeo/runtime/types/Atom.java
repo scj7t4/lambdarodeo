@@ -1,5 +1,6 @@
 package lambda.rodeo.runtime.types;
 
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class Atom implements LRType {
+public class Atom implements LRType, Lambda0<Atom> {
   private final String atom;
 
   public static final Atom UNDEFINED = new Atom("$UNDEFINED");
@@ -23,5 +24,10 @@ public class Atom implements LRType {
   @Override
   public boolean assignableFrom(LRType type) {
     return equals(type);
+  }
+
+  @Override
+  public Atom apply() {
+    return this;
   }
 }

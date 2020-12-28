@@ -3,6 +3,7 @@ import static org.objectweb.asm.Opcodes.BASTORE;
 import static org.objectweb.asm.Opcodes.BIPUSH;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.NEWARRAY;
 import static org.objectweb.asm.Opcodes.T_BYTE;
@@ -17,6 +18,8 @@ import lambda.rodeo.lang.s2typed.expressions.SimpleTypedExpression;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -74,5 +77,10 @@ public class IntConstantAst implements ExpressionAst, CompileableExpression {
         "<init>",
         "([B)V",
         false);
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(Lambda0.class), "make",
+        FunctionDescriptorBuilder.args(Object.class)
+          .returns(Lambda0.class),
+        true);
   }
 }

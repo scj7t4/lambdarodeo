@@ -2,7 +2,7 @@ package lambda.rodeo.runtime.execution;
 
 import lambda.rodeo.runtime.lambda.Lambda0;
 
-public class Trampoline<T> {
+public class Trampoline<T> implements Lambda0<T> {
   private final Lambda0<?> bounce;
 
   private Trampoline(Lambda0<?> bounce) {
@@ -21,5 +21,10 @@ public class Trampoline<T> {
     } else {
       return (T) applied;
     }
+  }
+
+  @Override
+  public T apply() {
+    return exec();
   }
 }

@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.math.BigInteger;
@@ -14,7 +15,10 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.types.StringType;
+import lambda.rodeo.lang.util.DescriptorUtils;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.fn.IntegerFunctions;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -74,5 +78,10 @@ public class AddAst implements BiNumericExpressionAst {
         "add",
         FunctionDescriptorBuilder.args(BigInteger.class).returns(BigInteger.class),
         false);
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(IntegerFunctions.class), "makeAdd",
+        FunctionDescriptorBuilder.args(Lambda0.class, Lambda0.class)
+          .returns(Lambda0.class), false);
+
   }
 }

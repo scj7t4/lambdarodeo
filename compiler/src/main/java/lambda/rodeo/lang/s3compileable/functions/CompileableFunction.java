@@ -32,20 +32,11 @@ public class CompileableFunction {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     for (S2TypedVar var : functionSignature.getArguments()) {
-      String descriptor;
-      if (var.getType().isLambda()) {
-        descriptor = var.getType().getDescriptor();
-      } else {
-        descriptor = Type.getDescriptor(Lambda0.class);
-      }
+      String descriptor = var.getType().getLambdaDescriptor();
       sb.append(descriptor);
     }
     sb.append(")");
-    if (functionSignature.getDeclaredReturnType().isLambda()) {
-      sb.append(functionSignature.getDeclaredReturnType().getDescriptor());
-    } else {
-      sb.append(Type.getDescriptor(Lambda0.class));
-    }
+    sb.append(functionSignature.getDeclaredReturnType().getLambdaDescriptor());
     return sb.toString();
   }
 
@@ -53,25 +44,11 @@ public class CompileableFunction {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     for (S2TypedVar var : functionSignature.getArguments()) {
-      String descriptor;
-      if (var.getType().isLambda()) {
-        descriptor = var.getType().getDescriptor();
-      } else {
-        descriptor = DescriptorUtils.genericType(Lambda0.class, var.getType().getSignature());
-      }
+      String descriptor = var.getType().getSignature();
       sb.append(descriptor);
     }
     sb.append(")");
-
-    if (functionSignature.getDeclaredReturnType().isLambda()) {
-      sb.append(functionSignature.getDeclaredReturnType().getSignature());
-    } else {
-      sb.append(DescriptorUtils.genericType(
-          Lambda0.class,
-          functionSignature.getDeclaredReturnType().getSignature())
-      );
-    }
-
+    sb.append(functionSignature.getDeclaredReturnType().getSignature());
     return sb.toString();
   }
 

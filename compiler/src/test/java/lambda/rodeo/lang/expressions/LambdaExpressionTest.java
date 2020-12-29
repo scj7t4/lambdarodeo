@@ -68,6 +68,8 @@ public class LambdaExpressionTest {
     ModuleAst moduleAst = ExpressionTestUtils.moduleForExpression(expressionAst,
         expectedType.getType());
 
+    CompileUtils.asmifyModule(moduleAst);
+
     Class<?> retVal = CompileUtils.createClass(moduleAst);
 
     CompileContextUtils.assertNoCompileErrors(compileContext);
@@ -105,7 +107,7 @@ public class LambdaExpressionTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
     @SuppressWarnings("unchecked")
-    Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) noArgs.invoke(null);
+    Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) trampoline(noArgs.invoke(null));
     assertThat(trampoline(res.apply(new Atom("ok"))), equalTo(new BigInteger("1337")));
   }
 
@@ -126,11 +128,11 @@ public class LambdaExpressionTest {
         .functionAsts(Collections.singletonList(functionAst))
         .build());
 
-    Method method = compiledModule.getMethod("closure0", BigInteger.class);
+    Method method = compiledModule.getMethod("closure0", Lambda0.class);
     @SuppressWarnings("unchecked")
     Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null, BigInteger.TWO);
 
-    assertThat(invokeResult.apply(), equalTo(BigInteger.TWO));
+    assertThat(trampoline(invokeResult.apply()), equalTo(BigInteger.TWO));
   }
 
   @Test
@@ -150,10 +152,10 @@ public class LambdaExpressionTest {
         .functionAsts(Collections.singletonList(functionAst))
         .build());
 
-    Method method = compiledModule.getMethod("closure1", BigInteger.class);
+    Method method = compiledModule.getMethod("closure1", Lambda0.class);
     @SuppressWarnings("unchecked")
     Lambda1<BigInteger, Lambda0<BigInteger>> invokeResult =
-        (Lambda1<BigInteger, Lambda0<BigInteger>>) method.invoke(null, BigInteger.TWO);
+        (Lambda1<BigInteger, Lambda0<BigInteger>>) method.invoke(null, Value.of(BigInteger.TWO));
 
     assertThat(invokeResult.apply(BigInteger.TWO).apply(), equalTo(new BigInteger("4")));
   }
@@ -175,8 +177,9 @@ public class LambdaExpressionTest {
         .functionAsts(Collections.singletonList(functionAst))
         .build());
 
-    Method method = compiledModule.getMethod("closure1", BigInteger.class);
-    BigInteger invokeResult = (BigInteger) method.invoke(null, BigInteger.TWO);
+    Method method = compiledModule.getMethod("closure1", Lambda0.class);
+    BigInteger invokeResult = (BigInteger) trampoline(
+        method.invoke(null, Value.of(BigInteger.TWO)));
 
     assertThat(invokeResult, equalTo(new BigInteger("4")));
   }
@@ -203,8 +206,8 @@ public class LambdaExpressionTest {
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
     @SuppressWarnings("unchecked")
-    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method
-        .invoke(null, Value.of(BigInteger.TWO));
+    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) trampoline(method
+        .invoke(null, Value.of(BigInteger.TWO)));
 
     assertThat(invokeResult.apply(), equalTo(new BigInteger("4")));
   }

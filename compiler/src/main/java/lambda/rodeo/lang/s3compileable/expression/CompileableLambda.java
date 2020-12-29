@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -18,6 +19,7 @@ import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.util.DescriptorUtils;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Value;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -55,17 +57,10 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
 
     StringBuilder invokeDynamicDescriptor = new StringBuilder("(");
     for (Entry entry : typedExpression.getScopeArgs()) {
-      CompileableType type = entry.getType();
-      if (type.isLambda()) {
-        invokeDynamicDescriptor.append(type.getDescriptor());
-      } else {
-        invokeDynamicDescriptor.append(Type.getDescriptor(Lambda0.class));
-      }
+      invokeDynamicDescriptor.append(entry.getType().getLambdaDescriptor());
     }
     invokeDynamicDescriptor.append(")");
-    CompileableLambdaType type = typedExpression.getType();
-    // We are making byte code for a lambda so this should always be a lambda type.
-    invokeDynamicDescriptor.append(type.getDescriptor());
+    invokeDynamicDescriptor.append(typedExpression.getType().getDescriptor());
 
     methodVisitor.visitInvokeDynamicInsn(
         "apply",
@@ -91,7 +86,11 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
             false),
         // And this should be the descriptor of how the lambda appears:
         Type.getType(typedExpression.getType().getFunctionDescriptor()));
-
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(Value.class), "of",
+        FunctionDescriptorBuilder.args(Object.class)
+            .returns(Value.class),
+        false);
   }
 
   @Override

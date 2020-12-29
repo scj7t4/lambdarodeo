@@ -2,12 +2,14 @@ package lambda.rodeo.lang.scope;
 
 import java.util.List;
 import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @Getter
 @Builder
@@ -34,7 +36,7 @@ public class CompileableTypeScope {
 
       methodVisitor.visitLocalVariable(
           scopeEntry.getName(),
-          scopeEntry.getType().getDescriptor(),
+          scopeEntry.getType().getLambdaDescriptor(),
           null,
           start,
           end,

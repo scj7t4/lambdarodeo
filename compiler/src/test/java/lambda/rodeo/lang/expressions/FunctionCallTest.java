@@ -162,7 +162,7 @@ class FunctionCallTest {
 
     String callDescriptor = cfc.getCallDescriptor();
     assertThat(callDescriptor,
-        equalTo("(Llambda/rodeo/runtime/types/Atom;Llambda/rodeo/runtime/lambda/Lambda0;)Llambda/rodeo/runtime/lambda/Lambda0;")
+        equalTo("(Llambda/rodeo/runtime/lambda/Lambda0;Llambda/rodeo/runtime/lambda/Lambda0;)Llambda/rodeo/runtime/lambda/Lambda0;")
     );
   }
 

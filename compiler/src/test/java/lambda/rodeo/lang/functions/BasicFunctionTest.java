@@ -72,7 +72,7 @@ public class BasicFunctionTest {
         .functionAsts(Collections.singletonList(functionAst))
         .build());
 
-    Method noArgs = compiledModule.getMethod("nillify", Atom.class);
+    Method noArgs = compiledModule.getMethod("nillify", Lambda0.class);
     Object invokeResult = noArgs.invoke(null, Atom.NULL);
 
     assertThat(invokeResult, equalTo(Atom.NULL));

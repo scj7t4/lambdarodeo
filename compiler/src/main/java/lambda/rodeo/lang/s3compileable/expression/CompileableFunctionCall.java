@@ -61,24 +61,11 @@ public class CompileableFunctionCall implements CompileableExpr {
     sb.append("(");
 
     for (CompileableExpr arg : args) {
-      CompileableType type = arg.getTypedExpression().getType();
-      if (type.isLambda()) {
-        sb.append(type.getDescriptor());
-      } else {
-        sb.append(Type.getDescriptor(Lambda0.class));
-      }
+      sb.append(arg.getTypedExpression().getType().getLambdaDescriptor());
     }
     sb.append(")");
 
-    String returnTypeDescriptor;
-
-    if (typedExpression.getReturnType().isLambda()) {
-      returnTypeDescriptor = typedExpression
-          .getReturnType()
-          .getDescriptor();
-    } else {
-      returnTypeDescriptor = Type.getDescriptor(Lambda0.class);
-    }
+    String returnTypeDescriptor = typedExpression.getReturnType().getLambdaDescriptor();
     sb.append(returnTypeDescriptor);
     return sb.toString();
   }

@@ -8,6 +8,8 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
+import lambda.rodeo.lang.util.DescriptorUtils;
 import lambda.rodeo.runtime.exceptions.RuntimeCriticalLanguageException;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
@@ -55,15 +57,11 @@ public class CompileableLambdaType implements CompileableType {
 
   @Override
   public String getSignature() {
-    StringBuilder sb = new StringBuilder("L");
-    sb.append(Type.getInternalName(functionalRep()));
-    sb.append("<");
-    for (CompileableType arg : args) {
-      sb.append(arg.getSignature());
-    }
-    sb.append(returnType.getSignature());
-    sb.append(">;");
-    return sb.toString();
+    String[] params = Stream.concat(args.stream(), Stream.of(returnType))
+        .map(CompileableType::getSignature)
+        .toArray(String[]::new);
+    return DescriptorUtils.genericType(Lambda0.class,
+        DescriptorUtils.genericType(functionalRep(), params));
   }
 
   @Override
@@ -109,13 +107,9 @@ public class CompileableLambdaType implements CompileableType {
   public String getFunctionDescriptor() {
     StringBuilder sb = new StringBuilder("(");
     for (CompileableType arg : args) {
-      if (arg.isLambda()) {
-        sb.append(arg.getDescriptor());
-      } else {
-        sb.append(Type.getDescriptor(Lambda0.class));
-      }
+      sb.append(arg.getLambdaDescriptor());
     }
-    sb.append(")").append(returnType.getDescriptor());
+    sb.append(")").append(Type.getDescriptor(Lambda0.class));
     return sb.toString();
   }
 

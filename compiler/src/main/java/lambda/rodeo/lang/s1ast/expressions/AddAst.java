@@ -72,12 +72,6 @@ public class AddAst implements BiNumericExpressionAst {
       S1CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);
     rhs.compile(methodVisitor, compileContext);
-    methodVisitor.visitMethodInsn(
-        INVOKEVIRTUAL,
-        Type.getInternalName(BigInteger.class),
-        "add",
-        FunctionDescriptorBuilder.args(BigInteger.class).returns(BigInteger.class),
-        false);
     methodVisitor.visitMethodInsn(INVOKESTATIC,
         Type.getInternalName(IntegerFunctions.class), "makeAdd",
         FunctionDescriptorBuilder.args(Lambda0.class, Lambda0.class)

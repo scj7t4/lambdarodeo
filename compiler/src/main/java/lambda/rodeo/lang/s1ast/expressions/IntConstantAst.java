@@ -20,6 +20,7 @@ import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Value;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -78,9 +79,9 @@ public class IntConstantAst implements ExpressionAst, CompileableExpression {
         "([B)V",
         false);
     methodVisitor.visitMethodInsn(INVOKESTATIC,
-        Type.getInternalName(Lambda0.class), "make",
+        Type.getInternalName(Value.class), "of",
         FunctionDescriptorBuilder.args(Object.class)
-          .returns(Lambda0.class),
-        true);
+          .returns(Value.class),
+        false);
   }
 }

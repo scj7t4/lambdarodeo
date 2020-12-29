@@ -9,17 +9,21 @@ import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionSignature;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
+import lambda.rodeo.lang.util.DescriptorUtils;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
 @EqualsAndHashCode
 public class CompileableFunction {
+
   private final TypedFunction typedFunction;
   private final CompileableFunctionBody functionBody;
   private final TypedFunctionSignature functionSignature;
@@ -28,10 +32,20 @@ public class CompileableFunction {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     for (S2TypedVar var : functionSignature.getArguments()) {
-      String descriptor = var.getType().getDescriptor();
+      String descriptor;
+      if (var.getType().isLambda()) {
+        descriptor = var.getType().getDescriptor();
+      } else {
+        descriptor = Type.getDescriptor(Lambda0.class);
+      }
       sb.append(descriptor);
     }
-    sb.append(")").append(functionSignature.getDeclaredReturnType().getDescriptor());
+    sb.append(")");
+    if (functionSignature.getDeclaredReturnType().isLambda()) {
+      sb.append(functionSignature.getDeclaredReturnType().getDescriptor());
+    } else {
+      sb.append(Type.getDescriptor(Lambda0.class));
+    }
     return sb.toString();
   }
 
@@ -39,16 +53,31 @@ public class CompileableFunction {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     for (S2TypedVar var : functionSignature.getArguments()) {
-      String descriptor = var.getType().getSignature();
+      String descriptor;
+      if (var.getType().isLambda()) {
+        descriptor = var.getType().getDescriptor();
+      } else {
+        descriptor = DescriptorUtils.genericType(Lambda0.class, var.getType().getSignature());
+      }
       sb.append(descriptor);
     }
-    sb.append(")").append(functionSignature.getDeclaredReturnType().getSignature());
+    sb.append(")");
+
+    if (functionSignature.getDeclaredReturnType().isLambda()) {
+      sb.append(functionSignature.getDeclaredReturnType().getSignature());
+    } else {
+      sb.append(DescriptorUtils.genericType(
+          Lambda0.class,
+          functionSignature.getDeclaredReturnType().getSignature())
+      );
+    }
+
     return sb.toString();
   }
 
   public void compile(ClassWriter cw, S2CompileContext compileContext, String internalModuleName) {
     int access = ACC_PUBLIC | ACC_STATIC;
-    if(isLambda()) {
+    if (isLambda()) {
       access |= ACC_SYNTHETIC;
     }
 

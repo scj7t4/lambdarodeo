@@ -1,6 +1,7 @@
 package lambda.rodeo.runtime.execution;
 
 import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.types.Atom;
 
 public class Trampoline<T> implements Lambda0<T> {
   private final Lambda0<?> bounce;
@@ -26,5 +27,12 @@ public class Trampoline<T> implements Lambda0<T> {
   @Override
   public T apply() {
     return exec();
+  }
+
+  public static Object trampoline(Object bouncer) {
+    while (bouncer instanceof Lambda0 && !(bouncer instanceof Atom)) {
+      bouncer = ((Lambda0<?>) bouncer).get();
+    }
+    return bouncer;
   }
 }

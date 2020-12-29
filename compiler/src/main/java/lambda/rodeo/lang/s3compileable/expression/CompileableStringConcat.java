@@ -1,11 +1,16 @@
 package lambda.rodeo.lang.s3compileable.expression;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
 import java.lang.invoke.CallSite;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedStringConcat;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.fn.IntegerFunctions;
+import lambda.rodeo.runtime.fn.StringFunctions;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.Handle;
@@ -24,23 +29,9 @@ public class CompileableStringConcat implements CompileableExpr {
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     lhs.compile(methodVisitor, compileContext);
     rhs.compile(methodVisitor, compileContext);
-    String invokeDescriptor = "("
-        + lhs.getTypedExpression().getType().getDescriptor()
-        + rhs.getTypedExpression().getType().getDescriptor()
-        + ")" + typedExpression.getType().getDescriptor();
-    methodVisitor.visitInvokeDynamicInsn("makeConcatWithConstants",
-        invokeDescriptor,
-        new Handle(Opcodes.H_INVOKESTATIC,
-            "java/lang/invoke/StringConcatFactory",
-            "makeConcatWithConstants",
-            FunctionDescriptorBuilder.args(
-                MethodHandles.Lookup.class,
-                String.class,
-                MethodType.class,
-                String.class,
-                Object[].class
-            ).returns(CallSite.class),
-            false),
-        "\u0001\u0001");
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(StringFunctions.class), "makeConcat",
+        FunctionDescriptorBuilder.args(Lambda0.class, Lambda0.class)
+            .returns(Lambda0.class), false);
   }
 }

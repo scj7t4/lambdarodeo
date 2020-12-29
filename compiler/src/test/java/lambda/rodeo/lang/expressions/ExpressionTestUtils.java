@@ -12,6 +12,7 @@ import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.types.LambdaRodeoType;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.SneakyThrows;
 
 public class ExpressionTestUtils {
@@ -63,7 +64,12 @@ public class ExpressionTestUtils {
 
   @SneakyThrows
   public static Object compileAndExecute(ExpressionAst expr, LambdaRodeoType expectedType) {
-    return compileAndExecute(moduleForExpression(expr, expectedType));
+    Object result = compileAndExecute(moduleForExpression(expr, expectedType));
+    if (result instanceof Lambda0) {
+      return ((Lambda0<?>) result).get();
+    } else {
+      return result;
+    }
   }
 
   @SneakyThrows

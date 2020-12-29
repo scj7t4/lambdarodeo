@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.expressions;
 
+import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -92,7 +93,7 @@ class FunctionCallTest {
         .build();
 
     String callDescriptor = cfc.getCallDescriptor();
-    assertThat(callDescriptor, equalTo("()Ljava/math/BigInteger;"));
+    assertThat(callDescriptor, equalTo("()Llambda/rodeo/runtime/lambda/Lambda0;"));
   }
 
   @Test
@@ -161,7 +162,7 @@ class FunctionCallTest {
 
     String callDescriptor = cfc.getCallDescriptor();
     assertThat(callDescriptor,
-        equalTo("(Llambda/rodeo/runtime/types/Atom;Ljava/math/BigInteger;)Ljava/math/BigInteger;")
+        equalTo("(Llambda/rodeo/runtime/types/Atom;Llambda/rodeo/runtime/lambda/Lambda0;)Llambda/rodeo/runtime/lambda/Lambda0;")
     );
   }
 
@@ -186,10 +187,10 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
     Method twoptwo = compiledModule.getMethod("twoptwo");
-    assertThat(twoptwo.invoke(null), equalTo(BigInteger.valueOf(4)));
+    assertThat(trampoline(twoptwo.invoke(null)), equalTo(BigInteger.valueOf(4)));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test
@@ -209,10 +210,10 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
     Method twoptwo = compiledModule.getMethod("twoptwo");
-    assertThat(twoptwo.invoke(null), equalTo(BigInteger.valueOf(4)));
+    assertThat(trampoline(twoptwo.invoke(null)), equalTo(BigInteger.valueOf(4)));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test
@@ -244,7 +245,7 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.ImportModuleFunctionCall"));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test
@@ -276,7 +277,7 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.AliasModuleFunctionCall"));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(callAndAdd.invoke(null), equalTo(BigInteger.valueOf(7)));
+    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test

@@ -5,6 +5,7 @@ import org.objectweb.asm.MethodVisitor;
 public interface CompileableType {
   LambdaRodeoType getType();
 
+  boolean isLambda();
   String getDescriptor();
   String getInternalName();
 

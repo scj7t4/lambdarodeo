@@ -65,4 +65,9 @@ public class CompileableAtom implements LambdaRodeoType, CompileableType {
   public LambdaRodeoType getType() {
     return this;
   }
+
+  @Override
+  public boolean isLambda() {
+    return true;
+  }
 }

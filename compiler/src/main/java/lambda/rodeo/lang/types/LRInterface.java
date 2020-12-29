@@ -91,6 +91,11 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
   }
 
   @Override
+  public boolean isLambda() {
+    return false;
+  }
+
+  @Override
   public String getDescriptor() {
     return Type.getDescriptor(LRObject.class);
   }

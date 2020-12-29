@@ -13,11 +13,14 @@ import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.util.DescriptorUtils;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
@@ -32,7 +35,7 @@ public class CompileableFunctionCall implements CompileableExpr {
 
   public Optional<ModuleAst> getModuleAst() {
     String targetModule = getTargetModule();
-    if(targetModule.isEmpty()) {
+    if (targetModule.isEmpty()) {
       return Optional.of(typedExpression.getTypedModuleScope().getThisScope().getThisModule());
     } else {
       return typedExpression.getTypedModuleScope().getImportedModules().stream()
@@ -49,24 +52,33 @@ public class CompileableFunctionCall implements CompileableExpr {
 
   public String getTargetModule() {
     String[] split = typedExpression.getCallTarget().split("\\.");
-    String[] allButLast = Arrays.copyOfRange(split, 0, split.length-1);
+    String[] allButLast = Arrays.copyOfRange(split, 0, split.length - 1);
     return String.join(".", allButLast);
   }
 
   public String getCallDescriptor() {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
-    List<CompileableType> callSignature = new ArrayList<>();
 
     for (CompileableExpr arg : args) {
       CompileableType type = arg.getTypedExpression().getType();
-      sb.append(type.getDescriptor());
-      callSignature.add(type);
+      if (type.isLambda()) {
+        sb.append(type.getDescriptor());
+      } else {
+        sb.append(Type.getDescriptor(Lambda0.class));
+      }
     }
     sb.append(")");
 
-    String returnTypeDescriptor = typedExpression.getReturnType()
-        .getDescriptor();
+    String returnTypeDescriptor;
+
+    if (typedExpression.getReturnType().isLambda()) {
+      returnTypeDescriptor = typedExpression
+          .getReturnType()
+          .getDescriptor();
+    } else {
+      returnTypeDescriptor = Type.getDescriptor(Lambda0.class);
+    }
     sb.append(returnTypeDescriptor);
     return sb.toString();
   }

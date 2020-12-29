@@ -39,6 +39,11 @@ public class CompileableLambdaType implements CompileableType {
   }
 
   @Override
+  public boolean isLambda() {
+    return true;
+  }
+
+  @Override
   public String getDescriptor() {
     return Type.getDescriptor(functionalRep());
   }

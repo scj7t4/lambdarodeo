@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.expressions;
 
 import static lambda.rodeo.lang.expressions.ExpressionTestUtils.TEST_METHOD;
+import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -28,6 +29,7 @@ import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
+import lambda.rodeo.runtime.lambda.Value;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +89,7 @@ public class LambdaExpressionTest {
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
     @SuppressWarnings("unchecked")
     Lambda0<BigInteger> res = (Lambda0<BigInteger>) noArgs.invoke(null);
-    assertThat(res.apply(), equalTo(new BigInteger("1337")));
+    assertThat(trampoline(res.apply()), equalTo(new BigInteger("1337")));
   }
 
   @Test
@@ -104,7 +106,7 @@ public class LambdaExpressionTest {
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
     @SuppressWarnings("unchecked")
     Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) noArgs.invoke(null);
-    assertThat(res.apply(new Atom("ok")), equalTo(new BigInteger("1337")));
+    assertThat(trampoline(res.apply(new Atom("ok"))), equalTo(new BigInteger("1337")));
   }
 
   @Test
@@ -196,9 +198,10 @@ public class LambdaExpressionTest {
         .functionAsts(Collections.singletonList(functionAst))
         .build());
 
-    Method method = compiledModule.getMethod("closure1", BigInteger.class);
+    Method method = compiledModule.getMethod("closure1", Lambda0.class);
     @SuppressWarnings("unchecked")
-    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null, BigInteger.TWO);
+    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method
+        .invoke(null, Value.of(BigInteger.TWO));
 
     assertThat(invokeResult.apply(), equalTo(new BigInteger("4")));
   }

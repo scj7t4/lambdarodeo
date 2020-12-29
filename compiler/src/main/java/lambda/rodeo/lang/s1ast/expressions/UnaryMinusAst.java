@@ -71,7 +71,7 @@ public class UnaryMinusAst implements ExpressionAst {
     operand.compile(methodVisitor, compileContext);
     methodVisitor.visitMethodInsn(INVOKESTATIC,
         Type.getInternalName(IntegerFunctions.class), "makeNegate",
-        FunctionDescriptorBuilder.args(Lambda0.class, Lambda0.class)
+        FunctionDescriptorBuilder.args(Lambda0.class)
             .returns(Lambda0.class), false);
   }
 

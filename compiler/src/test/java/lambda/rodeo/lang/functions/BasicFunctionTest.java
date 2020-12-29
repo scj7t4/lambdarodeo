@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.functions;
 
+import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,6 +26,8 @@ import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Value;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -94,12 +97,12 @@ public class BasicFunctionTest {
         .functionAsts(Collections.singletonList(functionAst))
         .build());
 
-    Method noArgs = compiledModule.getMethod("add", BigInteger.class, BigInteger.class);
-    Object invokeResult = noArgs.invoke(null, BigInteger.valueOf(2), BigInteger.valueOf(2));
+    Method noArgs = compiledModule.getMethod("add", Lambda0.class, Lambda0.class);
+    Object invokeResult = noArgs.invoke(null, Value.of(2), Value.of(2));
 
-    assertThat(invokeResult, instanceOf(BigInteger.class));
+    assertThat(trampoline(invokeResult), instanceOf(BigInteger.class));
 
-    assertThat(invokeResult, equalTo(BigInteger.valueOf(4)));
+    assertThat(trampoline(invokeResult), equalTo(BigInteger.valueOf(4)));
   }
 
   @Test

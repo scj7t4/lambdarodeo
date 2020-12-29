@@ -1,5 +1,7 @@
 package lambda.rodeo.lang.s1ast.expressions;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
 import java.util.Collections;
 import java.util.Set;
 import lambda.rodeo.lang.compilation.CollectsErrors;
@@ -11,9 +13,12 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.types.StringType;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.lambda.Value;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 @Builder
 @Getter
@@ -58,5 +63,10 @@ public class StringLiteralAst implements ExpressionAst, TypedExpression, Compile
   @Override
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
     methodVisitor.visitLdcInsn(contents);
+    methodVisitor.visitMethodInsn(INVOKESTATIC,
+        Type.getInternalName(Value.class), "of",
+        FunctionDescriptorBuilder.args(Object.class)
+            .returns(Value.class),
+        false);
   }
 }

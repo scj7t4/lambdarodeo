@@ -52,4 +52,9 @@ public class IntType implements LambdaRodeoType, CompileableType {
   public LambdaRodeoType getType() {
     return this;
   }
+
+  @Override
+  public boolean isLambda() {
+    return false;
+  }
 }

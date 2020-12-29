@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.functions;
 
+import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -16,6 +17,8 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
+import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Value;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -38,12 +41,12 @@ public class FunctionCasesTest {
         equalTo(2));
     Class<?> compiledModule = CompileUtils.createClass(testCase);
 
-    Method noArgs = compiledModule.getMethod("somefunc", BigInteger.class);
-    Object invokeResult = noArgs.invoke(null, BigInteger.ONE);
-    assertThat(invokeResult, equalTo(BigInteger.ONE));
+    Method noArgs = compiledModule.getMethod("somefunc", Lambda0.class);
+    Object invokeResult = noArgs.invoke(null, Value.of(BigInteger.ONE));
+    assertThat(trampoline(invokeResult), equalTo(BigInteger.ONE));
 
-    Object invokeResult2 = noArgs.invoke(null, BigInteger.ZERO);
-    assertThat(invokeResult2, equalTo(BigInteger.ZERO));
+    Object invokeResult2 = noArgs.invoke(null, Value.of(BigInteger.ZERO));
+    assertThat(trampoline(invokeResult2), equalTo(BigInteger.ZERO));
   }
 
   @Test
@@ -60,26 +63,26 @@ public class FunctionCasesTest {
         equalTo(3));
     Class<?> compiledModule = CompileUtils.createClass(testCase);
 
-    Method func = compiledModule.getMethod("fibonacci", BigInteger.class);
-    Object invokeResult = func.invoke(null, BigInteger.ONE);
+    Method func = compiledModule.getMethod("fibonacci", Lambda0.class);
+    Object invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.ONE)));
     assertThat(invokeResult, equalTo(BigInteger.ONE));
 
-    invokeResult = func.invoke(null, BigInteger.ZERO);
+    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.ZERO)));
     assertThat(invokeResult, equalTo(BigInteger.ONE));
 
-    invokeResult = func.invoke(null, BigInteger.valueOf(2));
+    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(2))));
     assertThat(invokeResult, equalTo(BigInteger.valueOf(2)));
 
-    invokeResult = func.invoke(null, BigInteger.valueOf(3));
+    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(3))));
     assertThat(invokeResult, equalTo(BigInteger.valueOf(3)));
 
-    invokeResult = func.invoke(null, BigInteger.valueOf(4));
+    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(4))));
     assertThat(invokeResult, equalTo(BigInteger.valueOf(5)));
 
-    Object invokeResult3 = func.invoke(null, BigInteger.valueOf(8));
+    Object invokeResult3 = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(8))));
     assertThat(invokeResult3, equalTo(BigInteger.valueOf(34)));
 
-    Object invokeResult4 = func.invoke(null, BigInteger.valueOf(50));
+    Object invokeResult4 = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(50))));
     assertThat(invokeResult4, equalTo(BigInteger.valueOf(20365011074L)));
   }
 }

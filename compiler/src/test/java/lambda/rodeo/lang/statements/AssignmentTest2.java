@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.statements;
 
+import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
@@ -52,7 +53,7 @@ class AssignmentTest2 {
 
     ModuleAst moduleAst = ExpressionTestUtils.moduleForStatements(statements, IntType.INSTANCE);
 
-    Object result = ExpressionTestUtils.compileAndExecute(moduleAst);
+    Object result = trampoline(ExpressionTestUtils.compileAndExecute(moduleAst));
 
     assertThat(result, equalTo(BigInteger.valueOf(5)));
 

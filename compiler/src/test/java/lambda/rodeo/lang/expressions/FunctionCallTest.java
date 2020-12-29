@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.expressions;
 
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -187,10 +187,10 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
     Method twoptwo = compiledModule.getMethod("twoptwo");
-    assertThat(trampoline(twoptwo.invoke(null)), equalTo(BigInteger.valueOf(4)));
+    assertThat(exhaust(twoptwo.invoke(null)), equalTo(BigInteger.valueOf(4)));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
+    assertThat(exhaust(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test
@@ -210,10 +210,10 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
 
     Method twoptwo = compiledModule.getMethod("twoptwo");
-    assertThat(trampoline(twoptwo.invoke(null)), equalTo(BigInteger.valueOf(4)));
+    assertThat(exhaust(twoptwo.invoke(null)), equalTo(BigInteger.valueOf(4)));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
+    assertThat(exhaust(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test
@@ -245,7 +245,7 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.ImportModuleFunctionCall"));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
+    assertThat(exhaust(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test
@@ -277,7 +277,7 @@ class FunctionCallTest {
         CoreMatchers.equalTo("testcase.AliasModuleFunctionCall"));
 
     Method callAndAdd = compiledModule.getMethod("callAndAdd");
-    assertThat(trampoline(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
+    assertThat(exhaust(callAndAdd.invoke(null)), equalTo(BigInteger.valueOf(7)));
   }
 
   @Test

@@ -1,6 +1,9 @@
 package lambda.rodeo.runtime.fn;
 
+import static lambda.rodeo.runtime.execution.Trampoline.maybeBounce;
+
 import java.math.BigInteger;
+import lambda.rodeo.runtime.execution.Trampoline;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Value;
 import lombok.AllArgsConstructor;
@@ -11,6 +14,7 @@ public class IntegerFunctions {
   @AllArgsConstructor
   @EqualsAndHashCode
   public static class IntegerAdd implements Lambda0<BigInteger> {
+
     private final Lambda0<BigInteger> left;
     private final Lambda0<BigInteger> right;
 
@@ -29,6 +33,7 @@ public class IntegerFunctions {
   @AllArgsConstructor
   @EqualsAndHashCode
   public static class IntegerSubtract implements Lambda0<BigInteger> {
+
     private final Lambda0<BigInteger> left;
     private final Lambda0<BigInteger> right;
 
@@ -47,6 +52,7 @@ public class IntegerFunctions {
   @AllArgsConstructor
   @EqualsAndHashCode
   public static class IntegerDivide implements Lambda0<BigInteger> {
+
     private final Lambda0<BigInteger> left;
     private final Lambda0<BigInteger> right;
 
@@ -65,6 +71,7 @@ public class IntegerFunctions {
   @AllArgsConstructor
   @EqualsAndHashCode
   public static class IntegerMultiply implements Lambda0<BigInteger> {
+
     private final Lambda0<BigInteger> left;
     private final Lambda0<BigInteger> right;
 
@@ -83,6 +90,7 @@ public class IntegerFunctions {
   @AllArgsConstructor
   @EqualsAndHashCode
   public static class IntegerNegate implements Lambda0<BigInteger> {
+
     private final Lambda0<BigInteger> item;
 
 
@@ -104,21 +112,24 @@ public class IntegerFunctions {
     return new IntegerAdd(left, right);
   }
 
-  public static Lambda0<BigInteger> makeSubtract(Lambda0<BigInteger> left, Lambda0<BigInteger> right) {
+  public static Lambda0<BigInteger> makeSubtract(Lambda0<BigInteger> left,
+      Lambda0<BigInteger> right) {
     if (left instanceof Value && right instanceof Value) {
       return Value.of(left.get().subtract(right.get()));
     }
     return new IntegerSubtract(left, right);
   }
 
-  public static Lambda0<BigInteger> makeDivide(Lambda0<BigInteger> left, Lambda0<BigInteger> right) {
+  public static Lambda0<BigInteger> makeDivide(Lambda0<BigInteger> left,
+      Lambda0<BigInteger> right) {
     if (left instanceof Value && right instanceof Value) {
       return Value.of(left.get().divide(right.get()));
     }
     return new IntegerDivide(left, right);
   }
 
-  public static Lambda0<BigInteger> makeMultiply(Lambda0<BigInteger> left, Lambda0<BigInteger> right) {
+  public static Lambda0<BigInteger> makeMultiply(Lambda0<BigInteger> left,
+      Lambda0<BigInteger> right) {
     if (left instanceof Value && right instanceof Value) {
       return Value.of(left.get().multiply(right.get()));
     }

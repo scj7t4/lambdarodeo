@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.interfaces;
 
 import static lambda.rodeo.lang.utils.TestUtils.parseResource;
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
@@ -145,8 +145,8 @@ public class InterfaceTest {
     Object invoke = test.invoke(null);
     LRObject asLRObject = (LRObject) invoke;
     assertThat(asLRObject.getEntries(), IsArrayWithSize.arrayWithSize(2));
-    assertThat(trampoline(asLRObject.get("member1")), Matchers.equalTo(BigInteger.valueOf(3L)));
-    assertThat(trampoline(asLRObject.get("member2")), Matchers.equalTo(Atom.NULL));
+    assertThat(exhaust(asLRObject.get("member1")), Matchers.equalTo(BigInteger.valueOf(3L)));
+    assertThat(exhaust(asLRObject.get("member2")), Matchers.equalTo(Atom.NULL));
   }
 
   @Test
@@ -170,8 +170,8 @@ public class InterfaceTest {
     Object invoke = test.invoke(null);
     LRObject asLRObject = (LRObject) invoke;
     assertThat(asLRObject.getEntries(), IsArrayWithSize.arrayWithSize(2));
-    assertThat(trampoline(asLRObject.get("member1")), Matchers.equalTo(BigInteger.valueOf(3L)));
-    assertThat(trampoline(asLRObject.get("member2")), Matchers.equalTo(Atom.NULL));
+    assertThat(exhaust(asLRObject.get("member1")), Matchers.equalTo(BigInteger.valueOf(3L)));
+    assertThat(exhaust(asLRObject.get("member2")), Matchers.equalTo(Atom.NULL));
   }
 
   @Test

@@ -1,6 +1,6 @@
 package lambda.rodeo.runtime.patterns.matchers;
 
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 
 import java.util.Objects;
 import lambda.rodeo.runtime.patterns.Matcher;
@@ -14,6 +14,6 @@ public class EqualMatcher implements Matcher {
 
   @Override
   public boolean matches(Object input) {
-    return Objects.equals(toMatch, input) || Objects.equals(trampoline(toMatch), trampoline(input));
+    return Objects.equals(toMatch, input) || Objects.equals(exhaust(toMatch), exhaust(input));
   }
 }

@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.expressions;
 
 import static lambda.rodeo.lang.expressions.ExpressionTestUtils.TEST_METHOD;
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -91,7 +91,7 @@ public class LambdaExpressionTest {
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
     @SuppressWarnings("unchecked")
     Lambda0<BigInteger> res = (Lambda0<BigInteger>) noArgs.invoke(null);
-    assertThat(trampoline(res.apply()), equalTo(new BigInteger("1337")));
+    assertThat(exhaust(res.apply()), equalTo(new BigInteger("1337")));
   }
 
   @Test
@@ -107,8 +107,8 @@ public class LambdaExpressionTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
     @SuppressWarnings("unchecked")
-    Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) trampoline(noArgs.invoke(null));
-    assertThat(trampoline(res.apply(new Atom("ok"))), equalTo(new BigInteger("1337")));
+    Lambda1<Atom, BigInteger> res = (Lambda1<Atom, BigInteger>) exhaust(noArgs.invoke(null));
+    assertThat(exhaust(res.apply(new Atom("ok"))), equalTo(new BigInteger("1337")));
   }
 
   @Test
@@ -133,7 +133,7 @@ public class LambdaExpressionTest {
     Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null,
         Value.of(BigInteger.TWO));
 
-    assertThat(trampoline(invokeResult.apply()), equalTo(BigInteger.TWO));
+    assertThat(exhaust(invokeResult.apply()), equalTo(BigInteger.TWO));
   }
 
   @Test
@@ -160,7 +160,7 @@ public class LambdaExpressionTest {
     Lambda1<Lambda0<BigInteger>, Lambda0<BigInteger>> invokeResult =
         (Lambda1<Lambda0<BigInteger>, Lambda0<BigInteger>>) method.invoke(null, Value.of(BigInteger.TWO));
 
-    Object apply = trampoline(invokeResult.apply(Value.of(BigInteger.TWO)));
+    Object apply = exhaust(invokeResult.apply(Value.of(BigInteger.TWO)));
     assertThat(apply, equalTo(new BigInteger("4")));
   }
 
@@ -186,7 +186,7 @@ public class LambdaExpressionTest {
 
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
-    BigInteger invokeResult = (BigInteger) trampoline(
+    BigInteger invokeResult = (BigInteger) exhaust(
         method.invoke(null, Value.of(BigInteger.TWO)));
 
     assertThat(invokeResult, equalTo(new BigInteger("4")));
@@ -213,7 +213,7 @@ public class LambdaExpressionTest {
     CompileUtils.asmifyModule(module);
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
-    BigInteger invokeResult = (BigInteger) trampoline(method
+    BigInteger invokeResult = (BigInteger) exhaust(method
         .invoke(null, Value.of(BigInteger.TWO)));
 
     assertThat(invokeResult, equalTo(new BigInteger("4")));

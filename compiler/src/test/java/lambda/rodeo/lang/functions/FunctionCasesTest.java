@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.functions;
 
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -43,10 +43,10 @@ public class FunctionCasesTest {
 
     Method noArgs = compiledModule.getMethod("somefunc", Lambda0.class);
     Object invokeResult = noArgs.invoke(null, Value.of(BigInteger.ONE));
-    assertThat(trampoline(invokeResult), equalTo(BigInteger.ONE));
+    assertThat(exhaust(invokeResult), equalTo(BigInteger.ONE));
 
     Object invokeResult2 = noArgs.invoke(null, Value.of(BigInteger.ZERO));
-    assertThat(trampoline(invokeResult2), equalTo(BigInteger.ZERO));
+    assertThat(exhaust(invokeResult2), equalTo(BigInteger.ZERO));
   }
 
   @Test
@@ -64,25 +64,96 @@ public class FunctionCasesTest {
     Class<?> compiledModule = CompileUtils.createClass(testCase);
 
     Method func = compiledModule.getMethod("fibonacci", Lambda0.class);
-    Object invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.ONE)));
+    Object invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.ONE)));
     assertThat(invokeResult, equalTo(BigInteger.ONE));
 
-    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.ZERO)));
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.ZERO)));
     assertThat(invokeResult, equalTo(BigInteger.ONE));
 
-    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(2))));
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(2))));
     assertThat(invokeResult, equalTo(BigInteger.valueOf(2)));
 
-    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(3))));
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(3))));
     assertThat(invokeResult, equalTo(BigInteger.valueOf(3)));
 
-    invokeResult = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(4))));
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(4))));
     assertThat(invokeResult, equalTo(BigInteger.valueOf(5)));
 
-    Object invokeResult3 = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(8))));
+    Object invokeResult3 = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(8))));
     assertThat(invokeResult3, equalTo(BigInteger.valueOf(34)));
 
-    Object invokeResult4 = trampoline(func.invoke(null, Value.of(BigInteger.valueOf(50))));
+    Object invokeResult4 = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(50))));
     assertThat(invokeResult4, equalTo(BigInteger.valueOf(20365011074L)));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testFibonacciTailCalls() {
+    String resource = "/test_cases/functions/CaseFunctionFiboTail.rdo";
+    ModuleContext moduleDef = TestUtils.parseModule(resource);
+    ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
+        CompileContextUtils.testS1CompileContext());
+    ModuleAst testCase = factory.toAst();
+
+    assertThat(
+        testCase.getFunctionAsts().get(0).getFunctionBodyAst().getPatternCases().size(),
+        equalTo(3));
+    Class<?> compiledModule = CompileUtils.createClass(testCase);
+
+    Method func = compiledModule.getMethod("fibonacci", Lambda0.class);
+    Object invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.ONE)));
+    assertThat(invokeResult, equalTo(BigInteger.ONE));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.ZERO)));
+    assertThat(invokeResult, equalTo(BigInteger.ONE));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(2))));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(2)));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(3))));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(3)));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(4))));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(5)));
+
+    Object invokeResult3 = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(8))));
+    assertThat(invokeResult3, equalTo(BigInteger.valueOf(34)));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testSumTailCalls() {
+    String resource = "/test_cases/functions/CaseFunctionSum.rdo";
+    ModuleContext moduleDef = TestUtils.parseModule(resource);
+    ModuleAstFactory factory = new ModuleAstFactory(moduleDef,
+        CompileContextUtils.testS1CompileContext());
+    ModuleAst testCase = factory.toAst();
+
+    assertThat(
+        testCase.getFunctionAsts().get(0).getFunctionBodyAst().getPatternCases().size(),
+        equalTo(3));
+    Class<?> compiledModule = CompileUtils.createClass(testCase);
+
+    Method func = compiledModule.getMethod("sum", Lambda0.class);
+    Object invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.ONE)));
+    assertThat(invokeResult, equalTo(BigInteger.ONE));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.ZERO)));
+    assertThat(invokeResult, equalTo(BigInteger.ZERO));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(2))));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(3)));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(3))));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(6)));
+
+    invokeResult = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(4))));
+    assertThat(invokeResult, equalTo(BigInteger.valueOf(10)));
+
+    Object invokeResult3 = exhaust(func.invoke(null, Value.of(BigInteger.valueOf(8))));
+    assertThat(invokeResult3, equalTo(BigInteger.valueOf(36)));
+
+    Object invokeResult4 = exhaust(func.invoke(null, Value.of(20000)));
+    assertThat(invokeResult4, equalTo(BigInteger.valueOf(200010000)));
   }
 }

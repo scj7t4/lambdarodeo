@@ -1,7 +1,7 @@
 package lambda.rodeo.lang.expressions;
 
 import static lambda.rodeo.lang.expressions.ExpressionTestUtils.TEST_METHOD;
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -69,7 +69,7 @@ public class StringConcatTest {
     Class<?> compiledModule = compileExpr("\"Hello World!\"");
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("Hello World!"));
   }
 
@@ -79,7 +79,7 @@ public class StringConcatTest {
     Class<?> compiledModule = compileExpr("\"Hello\" + \"World!\"");
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("HelloWorld!"));
   }
 
@@ -90,7 +90,7 @@ public class StringConcatTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
 
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("Nice33"));
   }
 
@@ -102,7 +102,7 @@ public class StringConcatTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
 
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("33Nice"));
   }
 
@@ -113,7 +113,7 @@ public class StringConcatTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
 
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("69Nice"));
   }
 
@@ -124,7 +124,7 @@ public class StringConcatTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
 
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("3336Nice"));
   }
 
@@ -135,7 +135,7 @@ public class StringConcatTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
 
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("Nice3336"));
   }
 
@@ -146,7 +146,7 @@ public class StringConcatTest {
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
 
-    String res = (String) trampoline(noArgs.invoke(null));
+    String res = (String) exhaust(noArgs.invoke(null));
     assertThat(res, equalTo("Nice69"));
   }
 }

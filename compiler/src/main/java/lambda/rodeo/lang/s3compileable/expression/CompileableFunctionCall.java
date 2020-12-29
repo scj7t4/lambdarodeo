@@ -14,6 +14,8 @@ import lambda.rodeo.lang.s2typed.expressions.TypedFunctionCall;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.util.DescriptorUtils;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.execution.Trampoline;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -89,5 +91,12 @@ public class CompileableFunctionCall implements CompileableExpr {
         getTargetMethod(),
         getCallDescriptor(),
         false);
+    methodVisitor.visitMethodInsn(
+        INVOKESTATIC,
+        Type.getInternalName(Trampoline.class),
+        "make",
+        FunctionDescriptorBuilder.args(Lambda0.class).returns(Lambda0.class),
+        false
+    );
   }
 }

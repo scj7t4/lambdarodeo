@@ -1,6 +1,6 @@
 package lambda.rodeo.lang.functions;
 
-import static lambda.rodeo.runtime.execution.Trampoline.trampoline;
+import static lambda.rodeo.runtime.execution.Trampoline.exhaust;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -100,9 +100,9 @@ public class BasicFunctionTest {
     Method noArgs = compiledModule.getMethod("add", Lambda0.class, Lambda0.class);
     Object invokeResult = noArgs.invoke(null, Value.of(2), Value.of(2));
 
-    assertThat(trampoline(invokeResult), instanceOf(BigInteger.class));
+    assertThat(exhaust(invokeResult), instanceOf(BigInteger.class));
 
-    assertThat(trampoline(invokeResult), equalTo(BigInteger.valueOf(4)));
+    assertThat(exhaust(invokeResult), equalTo(BigInteger.valueOf(4)));
   }
 
   @Test

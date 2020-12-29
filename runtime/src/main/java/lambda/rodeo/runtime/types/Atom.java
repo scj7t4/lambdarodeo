@@ -1,7 +1,6 @@
 package lambda.rodeo.runtime.types;
 
-import lambda.rodeo.runtime.lambda.Axiom;
-import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Quine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -11,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class Atom implements LRType, Axiom<Atom> {
+public class Atom implements LRType, Quine<Atom> {
   private final String atom;
 
   public static final Atom UNDEFINED = new Atom("$UNDEFINED");

@@ -109,7 +109,11 @@ public class CompileableLambdaType implements CompileableType {
   public String getFunctionDescriptor() {
     StringBuilder sb = new StringBuilder("(");
     for (CompileableType arg : args) {
-      sb.append(arg.getDescriptor());
+      if (arg.isLambda()) {
+        sb.append(arg.getDescriptor());
+      } else {
+        sb.append(Type.getDescriptor(Lambda0.class));
+      }
     }
     sb.append(")").append(returnType.getDescriptor());
     return sb.toString();

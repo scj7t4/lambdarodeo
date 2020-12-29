@@ -86,7 +86,9 @@ public class CompileUtils {
   }
 
   public static void asmifyModule(ModuleAst moduleAst) {
-    S2CompileContextImpl compileContext = S2CompileContextImpl.builder().build();
+    S2CompileContextImpl compileContext = S2CompileContextImpl.builder()
+        .source("test")
+        .build();
     ASMifier asMifier = new ASMifier();
     ClassReader classReader = new ClassReader(
         convertToCompileableModule(moduleAst, compileContext)

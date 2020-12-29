@@ -13,8 +13,11 @@ import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.scope.TypeScope.Entry;
+import lambda.rodeo.lang.types.CompileableLambdaType;
 import lambda.rodeo.lang.types.CompileableType;
+import lambda.rodeo.lang.util.DescriptorUtils;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -52,11 +55,17 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
 
     StringBuilder invokeDynamicDescriptor = new StringBuilder("(");
     for (Entry entry : typedExpression.getScopeArgs()) {
-      invokeDynamicDescriptor.append(entry.getType().getDescriptor());
+      CompileableType type = entry.getType();
+      if (type.isLambda()) {
+        invokeDynamicDescriptor.append(type.getDescriptor());
+      } else {
+        invokeDynamicDescriptor.append(Type.getDescriptor(Lambda0.class));
+      }
     }
-    invokeDynamicDescriptor.append(")")
-        .append(typedExpression.getType().getDescriptor());
-
+    invokeDynamicDescriptor.append(")");
+    CompileableLambdaType type = typedExpression.getType();
+    // We are making byte code for a lambda so this should always be a lambda type.
+    invokeDynamicDescriptor.append(type.getDescriptor());
 
     methodVisitor.visitInvokeDynamicInsn(
         "apply",

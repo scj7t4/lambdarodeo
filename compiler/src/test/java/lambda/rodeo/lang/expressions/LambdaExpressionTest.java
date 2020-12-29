@@ -194,9 +194,12 @@ public class LambdaExpressionTest {
     assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
     assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
 
-    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+    ModuleAst module = TestUtils.testModule()
         .functionAsts(Collections.singletonList(functionAst))
-        .build());
+        .build();
+    Class<?> compiledModule = CompileUtils.createClass(module);
+
+    CompileUtils.asmifyModule(module);
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
     @SuppressWarnings("unchecked")

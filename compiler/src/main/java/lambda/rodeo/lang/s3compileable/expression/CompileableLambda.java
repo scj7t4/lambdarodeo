@@ -86,11 +86,6 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
             false),
         // And this should be the descriptor of how the lambda appears:
         Type.getType(typedExpression.getType().getFunctionDescriptor()));
-    methodVisitor.visitMethodInsn(INVOKESTATIC,
-        Type.getInternalName(Value.class), "of",
-        FunctionDescriptorBuilder.args(Object.class)
-            .returns(Value.class),
-        false);
   }
 
   @Override

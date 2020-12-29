@@ -130,7 +130,8 @@ public class LambdaExpressionTest {
 
     Method method = compiledModule.getMethod("closure0", Lambda0.class);
     @SuppressWarnings("unchecked")
-    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null, BigInteger.TWO);
+    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) method.invoke(null,
+        Value.of(BigInteger.TWO));
 
     assertThat(trampoline(invokeResult.apply()), equalTo(BigInteger.TWO));
   }
@@ -148,16 +149,19 @@ public class LambdaExpressionTest {
     assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
     assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
 
-    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+    ModuleAst module = TestUtils.testModule()
         .functionAsts(Collections.singletonList(functionAst))
-        .build());
+        .build();
+    CompileUtils.asmifyModule(module);
+    Class<?> compiledModule = CompileUtils.createClass(module);
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
     @SuppressWarnings("unchecked")
-    Lambda1<BigInteger, Lambda0<BigInteger>> invokeResult =
-        (Lambda1<BigInteger, Lambda0<BigInteger>>) method.invoke(null, Value.of(BigInteger.TWO));
+    Lambda1<Lambda0<BigInteger>, Lambda0<BigInteger>> invokeResult =
+        (Lambda1<Lambda0<BigInteger>, Lambda0<BigInteger>>) method.invoke(null, Value.of(BigInteger.TWO));
 
-    assertThat(invokeResult.apply(BigInteger.TWO).apply(), equalTo(new BigInteger("4")));
+    Object apply = trampoline(invokeResult.apply(Value.of(BigInteger.TWO)));
+    assertThat(apply, equalTo(new BigInteger("4")));
   }
 
   @Test
@@ -173,9 +177,13 @@ public class LambdaExpressionTest {
     assertThat(functionAst.getArguments().get(0).getName(), equalTo("v1"));
     assertThat(functionAst.getArguments().get(0).getType(), equalTo(IntType.INSTANCE));
 
-    Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
+    ModuleAst module = TestUtils.testModule()
         .functionAsts(Collections.singletonList(functionAst))
-        .build());
+        .build();
+    CompileUtils.asmifyModule(module);
+
+    Class<?> compiledModule = CompileUtils.createClass(module);
+
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
     BigInteger invokeResult = (BigInteger) trampoline(
@@ -205,10 +213,9 @@ public class LambdaExpressionTest {
     CompileUtils.asmifyModule(module);
 
     Method method = compiledModule.getMethod("closure1", Lambda0.class);
-    @SuppressWarnings("unchecked")
-    Lambda0<BigInteger> invokeResult = (Lambda0<BigInteger>) trampoline(method
+    BigInteger invokeResult = (BigInteger) trampoline(method
         .invoke(null, Value.of(BigInteger.TWO)));
 
-    assertThat(invokeResult.apply(), equalTo(new BigInteger("4")));
+    assertThat(invokeResult, equalTo(new BigInteger("4")));
   }
 }

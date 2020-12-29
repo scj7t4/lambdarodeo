@@ -8,6 +8,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambdaInvoke;
 import lambda.rodeo.lang.types.CompileableLambdaType;
+import lambda.rodeo.runtime.lambda.Lambda0;
 import lombok.Builder;
 import lombok.Getter;
 import org.objectweb.asm.ClassWriter;
@@ -37,7 +38,7 @@ public class CompileableLambdaInvoke implements CompileableExpr, LambdaLiftable 
         lambda.getGenericFunctionDescriptor(),
         true);
     // And check to make sure it returns what it says it would.
-    methodVisitor.visitTypeInsn(CHECKCAST, lambda.getReturnType().getInternalName());
+    methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(Lambda0.class));
   }
 
 

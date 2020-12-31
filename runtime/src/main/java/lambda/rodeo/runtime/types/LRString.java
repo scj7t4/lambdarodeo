@@ -11,4 +11,9 @@ public class LRString implements LRType {
   public boolean assignableFrom(LRType type) {
     return type == INSTANCE;
   }
+
+  @Override
+  public boolean isObjectOfType(Object object) {
+    return object instanceof String;
+  }
 }

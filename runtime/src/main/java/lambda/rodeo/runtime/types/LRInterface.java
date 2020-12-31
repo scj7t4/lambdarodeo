@@ -37,6 +37,11 @@ public class LRInterface implements LRType {
     return true;
   }
 
+  @Override
+  public boolean isObjectOfType(Object object) {
+    return object instanceof LRObject && this.fulfillsInterface((LRObject) object);
+  }
+
   public LRType getType(String key) {
     return typeMap.getOrDefault(key, Atom.UNDEFINED);
   }

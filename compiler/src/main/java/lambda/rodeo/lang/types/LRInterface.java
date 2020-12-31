@@ -33,7 +33,7 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
-public class LRInterface implements LambdaRodeoType, CompileableType, CompilesToInnerClass {
+public class LRInterface implements LambdaRodeoType, CompileableType {
 
   /**
    * Can be null if the source of the interface is anonymous (like the result of an exprssion)
@@ -44,45 +44,10 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
   private final List<S2TypedVar> members;
 
   @Override
-  public void forwardDeclare(String name, ClassWriter classWriter) {
-    classWriter.visitNestMember(name);
-  }
-
-  @Override
-  public Map<String, byte[]> declareAndCompile(String internalName,
-      String parentInternalName,
-      String name,
-      ClassWriter classWriter) {
-    classWriter.visitInnerClass(
-        internalName,
-        parentInternalName,
-        name,
-        ACC_PUBLIC | ACC_STATIC | ACC_ABSTRACT | ACC_INTERFACE);
-
-    ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
-    cw.visit(
-        V11,
-        ACC_PUBLIC | ACC_ABSTRACT | ACC_INTERFACE,
-        internalName,
-        null,
-        "java/lang/Object",
-        new String[]{Type.getInternalName(LRPackaged.class)});
-
-    MethodVisitor methodVisitor;
-
-    for (S2TypedVar member : members) {
-      String memberName =
-          "get" + member.getName().substring(0, 1).toUpperCase() + member.getName().substring(1);
-      if (member.getType() instanceof CompileableLambdaType) {
-        memberName = member.getName();
-      }
-      // Figure out the name...
-      methodVisitor = classWriter
-          .visitMethod(ACC_PUBLIC | ACC_ABSTRACT, "someMethod", "()V", null, null);
-      methodVisitor.visitEnd();
-    }
-
-    return null;
+  public CompileableType toCompileableType(
+      TypedModuleScope typedModuleScope,
+      CollectsErrors compileContext) {
+    return this;
   }
 
   @Override
@@ -101,68 +66,6 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
   }
 
   @Override
-  public void provideRuntimeType(MethodVisitor methodVisitor) {
-    // Start the builder
-    methodVisitor.visitMethodInsn(INVOKESTATIC,
-        Type.getInternalName(LRInterface.class),
-        "builder",
-        FunctionDescriptorBuilder
-            .args()
-            .returns(LRInterfaceBuilder.class),
-        false);
-
-    // Start the map
-    methodVisitor.visitTypeInsn(NEW, "java/util/HashMap");
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-        Type.getInternalName(HashMap.class),
-        "<init>",
-        "()V",
-        false);
-
-    // For each member push into the map
-    for (S2TypedVar member : members) {
-      methodVisitor.visitInsn(DUP);
-      methodVisitor.visitLdcInsn(member.getName());
-      member.getType().provideRuntimeType(methodVisitor);
-      methodVisitor.visitMethodInsn(INVOKEINTERFACE,
-          Type.getInternalName(Map.class),
-          "put",
-          FunctionDescriptorBuilder
-              .args(Object.class, Object.class)
-              .returns(Object.class),
-          true);
-      methodVisitor.visitInsn(POP); // Pop because map put returns an item
-    }
-
-    // Invoke setting the type map
-    methodVisitor
-        .visitMethodInsn(INVOKEVIRTUAL,
-            Type.getInternalName(LRInterfaceBuilder.class),
-            "typeMap",
-            FunctionDescriptorBuilder
-                .args(Map.class)
-                .returns(LRInterfaceBuilder.class),
-            false);
-
-    // Invoke build();
-    methodVisitor
-        .visitMethodInsn(
-            INVOKEVIRTUAL,
-            Type.getInternalName(LRInterfaceBuilder.class),
-            "build",
-            FunctionDescriptorBuilder.args().returns(LRInterface.class),
-            false);
-  }
-
-  @Override
-  public CompileableType toCompileableType(
-      TypedModuleScope typedModuleScope,
-      CollectsErrors compileContext) {
-    return this;
-  }
-
-  @Override
   public boolean assignableFrom(CompileableType other) {
     // TODO refactor to provide better reasoning for failures.
     if (!(other instanceof LRInterface)) {
@@ -178,6 +81,11 @@ public class LRInterface implements LambdaRodeoType, CompileableType, CompilesTo
       }
     }
     return true;
+  }
+
+  @Override
+  public void provideRuntimeType(MethodVisitor methodVisitor) {
+
   }
 
   public String toString() {

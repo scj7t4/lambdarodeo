@@ -1,5 +1,6 @@
 package lambda.rodeo.runtime.types;
 
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,5 +24,10 @@ public class Atom implements LRType {
   @Override
   public boolean assignableFrom(LRType type) {
     return equals(type);
+  }
+
+  @Override
+  public boolean isObjectOfType(Object object) {
+    return Objects.equals(this, object);
   }
 }

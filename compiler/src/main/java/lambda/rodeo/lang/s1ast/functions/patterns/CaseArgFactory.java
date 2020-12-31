@@ -8,7 +8,6 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseVarNameContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseWildCardContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LiteralContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.PatternCaseContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.types.CompileableAtom;
 
@@ -48,7 +47,8 @@ public class CaseArgFactory extends LambdaRodeoBaseVisitor<CaseArgAst> {
           .characterStart(ctx.getStart().getCharPositionInLine())
           .build();
     }
-    throw new UnsupportedOperationException("What is this!?");
+    throw new UnsupportedOperationException("What is this!? Do you need to implement another"
+        + " kind of literal?");
   }
 
   @Override

@@ -15,6 +15,11 @@ public class LRTypeUnion implements LRType {
     return left.assignableFrom(type) || right.assignableFrom(type);
   }
 
+  @Override
+  public boolean isObjectOfType(Object object) {
+    return left.isObjectOfType(object) || right.isObjectOfType(object);
+  }
+
   public static LRTypeUnion make(LRType left, LRType right) {
     return new LRTypeUnion(left, right);
   }

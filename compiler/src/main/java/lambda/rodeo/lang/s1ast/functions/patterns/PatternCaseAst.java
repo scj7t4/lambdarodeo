@@ -49,6 +49,9 @@ public class PatternCaseAst implements AstNode {
       TypeScope initialTypeScope,
       TypedModuleScope typedModuleScope,
       ToTypedFunctionContext compileContext) {
+    // If any of the case args are a typed one, change the scope type based on the case arg?
+
+
     List<TypedStatement> typedStatements = getTypedStatements(initialTypeScope, typedModuleScope,
         compileContext, statements);
 

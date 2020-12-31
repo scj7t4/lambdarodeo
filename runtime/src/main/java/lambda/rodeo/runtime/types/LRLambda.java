@@ -1,6 +1,8 @@
 package lambda.rodeo.runtime.types;
 
 import java.util.List;
+import lambda.rodeo.runtime.lambda.Lambda0;
+import lambda.rodeo.runtime.lambda.Lambda1;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,5 +38,15 @@ public class LRLambda implements LRType {
       }
     }
     return true;
+  }
+
+  @Override
+  public boolean isObjectOfType(Object object) {
+    if (arguments.size() == 0 && object instanceof Lambda0) {
+      return true;
+    } else if (arguments.size() == 1 && object instanceof Lambda1) {
+      return true;
+    }
+    return false;
   }
 }

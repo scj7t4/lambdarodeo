@@ -93,7 +93,7 @@ public class LambdaExpressionTest {
   @Test
   @SneakyThrows
   public void testOneArgLambda() {
-    Class<?> compiledModule = compileLambda("(a::ok) => 1337",
+    Class<?> compiledModule = compileLambda("(a:@ok) => 1337",
         LambdaType.builder()
             .returnType(IntType.INSTANCE)
             .args(Collections.singletonList(new CompileableAtom("ok")))

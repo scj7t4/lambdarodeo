@@ -25,7 +25,7 @@ public class CompileableAtom implements LambdaRodeoType, CompileableType {
 
   @Override
   public String toString() {
-    return ":" + atom;
+    return "@" + atom;
   }
 
   public String getNameLiteral() {

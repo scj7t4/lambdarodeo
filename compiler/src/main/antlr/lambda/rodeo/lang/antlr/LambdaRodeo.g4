@@ -23,12 +23,15 @@ varName: IDENTIFIER;
 varType: typeExpression;
 
 returnType: typeExpression;
-typeExpression: intType
-  | stringType
-  | atom
-  | lambdaTypeExpression
-  | definedType
-  | interfaceDef;
+typeExpression
+  : '(' typeExpression ')' #typeOptParen
+  | typeExpression typeCombiners typeExpression #typeOptCompound
+  | intType #typeOptInt
+  | stringType #typeOptString
+  | atom #typeOptAtom
+  | lambdaTypeExpression #typeOptLambda
+  | definedType #typeOptDefined
+  | interfaceDef #typeOptInterfaceDef;
 
 intType: 'Int';
 stringType: 'String';
@@ -36,19 +39,23 @@ lambdaTypeExpression: '(' (typeExpression (',' typeExpression)*)? ')' '=>' typeE
 interfaceDef: '{' '}'
   | '{' memberDecl (';' memberDecl)* ';'? '}';
 memberDecl: typedVar;
+typeCombiners: ('|' | '&');
 
 definedType: identifier;
 
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
-caseArg: caseLiteral
+caseArg
+  : caseLiteral
   | caseVarName
+  | caseTypeMatch
   | caseWildCard;
 caseWildCard: '*';
+caseTypeMatch: ':' typeExpression;
 caseLiteral: literal;
 caseVarName: varName;
 
 statement: assignment? expr ';';
-atom: ':'IDENTIFIER;
+atom: '@'IDENTIFIER;
 expr
   : '(' expr ')' #parenthetical
   // Not sure about putting the function call priority here... not sure of the implications

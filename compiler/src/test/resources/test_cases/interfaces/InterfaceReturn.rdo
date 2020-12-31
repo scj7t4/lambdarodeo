@@ -1,6 +1,6 @@
 type MyCoolInterface => {
   member1: Int;
-  member2: :null;
+  member2: @null;
 };
 
 type Empty => {
@@ -13,13 +13,13 @@ def test() => Empty {
 def test2() => MyCoolInterface {
   {
     member1: 3;
-    member2: :null;
+    member2: @null;
   };
 }
 
 def test3() => Empty {
   {
     member1: 3;
-    member2: :null;
+    member2: @null;
   };
 }

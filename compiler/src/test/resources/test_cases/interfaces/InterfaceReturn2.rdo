@@ -1,6 +1,6 @@
 type MyCoolInterface => {
   member1: Int;
-  member2: :null;
+  member2: @null;
 };
 
 def test2() => MyCoolInterface {

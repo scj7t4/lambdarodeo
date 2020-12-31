@@ -307,7 +307,7 @@ class MathExpressionTest {
 
   @Test
   public void testUndefinedVarAdd() {
-    String expr = "3 + :atom";
+    String expr = "3 + @atom";
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
@@ -326,14 +326,14 @@ class MathExpressionTest {
     assertThat(compileError.getCharacterStart(), equalTo(0));
     assertThat(compileError.getEndLine(), equalTo(1));
     assertThat(compileError.getErrorType(), equalTo(CompileError.ILLEGAL_MATH_OPERATION));
-    assertThat(compileError.getErrorMsg(), containsString(":atom"));
+    assertThat(compileError.getErrorMsg(), containsString("@atom"));
     assertThat(compileError.getErrorMsg(), containsString("Int"));
     assertThat(compileError.getErrorMsg(), containsString("addition"));
   }
 
   @Test
   public void testUndefinedUnaryMinus() {
-    String expr = "-:atom";
+    String expr = "-@atom";
     LambdaRodeoParser lambdaRodeoParser = TestUtils.parseString(expr);
 
     ExprContext exprContext = lambdaRodeoParser.expr();
@@ -352,7 +352,7 @@ class MathExpressionTest {
     assertThat(compileError.getCharacterStart(), equalTo(0));
     assertThat(compileError.getEndLine(), equalTo(1));
     assertThat(compileError.getErrorType(), equalTo(CompileError.ILLEGAL_MATH_OPERATION));
-    assertThat(compileError.getErrorMsg(), containsString(":atom"));
+    assertThat(compileError.getErrorMsg(), containsString("@atom"));
     assertThat(compileError.getErrorMsg(), containsString("unary minus"));
   }
 }

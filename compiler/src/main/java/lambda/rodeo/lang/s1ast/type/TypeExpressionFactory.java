@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.type;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.DefinedTypeContext;
@@ -10,6 +11,14 @@ import lambda.rodeo.lang.antlr.LambdaRodeoParser.InterfaceDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LambdaTypeExpressionContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.StringTypeContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptAtomContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptCompoundContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptDefinedContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptIntContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptInterfaceDefContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptLambdaContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptParenContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeOptStringContext;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.DefinedType;
@@ -17,6 +26,7 @@ import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.types.LambdaRodeoType;
 import lambda.rodeo.lang.types.LambdaType;
 import lambda.rodeo.lang.types.StringType;
+import lambda.rodeo.lang.types.TypeUnion;
 
 public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoType> {
 
@@ -34,18 +44,19 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
   }
 
   @Override
-  public LambdaRodeoType visitIntType(IntTypeContext ctx) {
+  public LambdaRodeoType visitTypeOptInt(TypeOptIntContext ctx) {
     return IntType.INSTANCE;
   }
 
   @Override
-  public LambdaRodeoType visitAtom(AtomContext ctx) {
-    String atomIdentifier = ctx.IDENTIFIER().getText();
+  public LambdaRodeoType visitTypeOptAtom(TypeOptAtomContext ctx) {
+    String atomIdentifier = ctx.atom().IDENTIFIER().getText();
     return new CompileableAtom(atomIdentifier);
   }
 
   @Override
-  public LambdaRodeoType visitLambdaTypeExpression(LambdaTypeExpressionContext ctx) {
+  public LambdaRodeoType visitTypeOptLambda(TypeOptLambdaContext branch) {
+    LambdaTypeExpressionContext ctx = branch.lambdaTypeExpression();
     List<LambdaRodeoType> types = ctx.typeExpression().stream()
         .map(this::visit)
         .collect(Collectors.toList());
@@ -56,12 +67,13 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
   }
 
   @Override
-  public LambdaRodeoType visitStringType(StringTypeContext ctx) {
+  public LambdaRodeoType visitTypeOptString(TypeOptStringContext ctx) {
     return StringType.INSTANCE;
   }
 
   @Override
-  public LambdaRodeoType visitDefinedType(DefinedTypeContext ctx) {
+  public LambdaRodeoType visitTypeOptDefined(TypeOptDefinedContext branch) {
+    DefinedTypeContext ctx = branch.definedType();
     return DefinedType.builder()
         .characterStart(ctx.getStart().getCharPositionInLine())
         .startLine(ctx.getStart().getLine())
@@ -71,8 +83,29 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
   }
 
   @Override
-  public LambdaRodeoType visitInterfaceDef(InterfaceDefContext ctx) {
+  public LambdaRodeoType visitTypeOptInterfaceDef(TypeOptInterfaceDefContext branch) {
+    InterfaceDefContext ctx = branch.interfaceDef();
     InterfaceAstFactory interfaceAstFactory = new InterfaceAstFactory(ctx, compileContext);
     return interfaceAstFactory.getAst();
+  }
+
+  @Override
+  public LambdaRodeoType visitTypeOptParen(TypeOptParenContext ctx) {
+    TypeExpressionFactory inner = new TypeExpressionFactory(ctx.typeExpression(), compileContext);
+    return inner.toAst();
+  }
+
+  @Override
+  public LambdaRodeoType visitTypeOptCompound(TypeOptCompoundContext ctx) {
+    List<LambdaRodeoType> unions = ctx.typeExpression()
+        .stream()
+        .map(expr -> {
+          TypeExpressionFactory inner = new TypeExpressionFactory(expr, compileContext);
+          return inner.toAst();
+        })
+        .collect(Collectors.toList());
+    return TypeUnion.builder()
+        .unions(unions)
+        .build();
   }
 }

@@ -1,0 +1,10 @@
+type Combo => Int | String;
+
+def stringOrInt(arg: Combo) => @zero | @notZero {
+  case(0) {
+    @zero;
+  }
+  case(*) {
+    @notZero;
+  }
+}

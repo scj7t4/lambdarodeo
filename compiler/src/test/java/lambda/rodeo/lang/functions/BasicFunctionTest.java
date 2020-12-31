@@ -63,7 +63,7 @@ public class BasicFunctionTest {
     assertThat(functionAst.getName(), equalTo("nillify"));
     assertThat(functionAst.getArguments(), hasSize(1));
     assertThat(functionAst.getArguments().get(0).getName(), equalTo("inp"));
-    assertThat(functionAst.getArguments().get(0).getType(), equalTo(new CompileableAtom("nil")));
+    assertThat(functionAst.getArguments().get(0).getType(), equalTo(new CompileableAtom("null")));
 
     Class<?> compiledModule = CompileUtils.createClass(TestUtils.testModule()
         .functionAsts(Collections.singletonList(functionAst))

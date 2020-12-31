@@ -1,33 +1,39 @@
 package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionBodyContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.PatternCaseContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.StatementContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAstFactory;
+import lambda.rodeo.lang.s1ast.statements.StatementAst;
+import lambda.rodeo.lang.s1ast.statements.StatementAstFactory;
 
 public class FunctionBodyAstFactory {
 
   private final List<PatternCaseAst> patternCases = new ArrayList<>();
-  private final PatternCaseAstFactory noPatterns;
 
   public FunctionBodyAstFactory(
       FunctionBodyContext ctx,
       S1CompileContext compileContext) {
-    noPatterns = new PatternCaseAstFactory(compileContext, ctx.getStart(), ctx.getStop());
 
     List<PatternCaseContext> patternCases = ctx.patternCase();
-    if(patternCases == null || patternCases.isEmpty()) {
-      List<StatementContext> statements = ctx.statement();
-      for(StatementContext statement : statements) {
-        noPatterns.enterStatement(statement);
-      }
+    if (patternCases == null || patternCases.isEmpty()) {
+      List<StatementAst> statements = ctx.statement()
+          .stream()
+          .map(statement -> {
+            StatementAstFactory statementAstFactory = new StatementAstFactory(compileContext,
+                statement);
+            return statementAstFactory.toAst();
+          })
+          .collect(Collectors.toList());
+      PatternCaseAst ast = new PatternCaseAstFactory(compileContext, ctx.getStart(),
+          ctx.getStop(), statements).toAst();
+      this.patternCases.add(ast);
     } else {
-      for(PatternCaseContext patternCase : patternCases) {
+      for (PatternCaseContext patternCase : patternCases) {
         PatternCaseAst patternCaseAst = new PatternCaseAstFactory(patternCase, compileContext)
             .toAst();
         this.patternCases.add(patternCaseAst);
@@ -36,14 +42,8 @@ public class FunctionBodyAstFactory {
   }
 
   public FunctionBodyAst toAst() {
-    if (!patternCases.isEmpty()) {
-      return FunctionBodyAst.builder()
-          .patternCases(patternCases)
-          .build();
-    } else {
-      return FunctionBodyAst.builder()
-          .patternCases(Collections.singletonList(noPatterns.toAst()))
-          .build();
-    }
+    return FunctionBodyAst.builder()
+        .patternCases(patternCases)
+        .build();
   }
 }

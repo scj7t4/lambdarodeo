@@ -14,13 +14,16 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 
 
 @Getter
 @Builder
 public class PatternCaseAst implements AstNode {
 
+  @NonNull
   private final List<StatementAst> statements;
+  @NonNull
   private final List<CaseArgAst> caseArgs;
   private final int startLine;
   private final int endLine;

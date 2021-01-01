@@ -29,6 +29,7 @@ public class ModuleAstFactory extends LambdaRodeoBaseListener {
     builder.functionAsts(functions);
     builder.imports(imports);
     builder.types(types);
+    builder.sourceFile(compileContext.getSource());
 
     String identifier = compileContext.getSource()
         .replaceAll("\\.rdo$", "")

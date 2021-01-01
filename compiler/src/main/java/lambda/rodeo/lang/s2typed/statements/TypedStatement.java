@@ -33,4 +33,16 @@ public class TypedStatement {
         .typedStatement(this)
         .build();
   }
+
+  public int getStartLine() {
+    return getStatementAst().getStartLine();
+  }
+
+  public int getEndLine() {
+    return getStatementAst().getEndLine();
+  }
+
+  public int getCharacterStart() {
+    return getStatementAst().getCharacterStart();
+  }
 }

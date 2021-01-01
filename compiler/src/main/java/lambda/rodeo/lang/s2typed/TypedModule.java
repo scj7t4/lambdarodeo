@@ -69,4 +69,8 @@ public class TypedModule {
   public String getName() {
     return getModuleAst().getName();
   }
+
+  public String getSourceFile() {
+    return getModuleAst().getSourceFile();
+  }
 }

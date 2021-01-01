@@ -54,12 +54,13 @@ public class CompileableModule {
         "java/lang/Object",
         null);
 
+    cw.visitSource(getSourceFile(), null);
+
     for (Map.Entry<CompileableCaseArg, CompileableStaticPattern> patternEntry
         : staticPatterns.entrySet()) {
       patternEntry.getKey().declareMatcherField(cw);
     }
 
-    // TODO: Mark source
     cw.visitInnerClass("java/lang/invoke/MethodHandles$Lookup", "java/lang/invoke/MethodHandles",
         "Lookup", ACC_PUBLIC | ACC_FINAL | ACC_STATIC);
 
@@ -143,5 +144,9 @@ public class CompileableModule {
   @NonNull
   public String getName() {
     return getTypedModule().getName();
+  }
+
+  public String getSourceFile() {
+    return getTypedModule().getSourceFile();
   }
 }

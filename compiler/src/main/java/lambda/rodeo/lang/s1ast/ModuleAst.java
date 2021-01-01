@@ -35,6 +35,8 @@ public class ModuleAst implements AstNode {
   @NonNull
   private final String name;
 
+  private final String sourceFile;
+
   @Builder.Default
   @NonNull
   private final List<FunctionAst> functionAsts = new ArrayList<>();

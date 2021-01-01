@@ -12,6 +12,7 @@ import lambda.rodeo.lang.s2typed.functions.patterns.TypedStaticPattern;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
+import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,14 +27,16 @@ public class TypedFunctionBody {
   private final List<TypedPatternCase> patternCases;
   private final FunctionBodyAst functionBodyAst;
 
-
   public CompileableFunctionBody toCompileableFunctionBody(
       Map<TypedCaseArg, TypedStaticPattern> staticPatterns,
+      TypedModuleScope scope,
       CollectsErrors compileContext) {
 
     List<CompileablePatternCase> compileablePatternCases = patternCases
         .stream()
-        .map(patternCase -> patternCase.toCompileablePatternCase(staticPatterns, compileContext))
+        .map(patternCase -> patternCase.toCompileablePatternCase(staticPatterns,
+            scope,
+            compileContext))
         .collect(Collectors.toList());
 
     return CompileableFunctionBody.builder()

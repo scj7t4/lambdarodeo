@@ -33,7 +33,7 @@ public class TypedFunction {
         compileContext);
 
     CompileableFunctionBody functionBody = this.functionBody
-        .toCompileableFunctionBody(staticPatterns, compileContext);
+        .toCompileableFunctionBody(staticPatterns, typedModuleScope, compileContext);
 
     return CompileableFunction.builder()
         .functionBody(functionBody)

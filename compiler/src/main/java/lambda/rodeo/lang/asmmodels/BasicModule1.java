@@ -6,10 +6,17 @@ import lambda.rodeo.runtime.types.LRString;
 import lambda.rodeo.runtime.types.LRType;
 import lambda.rodeo.runtime.types.LRTypeUnion;
 
-public interface BasicModule1 {
+public class BasicModule1 {
 
   public static LRType fibonacci() {
-    return LRTypeUnion.make(LRInteger.INSTANCE, LRString.INSTANCE);
+    return new LRTypeUnion(new LRType[]{
+        LRInteger.INSTANCE,
+        LRString.INSTANCE,
+        LRInteger.INSTANCE,
+        LRString.INSTANCE,
+        LRInteger.INSTANCE,
+        LRString.INSTANCE
+    });
   }
 
 }

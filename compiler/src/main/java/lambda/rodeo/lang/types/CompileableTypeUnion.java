@@ -1,9 +1,12 @@
 package lambda.rodeo.lang.types;
 
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.AASTORE;
+import static org.objectweb.asm.Opcodes.ANEWARRAY;
+import static org.objectweb.asm.Opcodes.BIPUSH;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 
 import java.util.List;
-import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRType;
 import lambda.rodeo.runtime.types.LRTypeUnion;
 import lombok.Builder;
@@ -13,6 +16,7 @@ import org.objectweb.asm.Type;
 
 @Builder
 public class CompileableTypeUnion implements CompileableType {
+
   @NonNull
   private final List<CompileableType> unions;
   @NonNull
@@ -51,11 +55,19 @@ public class CompileableTypeUnion implements CompileableType {
 
   @Override
   public void provideRuntimeType(MethodVisitor methodVisitor) {
-    unions.forEach(union -> provideRuntimeType(methodVisitor));
-    methodVisitor.visitMethodInsn(INVOKESTATIC,
-        Type.getInternalName(LRTypeUnion.class), "make",
-        FunctionDescriptorBuilder.args(LRType.class, LRType.class)
-          .returns(LRTypeUnion.class),
+
+    methodVisitor.visitTypeInsn(ANEWARRAY, Type.getInternalName(LRType.class));
+    for (int i = 0; i < unions.size(); i++) {
+      methodVisitor.visitInsn(DUP);
+      methodVisitor.visitIntInsn(BIPUSH, unions.size());
+      unions.get(i).provideRuntimeType(methodVisitor);
+      methodVisitor.visitInsn(AASTORE);
+    }
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+        Type.getInternalName(LRTypeUnion.class),
+        "<init>",
+        "([Llambda/rodeo/runtime/types/LRType;)V",
         false);
+
   }
 }

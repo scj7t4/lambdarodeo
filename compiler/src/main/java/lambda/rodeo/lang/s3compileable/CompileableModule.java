@@ -61,7 +61,9 @@ public class CompileableModule {
       patternEntry.getKey().declareMatcherField(cw);
     }
 
-    cw.visitInnerClass("java/lang/invoke/MethodHandles$Lookup", "java/lang/invoke/MethodHandles",
+    cw.visitInnerClass(
+        "java/lang/invoke/MethodHandles$Lookup",
+        "java/lang/invoke/MethodHandles",
         "Lookup", ACC_PUBLIC | ACC_FINAL | ACC_STATIC);
 
     {

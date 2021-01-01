@@ -41,6 +41,12 @@ public class TypeScopeImpl implements TypeScope {
   }
 
   @Override
+  public Stream<Entry> get(int index) {
+    return this.scope.stream()
+        .filter(entry -> Objects.equals(entry.getIndex(), index));
+  }
+
+  @Override
   public Stream<Entry> getAll() {
     return this.scope.stream();
   }

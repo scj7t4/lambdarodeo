@@ -75,13 +75,14 @@ public class TypeCompileableCaseArg implements CompileableCaseArg {
     methodVisitor.visitInsn(DUP);
     this.type.provideRuntimeType(methodVisitor);
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
-        type,
+        Type.getInternalName(TypeMatcher.class),
         "<init>",
-        "([Llambda/rodeo/runtime/types/LRType;)V",
+        "(Llambda/rodeo/runtime/types/LRType;)V",
         false);
+
     methodVisitor.visitFieldInsn(PUTSTATIC,
         internalModuleName,
         staticPattern.getMatcherIdentifier(),
-        Type.getDescriptor(IntMatcher.class));
+        Type.getDescriptor(TypeMatcher.class));
   }
 }

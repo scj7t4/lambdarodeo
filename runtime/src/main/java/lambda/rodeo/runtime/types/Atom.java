@@ -18,7 +18,7 @@ public class Atom implements LRType {
 
   @Override
   public String toString() {
-    return ":" + atom;
+    return "@" + atom;
   }
 
   @Override

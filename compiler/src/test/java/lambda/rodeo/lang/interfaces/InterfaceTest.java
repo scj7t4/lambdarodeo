@@ -26,6 +26,7 @@ import lambda.rodeo.lang.types.DefinedType;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.LRObject;
@@ -114,8 +115,8 @@ public class InterfaceTest {
     List<CompileUnit> toCompile = new ArrayList<>();
     toCompile.add(interfaceUnit);
 
-    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
-    Class<?> aClass = classes.get(interfaceUnit.getSourcePath());
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    Class<?> aClass = classes.get(interfaceUnit.getSourcePath()).getLoaded();
 
     Method test = aClass.getMethod("test");
     Object invoke = test.invoke(null);
@@ -137,8 +138,8 @@ public class InterfaceTest {
     List<CompileUnit> toCompile = new ArrayList<>();
     toCompile.add(interfaceUnit);
 
-    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
-    Class<?> aClass = classes.get(interfaceUnit.getSourcePath());
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    Class<?> aClass = classes.get(interfaceUnit.getSourcePath()).getLoaded();
 
     Method test = aClass.getMethod("test2");
     Object invoke = test.invoke(null);
@@ -162,8 +163,8 @@ public class InterfaceTest {
     List<CompileUnit> toCompile = new ArrayList<>();
     toCompile.add(interfaceUnit);
 
-    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
-    Class<?> aClass = classes.get(interfaceUnit.getSourcePath());
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    Class<?> aClass = classes.get(interfaceUnit.getSourcePath()).getLoaded();
 
     Method test = aClass.getMethod("test3");
     Object invoke = test.invoke(null);

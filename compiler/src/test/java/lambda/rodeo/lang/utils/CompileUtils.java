@@ -21,6 +21,8 @@ import lambda.rodeo.lang.s2typed.TypedModule;
 import lambda.rodeo.lang.s3compileable.CompileableModule;
 import lambda.rodeo.lang.scope.ModuleScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lombok.Builder;
+import lombok.Getter;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.objectweb.asm.ClassReader;
@@ -87,20 +89,27 @@ public class CompileUtils {
 
   public static void asmifyModule(ModuleAst moduleAst) {
     S2CompileContextImpl compileContext = S2CompileContextImpl.builder().build();
+    byte[] byteCode = convertToCompileableModule(moduleAst, compileContext)
+        .compile(compileContext).get(null);
+    asmifyByteCode(byteCode);
+  }
+
+  public static void asmifyByteCode(byte[] byteCode) {
     ASMifier asMifier = new ASMifier();
     ClassReader classReader = new ClassReader(
-        convertToCompileableModule(moduleAst, compileContext)
-            .compile(compileContext).get(null));
+        byteCode);
     PrintWriter printWriter = new PrintWriter(System.out);
     TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, asMifier, printWriter);
     classReader.accept(traceClassVisitor, 0);
   }
 
-  public static Map<String, Class<?>> createClasses(List<CompileUnit> units) throws IOException {
+  // TODO: Replace me
+  public static Map<String, Class<?>> createClassesSimple(List<CompileUnit> units) throws IOException {
     CompilerChain chain = CompilerChain.builder()
         .compileUnits(units)
         .build();
     CompileResult compile = chain.compile();
+
     assertThat(compile.getErrorCollector().getCompileErrors(), empty());
     assertThat(compile.isSuccess(), equalTo(true));
     TestClassLoader classLoader = new TestClassLoader(CompileUtils.class.getClassLoader());
@@ -117,5 +126,40 @@ public class CompileUtils {
     }
 
     return compiledClasses;
+  }
+
+  public static Map<String, CompiledClass> createClasses(List<CompileUnit> units) throws IOException {
+    CompilerChain chain = CompilerChain.builder()
+        .compileUnits(units)
+        .build();
+    CompileResult compile = chain.compile();
+
+    assertThat(compile.getErrorCollector().getCompileErrors(), empty());
+    assertThat(compile.isSuccess(), equalTo(true));
+    TestClassLoader classLoader = new TestClassLoader(CompileUtils.class.getClassLoader());
+
+    assertThat(compile.getCompiledUnits().isPresent(), equalTo(true));
+    List<CompiledUnit> compiledUnits = compile.getCompiledUnits().orElse(Collections.emptyList());
+
+    Map<String, CompiledClass> compiledClasses = new HashMap<>();
+
+    for(CompiledUnit compiledUnit : compiledUnits) {
+      Class<?> aClass = classLoader
+          .defineClass(compiledUnit.getModuleName(), compiledUnit.getByteCode());
+      compiledClasses.put(compiledUnit.getModuleName(),
+          CompiledClass.builder()
+              .loaded(aClass)
+              .byteCode(compiledUnit.getByteCode())
+              .build());
+    }
+
+    return compiledClasses;
+  }
+
+  @Builder
+  @Getter
+  public static class CompiledClass {
+    private final byte[] byteCode;
+    private final Class<?> loaded;
   }
 }

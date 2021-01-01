@@ -7,6 +7,7 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lambda.rodeo.runtime.types.LRType;
 import lambda.rodeo.runtime.types.LRTypeUnion;
 import lombok.Builder;
@@ -29,16 +30,37 @@ public class CompileableTypeUnion implements CompileableType {
 
   @Override
   public String getDescriptor() {
+    List<String> descriptors = unions.stream()
+        .map(CompileableType::getDescriptor)
+        .distinct()
+        .collect(Collectors.toList());
+    if (descriptors.size() == 1) {
+      return descriptors.get(0);
+    }
     return Type.getDescriptor(Object.class);
   }
 
   @Override
   public String getInternalName() {
+    List<String> internalNames = unions.stream()
+        .map(CompileableType::getInternalName)
+        .distinct()
+        .collect(Collectors.toList());
+    if (internalNames.size() == 1) {
+      return internalNames.get(0);
+    }
     return Type.getInternalName(Object.class);
   }
 
   @Override
   public String getSignature() {
+    List<String> signatures = unions.stream()
+        .map(CompileableType::getSignature)
+        .distinct()
+        .collect(Collectors.toList());
+    if (signatures.size() == 1) {
+      return signatures.get(0);
+    }
     return Type.getDescriptor(Object.class);
   }
 

@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.scope;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,9 +29,19 @@ public class DerivedTypeScope implements TypeScope {
   }
 
   @Override
-  public TypeScope declare(String varName, CompileableType type) {
+  public DerivedTypeScope declare(String varName, CompileableType type) {
     TypeScope declare = parent.declare(varName, type);
     Set<Integer> newAllowed = new HashSet<>(allowedEntries);
+    if (type.allocateSlot()) {
+      newAllowed.add(declare.maxSlot());
+    }
+    return new DerivedTypeScope(declare, newAllowed);
+  }
+
+  public DerivedTypeScope replace(String varName, CompileableType type, int toReplace) {
+    TypeScope declare = parent.declare(varName, type);
+    Set<Integer> newAllowed = new HashSet<>(allowedEntries);
+    newAllowed.remove(toReplace);
     if (type.allocateSlot()) {
       newAllowed.add(declare.maxSlot());
     }
@@ -41,6 +52,11 @@ public class DerivedTypeScope implements TypeScope {
   public Stream<Entry> get(String varName) {
     return parent.get(varName)
         .filter(entry -> allowedEntries.contains(entry.getIndex()));
+  }
+
+  public Stream<Entry> get(int index) {
+    return parent.get(index)
+        .filter(entry -> Objects.equals(entry.getIndex(), index));
   }
 
   @Override

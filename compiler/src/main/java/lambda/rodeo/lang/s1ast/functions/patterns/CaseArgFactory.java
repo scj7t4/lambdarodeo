@@ -4,11 +4,13 @@ import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.AtomContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseArgContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseLiteralContext;
+import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseTypeMatchContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseVarNameContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.CaseWildCardContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.IntLiteralContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.LiteralContext;
 import lambda.rodeo.lang.compilation.S1CompileContext;
+import lambda.rodeo.lang.s1ast.type.TypeExpressionFactory;
 import lambda.rodeo.lang.types.CompileableAtom;
 
 
@@ -68,6 +70,19 @@ public class CaseArgFactory extends LambdaRodeoBaseVisitor<CaseArgAst> {
         .startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())
         .characterStart(ctx.getStart().getCharPositionInLine())
+        .build();
+  }
+
+  @Override
+  public CaseArgAst visitCaseTypeMatch(CaseTypeMatchContext ctx) {
+    TypeExpressionFactory typeExpressionFactory = new TypeExpressionFactory(ctx.typeExpression(),
+        compileContext);
+
+    return TypeArgAst.builder()
+        .startLine(ctx.getStart().getLine())
+        .endLine(ctx.getStop().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .type(typeExpressionFactory.toAst())
         .build();
   }
 }

@@ -37,6 +37,7 @@ import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.IntType;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
+import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
 import lombok.SneakyThrows;
@@ -202,8 +203,8 @@ class FunctionCallTest {
         .sourcePath("testcase/BasicFunctionCall.rdo")
         .build();
 
-    Map<String, Class<?>> classes = CompileUtils.createClasses(Collections.singletonList(unit));
-    Class<?> compiledModule = classes.get("testcase.BasicFunctionCall");
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(Collections.singletonList(unit));
+    Class<?> compiledModule = classes.get("testcase.BasicFunctionCall").getLoaded();
 
     assertThat(compiledModule.getCanonicalName(),
         CoreMatchers.equalTo("testcase.BasicFunctionCall"));
@@ -237,8 +238,8 @@ class FunctionCallTest {
     toCompile.add(basicUnit);
     toCompile.add(importUnit);
 
-    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
-    Class<?> compiledModule = classes.get("testcase.ImportModuleFunctionCall");
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    Class<?> compiledModule = classes.get("testcase.ImportModuleFunctionCall").getLoaded();
 
     assertThat(compiledModule.getCanonicalName(),
         CoreMatchers.equalTo("testcase.ImportModuleFunctionCall"));
@@ -269,8 +270,8 @@ class FunctionCallTest {
     toCompile.add(basicUnit);
     toCompile.add(importUnit);
 
-    Map<String, Class<?>> classes = CompileUtils.createClasses(toCompile);
-    Class<?> compiledModule = classes.get("testcase.AliasModuleFunctionCall");
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    Class<?> compiledModule = classes.get("testcase.AliasModuleFunctionCall").getLoaded();
 
     assertThat(compiledModule.getCanonicalName(),
         CoreMatchers.equalTo("testcase.AliasModuleFunctionCall"));

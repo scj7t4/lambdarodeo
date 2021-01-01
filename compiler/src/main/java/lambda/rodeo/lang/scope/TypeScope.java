@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.scope;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
@@ -20,6 +21,8 @@ public interface TypeScope {
   int maxSlot();
 
   TypeScope parent();
+
+  Stream<Entry> get(int index);
 
   @Builder
   @Getter

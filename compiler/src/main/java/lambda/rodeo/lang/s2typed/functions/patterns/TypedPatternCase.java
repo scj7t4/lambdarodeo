@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
+import lambda.rodeo.lang.s1ast.functions.patterns.ScopeReplaceAndCasts;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
 import lambda.rodeo.lang.scope.TypeScope;
@@ -13,14 +14,20 @@ import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 
 @Builder
 @Getter
 @EqualsAndHashCode
 public class TypedPatternCase {
 
+  @NonNull
   private final List<TypedStatement> typedStatements;
+  @NonNull
   private final List<TypedCaseArg> typedCaseArgs;
+  @NonNull
+  private final List<ScopeReplaceAndCasts> scopeReplaceAndCasts;
+  @NonNull
   private final PatternCaseAst patternCaseAst;
 
   public CompileablePatternCase toCompileablePatternCase(
@@ -36,6 +43,7 @@ public class TypedPatternCase {
         .statements(typedStatements.stream()
             .map(typedStatement -> typedStatement.toCompileableStatement(compileContext))
             .collect(Collectors.toList()))
+        .typedPatternCase(this)
         .build();
   }
 

@@ -1,0 +1,13 @@
+type Combo => Int | String;
+
+def stringOrInt(arg: Combo) => @number | @string | @err {
+  case(:Int) {
+    @number;
+  }
+  case(:String) {
+    @string;
+  }
+  case(*) {
+    @err;
+  }
+}

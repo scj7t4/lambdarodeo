@@ -6,6 +6,8 @@ import static org.objectweb.asm.Opcodes.IFEQ;
 import java.util.List;
 import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.compilation.S2CompileContext;
+import lambda.rodeo.lang.s1ast.functions.patterns.ScopeReplaceAndCasts;
+import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.s3compileable.statement.CompileableStatement;
 import lambda.rodeo.lang.scope.CompileableTypeScope;
 import lambda.rodeo.lang.types.CompileableType;
@@ -24,6 +26,9 @@ public class CompileablePatternCase {
 
   @NonNull
   private final List<CompileableCaseArg> caseArgs;
+
+  @NonNull
+  private final TypedPatternCase typedPatternCase;
 
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext,
       String internalModuleName) {
@@ -44,6 +49,11 @@ public class CompileablePatternCase {
     }
     Label patternHit = new Label();
     methodVisitor.visitLabel(patternHit);
+    // Perform all the casts that the pattern match set up:
+    for(ScopeReplaceAndCasts cast : typedPatternCase.getScopeReplaceAndCasts()) {
+      cast.compileCast(methodVisitor);
+    }
+
     for(CompileableStatement compileableStatement : statements) {
       compileableStatement.compile(methodVisitor, compileContext);
     }

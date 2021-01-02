@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+import lambda.rodeo.lang.scope.CompileableTypeScope.CompileableEntry;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class TypeScopeImpl implements TypeScope {
 
-  private final List<Entry> scope;
+  private final List<SimpleEntry> scope;
 
   public TypeScopeImpl() {
     scope = new ArrayList<>();
@@ -26,7 +27,7 @@ public class TypeScopeImpl implements TypeScope {
     if (type.allocateSlot()) {
       slot = maxSlot() + 1;
     }
-    out.scope.add(Entry.builder()
+    out.scope.add(SimpleEntry.builder()
         .name(varName)
         .type(type)
         .index(slot)
@@ -35,28 +36,28 @@ public class TypeScopeImpl implements TypeScope {
   }
 
   @Override
-  public Stream<Entry> get(String varName) {
+  public Stream<SimpleEntry> getSimple(String varName) {
     return this.scope.stream()
         .filter(entry -> Objects.equals(entry.getName(), varName));
   }
 
   @Override
-  public Stream<Entry> get(int index) {
+  public Stream<SimpleEntry> getByIndex(int index) {
     return this.scope.stream()
         .filter(entry -> Objects.equals(entry.getIndex(), index));
   }
 
   @Override
-  public Stream<Entry> getAll() {
+  public Stream<SimpleEntry> getAllSimple() {
     return this.scope.stream();
   }
 
   @Override
   public CompileableTypeScope toCompileableTypeScope() {
-    List<CompileableTypeScope.Entry> entries = new ArrayList<>();
+    List<CompileableEntry> entries = new ArrayList<>();
 
-    for (Entry entry : scope) {
-      CompileableTypeScope.Entry converted = entry.toCompileableEntry();
+    for (SimpleEntry entry : scope) {
+      CompileableEntry converted = entry.toCompileableEntry();
       entries.add(converted);
     }
 
@@ -69,8 +70,8 @@ public class TypeScopeImpl implements TypeScope {
   @Override
   public int maxSlot() {
     return scope.stream()
-        .filter(entry -> entry.getIndex() != -1)
-        .map(Entry::getIndex)
+        .map(SimpleEntry::getIndex)
+        .filter(index -> index != -1)
         .mapToInt(x -> x)
         .max()
         .orElse(-1);

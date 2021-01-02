@@ -15,11 +15,11 @@ import org.objectweb.asm.MethodVisitor;
 public class CompileableTypeScope {
 
   @NonNull
-  private final List<Entry> scope;
+  private final List<CompileableEntry> scope;
 
   @Builder
   @Getter
-  public static class Entry {
+  public static class CompileableEntry {
 
     private final String name;
     private final CompileableType type;
@@ -27,7 +27,7 @@ public class CompileableTypeScope {
   }
 
   public void compile(MethodVisitor methodVisitor, Label start, Label end) {
-    for (Entry scopeEntry : scope) {
+    for (CompileableEntry scopeEntry : scope) {
       if (scopeEntry.getIndex() == -1) {
         continue;
       }

@@ -12,8 +12,8 @@ import lambda.rodeo.lang.s1ast.statements.StatementAst;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedPatternCase;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.scope.DerivedTypeScope;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.types.LambdaRodeoType;
@@ -62,7 +62,7 @@ public class PatternCaseAst implements AstNode {
       CaseArgAst caseArgAst = caseArgs.get(i);
       if (caseArgAst instanceof TypeArgAst) {
         LambdaRodeoType typeCheck = ((TypeArgAst) caseArgAst).getType();
-        Entry uncastEntry = initialTypeScope.get(i)
+        Entry uncastEntry = initialTypeScope.getByIndex(i)
             .findFirst()
             .orElseThrow(() -> new CriticalLanguageException("Tried to check type"));
         CompileableType castTo = typeCheck

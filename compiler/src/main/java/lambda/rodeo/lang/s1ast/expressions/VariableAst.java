@@ -9,9 +9,9 @@ import java.util.Set;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.expressions.TypedVariable;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.s2typed.expressions.TypedExpression;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
@@ -34,7 +34,7 @@ public class VariableAst implements ExpressionAst {
       TypedModuleScope typedModuleScope, ToTypedFunctionContext compileContext) {
     Optional<Entry> entry = typeScope.get(name).findFirst();
     CompileableType type = entry
-        .map(TypeScope.Entry::getType)
+        .map(Entry::getType)
         .orElse(UNDEFINED);
     if (Objects.equals(UNDEFINED, type)) {
       compileContext.getCompileErrorCollector()

@@ -4,7 +4,7 @@ import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.functions.patterns.VariableCaseArgAst;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.VariableCompileableCaseArg;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.patterns.Matcher;
 import lombok.Builder;

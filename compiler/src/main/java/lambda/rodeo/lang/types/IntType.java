@@ -3,7 +3,11 @@ package lambda.rodeo.lang.types;
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LRInteger;
 import lombok.EqualsAndHashCode;
@@ -39,6 +43,11 @@ public class IntType implements LambdaRodeoType, CompileableType {
         Type.getInternalName(LRInteger.class),
         "INSTANCE",
         Type.getDescriptor(LRInteger.class));
+  }
+
+  @Override
+  public Optional<Entry> getMemberEntry(Entry parent, String name) {
+    return Optional.empty();
   }
 
   @Override

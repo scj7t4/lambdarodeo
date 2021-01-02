@@ -1,33 +1,17 @@
 package lambda.rodeo.lang.types;
 
-import static org.objectweb.asm.Opcodes.ACC_ABSTRACT;
-import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_STATIC;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.POP;
-import static org.objectweb.asm.Opcodes.V11;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
-import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
-import lambda.rodeo.runtime.types.LRPackaged;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
@@ -86,6 +70,19 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
   @Override
   public void provideRuntimeType(MethodVisitor methodVisitor) {
 
+  }
+
+  @Override
+  public Optional<Entry> getMemberEntry(Entry parent, String name) {
+    return members.stream()
+        .filter(member -> Objects.equals(member.getName(), name))
+        .map(member -> LRInterfaceEntry.builder()
+            .type(member.getType())
+            .name(name)
+            .parent(parent)
+            .build())
+        .findFirst()
+        .map(entry -> entry);
   }
 
   public String toString() {

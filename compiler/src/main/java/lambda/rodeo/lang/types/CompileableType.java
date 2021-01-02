@@ -1,11 +1,15 @@
 package lambda.rodeo.lang.types;
 
+import java.util.List;
+import java.util.Optional;
+import lambda.rodeo.lang.scope.Entry;
 import org.objectweb.asm.MethodVisitor;
 
 public interface CompileableType {
   LambdaRodeoType getType();
 
   String getDescriptor();
+
   String getInternalName();
 
   default String getSignature() {
@@ -20,5 +24,7 @@ public interface CompileableType {
     return true;
   }
 
-  public void provideRuntimeType(MethodVisitor methodVisitor);
+  void provideRuntimeType(MethodVisitor methodVisitor);
+
+  Optional<Entry> getMemberEntry(Entry parent, String name);
 }

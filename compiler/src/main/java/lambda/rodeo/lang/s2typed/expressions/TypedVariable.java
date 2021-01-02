@@ -9,7 +9,7 @@ import lambda.rodeo.lang.s1ast.expressions.VariableAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpression;
 import lambda.rodeo.lang.s3compileable.expression.SimpleCompilableExpr;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -45,7 +45,7 @@ public class TypedVariable implements TypedExpression, CompileableExpression {
 
   @Override
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
-    methodVisitor.visitVarInsn(ALOAD, scopeEntry.getIndex());
+    scopeEntry.compileLoad(methodVisitor);
   }
 
 }

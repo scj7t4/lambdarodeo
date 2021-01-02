@@ -23,8 +23,8 @@ public class DerivedTypeScope implements TypeScope {
 
   public DerivedTypeScope(TypeScope parent, TypeScope initialTypeScope) {
     this(parent,
-        initialTypeScope.getAll()
-            .map(Entry::getIndex)
+        initialTypeScope.getAllSimple()
+            .map(SimpleEntry::getIndex)
             .collect(Collectors.toSet()));
   }
 
@@ -49,28 +49,29 @@ public class DerivedTypeScope implements TypeScope {
   }
 
   @Override
-  public Stream<Entry> get(String varName) {
-    return parent.get(varName)
-        .filter(entry -> allowedEntries.contains(entry.getIndex()));
+  public Stream<SimpleEntry> getSimple(String varName) {
+    return parent.getSimple(varName)
+        .filter(entry -> allowedEntries.contains(entry.getIndex()))
+        .map(entry -> entry);
   }
 
-  public Stream<Entry> get(int index) {
-    return parent.get(index)
+  public Stream<SimpleEntry> getByIndex(int index) {
+    return parent.getByIndex(index)
         .filter(entry -> Objects.equals(entry.getIndex(), index));
   }
 
   @Override
-  public Stream<Entry> getAll() {
+  public Stream<SimpleEntry> getAllSimple() {
     return this.parent
-        .getAll()
+        .getAllSimple()
         .filter(x -> allowedEntries.contains(x.getIndex()));
   }
 
   @Override
   public CompileableTypeScope toCompileableTypeScope() {
     return CompileableTypeScope.builder()
-        .scope(getAll()
-            .map(Entry::toCompileableEntry)
+        .scope(getAllSimple()
+            .map(SimpleEntry::toCompileableEntry)
             .collect(Collectors.toList()))
         .build();
   }

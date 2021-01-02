@@ -8,7 +8,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s3compileable.statement.CompileableAssignment;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
+import lambda.rodeo.lang.scope.SimpleEntry;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,13 +23,13 @@ public class TypedSimpleAssignment implements TypedAssignment, CompileableAssign
 
   @Override
   public void compile(MethodVisitor methodVisitor, S1CompileContext compileContext) {
+
     String identifier = assignmentAst.getIdentifier();
-    int index = typeScope.get(identifier)
-        .map(Entry::getIndex)
+    SimpleEntry entry = typeScope.getSimple(identifier)
         .findFirst()
         .orElseThrow(() -> new CriticalLanguageException(
             "Identifier '" + identifier + "'wasn't in type scope"));
-    methodVisitor.visitVarInsn(ASTORE, index);
+    entry.compileStore(methodVisitor);
   }
 
   @Override

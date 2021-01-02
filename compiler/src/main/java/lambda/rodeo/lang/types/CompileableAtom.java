@@ -4,7 +4,11 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.Atom;
 import lombok.EqualsAndHashCode;
@@ -52,6 +56,11 @@ public class CompileableAtom implements LambdaRodeoType, CompileableType {
         "<init>",
         "(Ljava/lang/String;)V",
         false);
+  }
+
+  @Override
+  public Optional<Entry> getMemberEntry(Entry parent, String name) {
+    return Optional.empty();
   }
 
   @Override

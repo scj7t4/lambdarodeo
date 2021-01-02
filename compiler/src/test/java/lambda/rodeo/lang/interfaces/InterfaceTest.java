@@ -29,6 +29,7 @@ import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.types.Atom;
+import lambda.rodeo.runtime.types.LRInteger;
 import lambda.rodeo.runtime.types.LRObject;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
@@ -225,5 +226,35 @@ public class InterfaceTest {
             .errorMsg("Cannot declare 'member1' it is already defined in this scope")
             .build()
     ));
+  }
+
+
+  @Test
+  @SneakyThrows
+  public void testMemberAccess() {
+    String importResource = "/test_cases/interfaces/MemberAccess.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.MemberAccess")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    CompiledClass compiledClass = classes.get(interfaceUnit.getSourcePath());
+    CompileUtils.asmifyByteCode(compiledClass.getByteCode());
+    Class<?> aClass = compiledClass.getLoaded();
+
+    LRObject arg = LRObject.create()
+        .set("member1", BigInteger.TWO, LRInteger.INSTANCE)
+        .set("member2", new Atom("null"), new Atom("null"))
+        .done();
+
+    Method test = aClass.getMethod("test", LRObject.class);
+    Object invoke = test.invoke(null, arg);
+    assertThat(invoke, Matchers.equalTo(BigInteger.TWO));
   }
 }

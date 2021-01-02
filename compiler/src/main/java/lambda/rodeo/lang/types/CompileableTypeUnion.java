@@ -7,7 +7,9 @@ import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.runtime.types.LRType;
 import lambda.rodeo.runtime.types.LRTypeUnion;
 import lombok.Builder;
@@ -92,4 +94,33 @@ public class CompileableTypeUnion implements CompileableType {
         false);
 
   }
+
+  @Override
+  public Optional<Entry> getMemberEntry(Entry parent, String name) {
+    List<Entry> mergeable = unions.stream()
+        .map(type -> type.getMemberEntry(parent, name))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(Collectors.toList());
+    if (mergeable.isEmpty()) {
+      return Optional.empty();
+    }
+    // TODO: if members get added to non-LRObjects this won't work...
+    List<CompileableType> mergedTypes = mergeable.stream()
+        .map(Entry::getType)
+        .collect(Collectors.toList());
+    List<LambdaRodeoType> mergedTypeSimple = mergedTypes.stream()
+        .map(CompileableType::getType)
+        .collect(Collectors.toList());
+    CompileableTypeUnion mergedType = CompileableTypeUnion.builder()
+        .unions(mergedTypes)
+        .type(TypeUnion.builder().unions(mergedTypeSimple).build())
+        .build();
+    LRInterfaceEntry merged = LRInterfaceEntry.builder()
+        .name(name)
+        .type(mergedType)
+        .build();
+    return Optional.of(merged);
+  }
+
 }

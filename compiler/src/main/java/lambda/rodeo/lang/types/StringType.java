@@ -3,7 +3,11 @@ package lambda.rodeo.lang.types;
 
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.runtime.types.LRString;
 import org.objectweb.asm.MethodVisitor;
@@ -28,6 +32,11 @@ public class StringType implements LambdaRodeoType, CompileableType {
         Type.getInternalName(LRString.class),
         "INSTANCE",
         Type.getDescriptor(LRString.class));
+  }
+
+  @Override
+  public Optional<Entry> getMemberEntry(Entry parent, String name) {
+    return Optional.empty();
   }
 
   @Override

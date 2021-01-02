@@ -12,9 +12,9 @@ public class BasicModule1 {
 
   public static TypeMatcher typeMatcher = new TypeMatcher(LRString.INSTANCE);
 
-  public static BigInteger fibonacci(Object arg) {
+  public static BigInteger fibonacci(LRObject arg) {
     BigInteger var;
-    var = (BigInteger) arg;
+    var = (BigInteger) arg.get("someMember");
     return var;
   }
 

@@ -7,7 +7,10 @@ import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.runtime.exceptions.RuntimeCriticalLanguageException;
 import lambda.rodeo.runtime.lambda.Lambda0;
 import lambda.rodeo.runtime.lambda.Lambda1;
@@ -99,6 +102,11 @@ public class CompileableLambdaType implements CompileableType {
         "build",
         "()Llambda/rodeo/runtime/type/LRLambda;",
         false);
+  }
+
+  @Override
+  public Optional<Entry> getMemberEntry(Entry parent, String name) {
+    return Optional.empty();
   }
 
   public String getFunctionDescriptor() {

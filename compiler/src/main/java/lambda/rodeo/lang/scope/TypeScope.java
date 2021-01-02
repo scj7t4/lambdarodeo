@@ -1,10 +1,11 @@
 package lambda.rodeo.lang.scope;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lambda.rodeo.lang.types.CompileableType;
-import lombok.Builder;
-import lombok.Getter;
 
 public interface TypeScope {
 
@@ -12,9 +13,31 @@ public interface TypeScope {
 
   TypeScope declare(String varName, CompileableType type);
 
-  Stream<Entry> get(String varName);
+  default Stream<Entry> get(String varName) {
+    if (varName.indexOf('.') == -1) {
+      return getSimple(varName)
+          .map(entry -> entry);
+    } else {
+      String[] tokens = varName.split("\\.");
+      List<Entry> consider = getSimple(tokens[0]).collect(Collectors.toList());
+      for(int i = 1; i < tokens.length; i++) {
+        String token = tokens[i];
+        List<Entry> next = new ArrayList<>();
+        for(int j = 0; j < consider.size(); j++) {
+          Entry current = consider.get(j);
+          CompileableType currentType = current.getType();
+          Optional<Entry> memberEntry = currentType.getMemberEntry(current, token);
+          memberEntry.ifPresent(next::add);
+        }
+        consider = next;
+      }
+      return consider.stream();
+    }
+  }
 
-  Stream<Entry> getAll();
+  Stream<SimpleEntry> getSimple(String varName);
+
+  Stream<SimpleEntry> getAllSimple();
 
   CompileableTypeScope toCompileableTypeScope();
 
@@ -22,22 +45,6 @@ public interface TypeScope {
 
   TypeScope parent();
 
-  Stream<Entry> get(int index);
+  Stream<SimpleEntry> getByIndex(int index);
 
-  @Builder
-  @Getter
-  class Entry {
-
-    private final String name;
-    private final CompileableType type;
-    private final int index;
-
-    public CompileableTypeScope.Entry toCompileableEntry() {
-      return CompileableTypeScope.Entry.builder()
-          .index(index)
-          .name(name)
-          .type(type)
-          .build();
-    }
-  }
 }

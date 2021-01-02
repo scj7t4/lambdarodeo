@@ -33,7 +33,7 @@ public class VariableCompileableCaseArg implements CompileableCaseArg {
     String eqMatcher = Type.getInternalName(EqualMatcher.class);
     methodVisitor.visitTypeInsn(NEW, eqMatcher);
     methodVisitor.visitInsn(DUP);
-    methodVisitor.visitVarInsn(ALOAD, typedCaseArg.getReferencedArgEntry().getIndex());
+    typedCaseArg.getReferencedArgEntry().compileLoad(methodVisitor);
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
         eqMatcher,
         "<init>",

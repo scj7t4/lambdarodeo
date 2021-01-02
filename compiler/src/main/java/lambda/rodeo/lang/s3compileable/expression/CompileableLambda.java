@@ -12,7 +12,7 @@ import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lambda.rodeo.lang.s2typed.expressions.TypedLambda;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
-import lambda.rodeo.lang.scope.TypeScope.Entry;
+import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.types.CompileableType;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lombok.Builder;
@@ -47,7 +47,7 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
 
     // aload all the variables carried into the closure:
     for (Entry entry : typedExpression.getScopeArgs()) {
-      methodVisitor.visitVarInsn(ALOAD, entry.getIndex());
+      entry.compileLoad(methodVisitor);
     }
 
     StringBuilder invokeDynamicDescriptor = new StringBuilder("(");
@@ -56,7 +56,6 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
     }
     invokeDynamicDescriptor.append(")")
         .append(typedExpression.getType().getDescriptor());
-
 
     methodVisitor.visitInvokeDynamicInsn(
         "apply",
@@ -86,7 +85,8 @@ public class CompileableLambda implements CompileableExpr, LambdaLiftable {
   }
 
   @Override
-  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext, String internalModuleName) {
+  public void lambdaLift(ClassWriter cw, S2CompileContext compileContext,
+      String internalModuleName) {
     lambdaFunction.compile(cw, compileContext, internalModuleName);
     lambdaFunction.lambdaLift(cw, compileContext, internalModuleName);
   }

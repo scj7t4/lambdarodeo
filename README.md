@@ -124,3 +124,32 @@ def stringOrInt(arg: Combo) => @zero | @notZero {
 ### Types
 
 Lambda.Rodeo currently supports arbitrary width integers, Strings, interfaces, and union types.
+
+### Lambdas
+
+Lambda.Rodeo supports lambdas, but currently on those with 0 or 1 args.
+
+```
+def closure1(v1: Int) => (Int) => () => Int {
+  (v2: Int) => {
+    () => v1 + v2;
+  };
+}
+```
+
+(Calling `closure1` returns a function that takes one arg and returns a function that takes no
+args. Calling that function returns the sum of the two previous args.)
+
+### Generics
+
+Lambda.Rodeo supports generics (but currently only has type definitions):
+
+```
+type Value<T> => {
+  value: T
+};
+
+def useGeneric(arg: Value<String | Int>) => String | Int {
+  arg.value;
+}
+```

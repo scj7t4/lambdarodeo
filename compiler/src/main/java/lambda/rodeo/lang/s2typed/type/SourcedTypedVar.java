@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s2typed.type;
 
+import java.util.Objects;
 import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
@@ -28,5 +29,14 @@ public class SourcedTypedVar implements S2TypedVar {
 
   public int getCharacterStart() {
     return getFrom().getCharacterStart();
+  }
+
+  public boolean equals(Object other) {
+    return S2TypedVar.s2TypedVarEquals(this, other);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(from.getName(), type);
   }
 }

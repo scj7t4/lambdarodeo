@@ -9,7 +9,9 @@ moduleEntry: functionDef | typeDef;
 lrImport: moduleImport;
 alias: 'as' IDENTIFIER;
 moduleImport: 'import' SCOPED_IDENTIFIER alias? ';';
-typeDef: 'type' IDENTIFIER '=>' typeExpression ';';
+typeDef: 'type' IDENTIFIER ('<' genericDef '>')? '=>' typeExpression ';';
+genericDef: monoGenericDef (',' monoGenericDef)*;
+monoGenericDef: IDENTIFIER (':' typeExpression)?;
 
 functionDef: 'def' functionSig functionBody;
 functionSig: functionName functionArgs '=>' returnType;
@@ -31,7 +33,8 @@ typeExpression
   | atom #typeOptAtom
   | lambdaTypeExpression #typeOptLambda
   | definedType #typeOptDefined
-  | interfaceDef #typeOptInterfaceDef;
+  | interfaceDef #typeOptInterfaceDef
+  | 'any' #typeOptAny;
 
 intType: 'Int';
 stringType: 'String';
@@ -41,7 +44,7 @@ interfaceDef: '{' '}'
 memberDecl: typedVar;
 typeCombiners: ('|' | '&');
 
-definedType: identifier;
+definedType: identifier ('<' identifier (',' identifier)* '>')?;
 
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
 caseArg

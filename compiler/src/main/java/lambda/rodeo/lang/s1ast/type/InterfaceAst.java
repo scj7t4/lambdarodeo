@@ -6,7 +6,7 @@ import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
-import lambda.rodeo.lang.types.LRInterface;
+import lambda.rodeo.lang.types.CompileableInterface;
 import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,21 +23,11 @@ public class InterfaceAst implements AstNode, LambdaRodeoType {
   @NonNull
   private final List<TypedVar> members;
 
-  public LRInterface toTypedInterface(TypedModuleScope typedModuleScope,
-      CollectsErrors compileContext) {
-    return LRInterface.builder()
-        .from(this)
-        .members(members.stream()
-            .map(typedVar -> typedVar.toS2TypedVar(typedModuleScope, compileContext))
-            .collect(Collectors.toList()))
-        .build();
-  }
-
   @Override
   public CompileableType toCompileableType(
       TypedModuleScope typedModuleScope,
       CollectsErrors compileContext) {
-    return LRInterface.builder()
+    return CompileableInterface.builder()
         .from(this)
         .members(this.members.stream()
             .map(member -> member.toS2TypedVar(typedModuleScope, compileContext))

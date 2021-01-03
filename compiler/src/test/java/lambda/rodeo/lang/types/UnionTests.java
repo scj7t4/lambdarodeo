@@ -16,6 +16,7 @@ import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.TestUtils;
 import lambda.rodeo.runtime.types.Atom;
 import lambda.rodeo.runtime.types.LRObject;
+import lambda.rodeo.runtime.types.LRString;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsArrayWithSize;
@@ -72,5 +73,34 @@ public class UnionTests {
 
     Object invoke3 = test.invoke(null, LRObject.create());
     assertThat(invoke3, Matchers.equalTo(new Atom("err")));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testMaybeInterface() {
+    String importResource = "/test_cases/advanced_types/Maybe.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.Maybe")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+
+    Map<String, CompiledClass> classes = CompileUtils.createClasses(toCompile);
+    CompiledClass compiledClass = classes.get(interfaceUnit.getSourcePath());
+    CompileUtils.asmifyByteCode(compiledClass.getByteCode());
+    Class<?> aClass = compiledClass.getLoaded();
+
+    Method test = aClass.getMethod("maybe", Object.class);
+    Object invoke = test.invoke(null, new Atom("empty"));
+    assertThat(invoke, Matchers.equalTo(new Atom("empty")));
+
+    Object invoke2 = test.invoke(null, LRObject.create()
+        .set("msg", "cool!", LRString.INSTANCE)
+        .done());
+    assertThat(invoke2, Matchers.equalTo("cool!"));
   }
 }

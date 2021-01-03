@@ -1,6 +1,15 @@
 package lambda.rodeo.lang.types;
 
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.POP;
+
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import lambda.rodeo.lang.compilation.CollectsErrors;
@@ -8,6 +17,7 @@ import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +27,7 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
-public class LRInterface implements LambdaRodeoType, CompileableType {
+public class CompileableInterface implements LambdaRodeoType, CompileableType {
 
   /**
    * Can be null if the source of the interface is anonymous (like the result of an exprssion)
@@ -52,10 +62,10 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
   @Override
   public boolean assignableFrom(CompileableType other) {
     // TODO refactor to provide better reasoning for failures.
-    if (!(other instanceof LRInterface)) {
+    if (!(other instanceof CompileableInterface)) {
       return false;
     }
-    List<S2TypedVar> otherEntries = ((LRInterface) other).getMembers();
+    List<S2TypedVar> otherEntries = ((CompileableInterface) other).getMembers();
     for (S2TypedVar entry : this.members) {
       boolean present = otherEntries.stream()
           .filter(otherEntry -> Objects.equals(otherEntry.getName(), entry.getName()))
@@ -69,7 +79,36 @@ public class LRInterface implements LambdaRodeoType, CompileableType {
 
   @Override
   public void provideRuntimeType(MethodVisitor methodVisitor) {
+    // Set up that we want to make an LR interface
+    String runtimeType = Type.getInternalName(lambda.rodeo.runtime.types.LRInterface.class);
+    methodVisitor.visitTypeInsn(NEW,
+        runtimeType);
+    methodVisitor.visitInsn(DUP);
 
+    // The map is the one arg for for the CTOR so make that
+    methodVisitor.visitTypeInsn(NEW, "java/util/HashMap");
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+        Type.getInternalName(HashMap.class),
+        "<init>",
+        "()V",
+        false);
+    for (S2TypedVar member : members) {
+      // DUP to keep the map on the top of the stack after we put into it
+      methodVisitor.visitInsn(DUP);
+      methodVisitor.visitLdcInsn(member.getName());
+      member.getType().provideRuntimeType(methodVisitor);
+      methodVisitor.visitMethodInsn(INVOKEINTERFACE,
+          Type.getInternalName(Map.class),
+          "put",
+          FunctionDescriptorBuilder.args(Object.class, Object.class).returns(Object.class),
+          true);
+      methodVisitor.visitInsn(POP);
+    }
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+        runtimeType,
+        "<init>",
+        "(Ljava/util/Map;)V", false);
   }
 
   @Override

@@ -11,7 +11,7 @@ import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableObject;
 import lambda.rodeo.lang.s3compileable.expression.CompileableObject.CompileableObjectMember;
 import lambda.rodeo.lang.types.CompileableType;
-import lambda.rodeo.lang.types.LRInterface;
+import lambda.rodeo.lang.types.CompileableInterface;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -55,7 +55,7 @@ public class TypedObject implements TypedExpression {
             .type(entry.getExpression().getType())
             .build())
         .collect(Collectors.toList());
-    return LRInterface.builder()
+    return CompileableInterface.builder()
         .members(members)
         .build();
   }

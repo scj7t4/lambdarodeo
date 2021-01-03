@@ -1,11 +1,13 @@
 package lambda.rodeo.runtime.types;
 
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
 @Getter
+@AllArgsConstructor
 public class LRInterface implements LRType {
   private final Map<String, LRType> typeMap;
 

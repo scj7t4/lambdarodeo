@@ -1,0 +1,16 @@
+type Status => {
+  msg: String;
+};
+
+type Maybe => Status | @empty;
+
+type Result => String | @empty;
+
+def maybe(arg: Maybe) => Result  {
+  case(:Status) {
+    arg.msg;
+  }
+  case(*) {
+    @empty;
+  }
+}

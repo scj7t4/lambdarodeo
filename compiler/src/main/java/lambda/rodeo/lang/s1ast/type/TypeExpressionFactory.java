@@ -78,7 +78,7 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
         .characterStart(ctx.getStart().getCharPositionInLine())
         .startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())
-        .declaration(ctx.identifier().getText())
+        .declaration(ctx.identifier().get(0).getText())
         .build();
   }
 

@@ -35,24 +35,4 @@ public class InterfaceAst implements AstNode, LambdaRodeoType {
         )
         .build();
   }
-
-  /**
-   * Converts this interface to a generic one.
-   *
-   * The parser will produce the interface as a normal interface, because resolving the referenced
-   * types is not done immediately. This will mark this interface as generic and provide hinting for
-   * the types to be bound.
-   *
-   * @param generics Types that are generic, and their minimum typing.
-   * @return This interface as a generic.
-   */
-  public GenericInterfaceAst genericInterfaceAst(List<TypedVar> generics) {
-    return GenericInterfaceAst.builder()
-        .genericParams(generics)
-        .characterStart(characterStart)
-        .startLine(startLine)
-        .endLine(endLine)
-        .members(members)
-        .build();
-  }
 }

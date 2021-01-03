@@ -2,14 +2,10 @@ package lambda.rodeo.lang.s1ast.type;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.GenericDefContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.MonoGenericDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeDefContext;
-import lambda.rodeo.lang.antlr.LambdaRodeoParser.TypeExpressionContext;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.types.AnyType;
 import lambda.rodeo.lang.types.LambdaRodeoType;
@@ -37,30 +33,27 @@ public class TypeDefAstFactory extends LambdaRodeoBaseVisitor<TypeDef> {
 
     List<TypedVar> generics = Collections.emptyList();
     if (genericDefContext != null) {
-       generics = genericDefContext.monoGenericDef()
+      generics = genericDefContext.monoGenericDef()
           .stream()
-           .map(def -> {
-             LambdaRodeoType minimum;
-             if (def.typeExpression() != null) {
-               TypeExpressionFactory expressionFactory = new TypeExpressionFactory(
-                   def.typeExpression(),
-                   compileContext);
-               minimum = expressionFactory.toAst();
-             } else {
-               minimum = AnyType.INSTANCE;
-             }
-             return TypedVar.builder()
-                 .characterStart(def.getStart().getCharPositionInLine())
-                 .startLine(def.getStart().getLine())
-                 .endLine(def.getStop().getLine())
-                 .name(def.IDENTIFIER().getText())
-                 .type(minimum)
-                 .build();
-           })
+          .map(def -> {
+            LambdaRodeoType minimum;
+            if (def.typeExpression() != null) {
+              TypeExpressionFactory expressionFactory = new TypeExpressionFactory(
+                  def.typeExpression(),
+                  compileContext);
+              minimum = expressionFactory.toAst();
+            } else {
+              minimum = AnyType.INSTANCE;
+            }
+            return TypedVar.builder()
+                .characterStart(def.getStart().getCharPositionInLine())
+                .startLine(def.getStart().getLine())
+                .endLine(def.getStop().getLine())
+                .name(def.IDENTIFIER().getText())
+                .type(minimum)
+                .build();
+          })
           .collect(Collectors.toList());
-       if (type instanceof InterfaceAst) {
-         type = ((InterfaceAst) type).genericInterfaceAst(generics);
-       }
     }
 
     return TypeDef.builder()

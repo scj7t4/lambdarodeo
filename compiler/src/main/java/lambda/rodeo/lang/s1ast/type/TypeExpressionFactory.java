@@ -74,11 +74,19 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
   @Override
   public LambdaRodeoType visitTypeOptDefined(TypeOptDefinedContext branch) {
     DefinedTypeContext ctx = branch.definedType();
+    List<LambdaRodeoType> genericBindings = ctx.typeExpression().stream()
+        .map(expr -> {
+          TypeExpressionFactory factory = new TypeExpressionFactory(expr, compileContext);
+          return factory.toAst();
+        })
+        .collect(Collectors.toList());
+
     return DefinedType.builder()
         .characterStart(ctx.getStart().getCharPositionInLine())
         .startLine(ctx.getStart().getLine())
         .endLine(ctx.getStop().getLine())
-        .declaration(ctx.identifier().get(0).getText())
+        .declaration(ctx.identifier().getText())
+        .genericBindings(genericBindings)
         .build();
   }
 

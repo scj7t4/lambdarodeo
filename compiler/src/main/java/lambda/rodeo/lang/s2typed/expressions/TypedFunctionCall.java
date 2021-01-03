@@ -7,6 +7,7 @@ import lambda.rodeo.lang.s1ast.expressions.ExpressionAst;
 import lambda.rodeo.lang.s1ast.expressions.FunctionCallAst;
 import lambda.rodeo.lang.s3compileable.expression.CompileableExpr;
 import lambda.rodeo.lang.s3compileable.expression.CompileableFunctionCall;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;

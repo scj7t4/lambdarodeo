@@ -9,6 +9,7 @@ import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.s2typed.functions.TypedFunctionSignature;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.LambdaRodeoType;
@@ -33,13 +34,13 @@ public class FunctionSigAst implements AstNode {
 
   public TypeScope getInitialTypeScope(
       TypeScope moduleScope,
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       S2CompileContext compileContext) {
     TypeScope typeScope = moduleScope;
     for (TypedVar arg : arguments) {
       typeScope = typeScope.declare(
           arg.getName(),
-          arg.getType().toCompileableType(typedModuleScope, compileContext)
+          arg.getType().toCompileableType(typeResolver, compileContext)
       );
     }
     return typeScope;
@@ -57,14 +58,16 @@ public class FunctionSigAst implements AstNode {
   }
 
   public TypedFunctionSignature toTypedFunctionSignature(
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       CollectsErrors compileContext) {
     return TypedFunctionSignature.builder()
         .arguments(arguments.stream()
-            .map(typedVar -> typedVar.toS2TypedVar(typedModuleScope, compileContext))
+            .map(typedVar -> typedVar.toS2TypedVar(typeResolver, compileContext))
             .collect(Collectors.toList()))
         .from(this)
-        .declaredReturnType(declaredReturnType.toCompileableType(typedModuleScope, compileContext))
+        .declaredReturnType(declaredReturnType.toCompileableType(typeResolver,
+            compileContext
+        ))
         .build();
   }
 }

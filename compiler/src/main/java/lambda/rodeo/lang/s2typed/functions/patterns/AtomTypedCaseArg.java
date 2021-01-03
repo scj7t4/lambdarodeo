@@ -4,7 +4,7 @@ import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.functions.patterns.AtomCaseArgAst;
 import lambda.rodeo.lang.s3compileable.functions.patterns.AtomCompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.runtime.patterns.Matcher;
 import lambda.rodeo.runtime.patterns.matchers.AtomMatcher;
 import lombok.Builder;
@@ -19,7 +19,7 @@ public class AtomTypedCaseArg implements TypedCaseArg {
 
   @Override
   public CompileableCaseArg toCompileableCaseArg(
-      TypedStaticPattern staticPattern, TypedModuleScope scope,
+      TypedStaticPattern staticPattern, TypeResolver scope,
       CollectsErrors compileContext) {
     return AtomCompileableCaseArg.builder()
         .staticPattern(staticPattern)

@@ -4,7 +4,7 @@ import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.s2typed.type.SourcedTypedVar;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.types.LambdaRodeoType;
 import lombok.Builder;
 import lombok.Data;
@@ -25,11 +25,11 @@ public class TypedVar implements AstNode {
   @EqualsAndHashCode.Exclude
   private final int characterStart;
 
-  public S2TypedVar toS2TypedVar(TypedModuleScope typedModuleScope,
+  public S2TypedVar toS2TypedVar(TypeResolver typeResolver,
       CollectsErrors compileContext) {
     return SourcedTypedVar.builder()
         .from(this)
-        .type(type.toCompileableType(typedModuleScope, compileContext))
+        .type(type.toCompileableType(typeResolver, compileContext))
         .build();
   }
 }

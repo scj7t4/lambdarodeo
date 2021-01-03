@@ -5,6 +5,7 @@ import java.util.List;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionSigAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
@@ -41,9 +42,9 @@ public class TypedFunctionSignature {
 
   public TypeScope getInitialTypeScope(
       TypeScope moduleScope,
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       S2CompileContext compileContext) {
-    return getFrom().getInitialTypeScope(moduleScope, typedModuleScope, compileContext);
+    return getFrom().getInitialTypeScope(moduleScope, typeResolver, compileContext);
   }
 
   public void checkCollisionAgainstModule(TypedModuleScope typedModuleScope,

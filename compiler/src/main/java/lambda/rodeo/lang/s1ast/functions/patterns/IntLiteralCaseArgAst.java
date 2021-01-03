@@ -3,8 +3,8 @@ package lambda.rodeo.lang.s1ast.functions.patterns;
 import lambda.rodeo.lang.s1ast.functions.ToTypedFunctionContext;
 import lambda.rodeo.lang.s2typed.functions.patterns.IntLiteralTypedCaseArg;
 import lambda.rodeo.lang.s2typed.functions.patterns.TypedCaseArg;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class IntLiteralCaseArgAst implements CaseArgAst {
 
   @Override
   public TypedCaseArg toTypedCaseArg(TypeScope initialTypeScope,
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       ToTypedFunctionContext compileContext) {
     return IntLiteralTypedCaseArg.builder()
         .caseArgAst(this)

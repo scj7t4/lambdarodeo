@@ -8,8 +8,8 @@ import lambda.rodeo.lang.s1ast.functions.patterns.PatternCaseAst;
 import lambda.rodeo.lang.s1ast.functions.patterns.ScopeReplaceAndCasts;
 import lambda.rodeo.lang.s2typed.statements.TypedStatement;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileablePatternCase;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.scope.TypeScope;
-import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -32,7 +32,7 @@ public class TypedPatternCase {
 
   public CompileablePatternCase toCompileablePatternCase(
       Map<TypedCaseArg, TypedStaticPattern> staticPatterns,
-      TypedModuleScope scope,
+      TypeResolver scope,
       CollectsErrors compileContext) {
     return CompileablePatternCase.builder()
         .caseArgs(typedCaseArgs.stream()

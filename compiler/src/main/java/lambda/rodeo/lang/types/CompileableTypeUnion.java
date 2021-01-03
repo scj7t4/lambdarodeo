@@ -9,6 +9,8 @@ import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.scope.Entry;
 import lambda.rodeo.runtime.types.LRType;
 import lambda.rodeo.runtime.types.LRTypeUnion;
@@ -122,5 +124,4 @@ public class CompileableTypeUnion implements CompileableType {
         .build();
     return Optional.of(merged);
   }
-
 }

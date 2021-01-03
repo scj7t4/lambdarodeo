@@ -3,7 +3,7 @@ package lambda.rodeo.lang.types;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CollectsErrors;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,15 +18,19 @@ public class LambdaType implements LambdaRodeoType {
 
   @Override
   public CompileableLambdaType toCompileableType(
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       CollectsErrors compileContext) {
     return CompileableLambdaType.builder()
         .from(this)
         .args(args.stream()
-            .map(arg -> arg.toCompileableType(typedModuleScope, compileContext))
+            .map(arg -> arg.toCompileableType(typeResolver,
+                compileContext
+            ))
             .collect(Collectors.toList())
         )
-        .returnType(returnType.toCompileableType(typedModuleScope, compileContext))
+        .returnType(returnType.toCompileableType(typeResolver,
+            compileContext
+        ))
         .build();
   }
 

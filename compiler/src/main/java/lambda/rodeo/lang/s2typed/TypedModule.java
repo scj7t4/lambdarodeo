@@ -15,6 +15,7 @@ import lambda.rodeo.lang.s3compileable.functions.CompileableFunction;
 import lambda.rodeo.lang.s3compileable.functions.CompileableFunctionBody;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableStaticPattern;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

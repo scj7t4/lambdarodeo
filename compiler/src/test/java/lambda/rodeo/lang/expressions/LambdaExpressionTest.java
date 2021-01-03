@@ -81,7 +81,8 @@ public class LambdaExpressionTest {
             .returnType(IntType.INSTANCE)
             .args(Collections.emptyList())
             .build()
-            .toCompileableType(typedModuleScope, compileContext.getCompileContext())
+            .toCompileableType(typedModuleScope, compileContext.getCompileContext()
+            )
     );
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);
@@ -98,7 +99,8 @@ public class LambdaExpressionTest {
             .returnType(IntType.INSTANCE)
             .args(Collections.singletonList(new CompileableAtom("ok")))
             .build()
-            .toCompileableType(typedModuleScope, compileContext.getCompileContext())
+            .toCompileableType(typedModuleScope, compileContext.getCompileContext()
+            )
     );
 
     Method noArgs = compiledModule.getMethod(TEST_METHOD);

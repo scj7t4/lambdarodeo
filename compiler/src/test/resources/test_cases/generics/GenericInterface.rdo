@@ -1,0 +1,7 @@
+type Value<T> => {
+  value: T
+};
+
+def useGeneric(arg: Value<String>) => String {
+  arg.value;
+}

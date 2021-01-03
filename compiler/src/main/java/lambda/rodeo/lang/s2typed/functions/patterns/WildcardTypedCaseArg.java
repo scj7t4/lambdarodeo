@@ -4,7 +4,7 @@ import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.functions.patterns.WildcardCaseArgAst;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.WildcardCompileableCaseArg;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.runtime.patterns.Matcher;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ public class WildcardTypedCaseArg implements TypedCaseArg {
 
   @Override
   public CompileableCaseArg toCompileableCaseArg(
-      TypedStaticPattern staticPattern, TypedModuleScope scope,
+      TypedStaticPattern staticPattern, TypeResolver scope,
       CollectsErrors compileContext) {
     return WildcardCompileableCaseArg.builder()
         .staticPattern(staticPattern)

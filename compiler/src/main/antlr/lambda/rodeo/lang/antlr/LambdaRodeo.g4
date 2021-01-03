@@ -44,7 +44,7 @@ interfaceDef: '{' '}'
 memberDecl: typedVar;
 typeCombiners: ('|' | '&');
 
-definedType: identifier ('<' identifier (',' identifier)* '>')?;
+definedType: identifier ('<' typeExpression (',' typeExpression)* '>')?;
 
 patternCase: 'case' '(' caseArg (',' caseArg)* ')' '{' statement+ '}';
 caseArg

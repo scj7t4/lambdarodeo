@@ -66,7 +66,8 @@ public class PatternCaseAst implements AstNode {
             .findFirst()
             .orElseThrow(() -> new CriticalLanguageException("Tried to check type"));
         CompileableType castTo = typeCheck
-            .toCompileableType(typedModuleScope, compileContext.getCompileContext());
+            .toCompileableType(typedModuleScope, compileContext.getCompileContext()
+            );
         int slot = withTypeChecks.maxSlot() + 1;
         withTypeChecks = withTypeChecks.replace(
             uncastEntry.getName(),

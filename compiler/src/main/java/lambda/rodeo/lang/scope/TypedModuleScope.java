@@ -7,24 +7,38 @@ import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.type.TypeDef;
 import lambda.rodeo.lang.s2typed.functions.TypedFunction;
 import lambda.rodeo.lang.types.CompileableType;
-import lambda.rodeo.lang.types.LambdaRodeoType;
+import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.types.StringType;
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
 @Getter
-public class TypedModuleScope {
+public class TypedModuleScope implements TypeResolver {
 
   private final ModuleScope thisScope;
   private final List<ModuleScope> importedModules;
   private final List<TypedFunction> typedFunctions;
 
-  public Optional<LambdaRodeoType> getTypeTarget(String typeTarget) {
-    Optional<LambdaRodeoType> matchedInterface = this.thisScope.getTypes()
+  @Override
+  public Optional<TypeDef> getTypeTarget(String typeTarget) {
+    if (Objects.equals(typeTarget, "String")) {
+      return Optional.of(TypeDef.builder()
+          .type(StringType.INSTANCE)
+          .identifier("String")
+          .build());
+    }
+    if (Objects.equals(typeTarget, "Int")) {
+      return Optional.of(TypeDef.builder()
+          .type(IntType.INSTANCE)
+          .identifier("Int")
+          .build());
+    }
+
+    Optional<TypeDef> matchedInterface = this.thisScope.getTypes()
         .stream()
         .filter(typeDef -> Objects.equals(typeTarget, typeDef.getIdentifier()))
-        .findFirst()
-        .map(TypeDef::getType);
+        .findFirst();
     if (matchedInterface.isPresent()) {
       return matchedInterface;
     }
@@ -41,7 +55,6 @@ public class TypedModuleScope {
         .filter(imported -> Objects.equals(imported.getAlias(), module))
         .flatMap(imported -> imported.getTypes().stream())
         .filter(type -> Objects.equals(typeName, type.getIdentifier()))
-        .map(TypeDef::getType)
         .findFirst();
   }
 
@@ -59,7 +72,7 @@ public class TypedModuleScope {
 
     String[] callTargetTokens = callTarget.split("\\.");
 
-    if(callTargetTokens.length != 2) {
+    if (callTargetTokens.length != 2) {
       return Optional.empty();
     }
 

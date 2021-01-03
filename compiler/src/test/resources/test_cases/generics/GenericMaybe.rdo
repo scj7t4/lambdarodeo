@@ -1,0 +1,10 @@
+type Maybe<T> => T | @empty;
+
+def useGeneric(arg: Maybe<String>) => String {
+  case(:String) {
+    arg;
+  }
+  case(*) {
+    "";
+  }
+}

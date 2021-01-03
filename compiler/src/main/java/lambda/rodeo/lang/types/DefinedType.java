@@ -1,14 +1,19 @@
 package lambda.rodeo.lang.types;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.s1ast.expressions.AtomAst;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.s1ast.type.TypeDef;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 
 @Builder
 @Getter
@@ -22,19 +27,33 @@ public class DefinedType implements LambdaRodeoType, AstNode {
   @EqualsAndHashCode.Exclude
   private final int characterStart;
   private final String declaration;
+  @NonNull
+  @Builder.Default
+  private final List<LambdaRodeoType> genericBindings = Collections.emptyList();
 
   @Override
   public CompileableType toCompileableType(
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       CollectsErrors compileContext) {
-    Optional<CompileableType> maybeType = typedModuleScope.getTypeTarget(declaration)
-        .map(type -> type.toCompileableType(typedModuleScope, compileContext));
-    if (maybeType.isEmpty()) {
+    List<CompileableType> compileableGenerics = this.genericBindings.stream()
+        .map(type -> type.toCompileableType(typeResolver,
+            compileContext))
+        .collect(Collectors.toList());
+
+    Optional<TypeDef> maybeTypeDef = typeResolver
+        .getTypeTarget(declaration);
+
+    if (maybeTypeDef.isEmpty()) {
       compileContext.getCompileErrorCollector().collect(
           CompileError.undefinedIdentifier(this, declaration));
       return AtomAst.undefinedAtomExpression().getType();
     }
-    return maybeType.get();
+    TypeDef typeDef = maybeTypeDef.get();
+    TypeResolver innerScope = typeDef
+        .bindGenerics(typeResolver, compileableGenerics, compileContext);
+
+    return typeDef.getType()
+        .toCompileableType(innerScope, compileContext);
   }
 
   @Override

@@ -16,7 +16,7 @@ import lambda.rodeo.lang.compilation.CollectsErrors;
 import lambda.rodeo.lang.s1ast.type.InterfaceAst;
 import lambda.rodeo.lang.s2typed.type.S2TypedVar;
 import lambda.rodeo.lang.scope.Entry;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lombok.Builder;
@@ -39,7 +39,7 @@ public class CompileableInterface implements LambdaRodeoType, CompileableType {
 
   @Override
   public CompileableType toCompileableType(
-      TypedModuleScope typedModuleScope,
+      TypeResolver typeResolver,
       CollectsErrors compileContext) {
     return this;
   }

@@ -5,7 +5,7 @@ import lambda.rodeo.lang.s1ast.functions.patterns.VariableCaseArgAst;
 import lambda.rodeo.lang.s3compileable.functions.patterns.CompileableCaseArg;
 import lambda.rodeo.lang.s3compileable.functions.patterns.VariableCompileableCaseArg;
 import lambda.rodeo.lang.scope.Entry;
-import lambda.rodeo.lang.scope.TypedModuleScope;
+import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.runtime.patterns.Matcher;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -20,7 +20,7 @@ public class VariableTypedCaseArg implements TypedCaseArg {
 
   @Override
   public CompileableCaseArg toCompileableCaseArg(
-      TypedStaticPattern staticPattern, TypedModuleScope scope,
+      TypedStaticPattern staticPattern, TypeResolver scope,
       CollectsErrors compileContext) {
     return VariableCompileableCaseArg.builder()
         .staticPattern(staticPattern)

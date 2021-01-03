@@ -2,6 +2,6 @@ type Value<T> => {
   value: T
 };
 
-def useGeneric(arg: Value<String>) => String {
+def useGeneric(arg: Value<String | Int>) => String | Int {
   arg.value;
 }

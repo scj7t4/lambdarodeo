@@ -1,6 +1,7 @@
 package lambda.rodeo.lang.s1ast.type;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lambda.rodeo.lang.antlr.LambdaRodeoBaseVisitor;
@@ -105,13 +106,13 @@ public class TypeExpressionFactory extends LambdaRodeoBaseVisitor<LambdaRodeoTyp
 
   @Override
   public LambdaRodeoType visitTypeOptCompound(TypeOptCompoundContext ctx) {
-    List<LambdaRodeoType> unions = ctx.typeExpression()
+    Set<LambdaRodeoType> unions = ctx.typeExpression()
         .stream()
         .map(expr -> {
           TypeExpressionFactory inner = new TypeExpressionFactory(expr, compileContext);
           return inner.toAst();
         })
-        .collect(Collectors.toList());
+        .collect(Collectors.toSet());
     return TypeUnion.builder()
         .unions(unions)
         .build();

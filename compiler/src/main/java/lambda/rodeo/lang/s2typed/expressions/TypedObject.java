@@ -1,5 +1,6 @@
 package lambda.rodeo.lang.s2typed.expressions;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambda.rodeo.lang.compilation.CollectsErrors;
@@ -56,7 +57,7 @@ public class TypedObject implements TypedExpression {
             .build())
         .collect(Collectors.toList());
     return CompileableInterface.builder()
-        .members(members)
+        .members(new LinkedHashSet<>(members))
         .build();
   }
 

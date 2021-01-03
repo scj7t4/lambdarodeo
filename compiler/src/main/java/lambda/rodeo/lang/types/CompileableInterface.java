@@ -7,7 +7,9 @@ import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.POP;
 
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,6 +22,7 @@ import lambda.rodeo.lang.scope.TypeResolver;
 import lambda.rodeo.lang.util.FunctionDescriptorBuilder;
 import lambda.rodeo.runtime.types.LRObject;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import org.objectweb.asm.MethodVisitor;
@@ -27,15 +30,17 @@ import org.objectweb.asm.Type;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CompileableInterface implements LambdaRodeoType, CompileableType {
 
   /**
    * Can be null if the source of the interface is anonymous (like the result of an exprssion)
    */
+  @EqualsAndHashCode.Exclude
   private final InterfaceAst from;
 
   @NonNull
-  private final List<S2TypedVar> members;
+  private final LinkedHashSet<S2TypedVar> members;
 
   @Override
   public CompileableType toCompileableType(
@@ -65,7 +70,7 @@ public class CompileableInterface implements LambdaRodeoType, CompileableType {
     if (!(other instanceof CompileableInterface)) {
       return false;
     }
-    List<S2TypedVar> otherEntries = ((CompileableInterface) other).getMembers();
+    Collection<S2TypedVar> otherEntries = ((CompileableInterface) other).getMembers();
     for (S2TypedVar entry : this.members) {
       boolean present = otherEntries.stream()
           .filter(otherEntry -> Objects.equals(otherEntry.getName(), entry.getName()))

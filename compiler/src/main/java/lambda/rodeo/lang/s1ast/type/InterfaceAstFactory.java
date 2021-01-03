@@ -2,6 +2,7 @@ package lambda.rodeo.lang.s1ast.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public class InterfaceAstFactory extends LambdaRodeoBaseVisitor<InterfaceAst> {
                 duplicateTypedVar.getName())));
 
     return InterfaceAst.builder()
-        .members(members)
+        .members(new LinkedHashSet<>(members))
         .build();
   }
 }

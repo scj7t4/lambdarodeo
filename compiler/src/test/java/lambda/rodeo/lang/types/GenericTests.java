@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import lambda.rodeo.lang.CompileUnit;
+import lambda.rodeo.lang.compilation.CompileError;
+import lambda.rodeo.lang.compilation.CompileErrorCollector;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.TestUtils;
@@ -82,5 +85,35 @@ public class GenericTests {
             .set("value", BigInteger.valueOf(1337), LRInteger.INSTANCE)
             .done());
     assertThat(invoke2, Matchers.equalTo(BigInteger.valueOf(1337)));
+  }
+
+  @Test
+  @SneakyThrows
+  public void testGenericErrors() {
+    String importResource = "/test_cases/generics/GenericCompilerErrors.rdo";
+    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+
+    CompileUnit interfaceUnit = CompileUnit.builder()
+        .contents(interfaceSource)
+        .sourcePath("lambda.rodeo.test.GenericInterface")
+        .build();
+
+    List<CompileUnit> toCompile = new ArrayList<>();
+    toCompile.add(interfaceUnit);
+
+    CompileErrorCollector compileErrorCollector = CompileUtils.expectCompileErrors(toCompile);
+
+    List<String> errors = compileErrorCollector.getCompileErrors()
+        .stream()
+        .map(CompileError::getErrorMsg)
+        .collect(Collectors.toList());
+
+    assertThat(errors,
+        Matchers.contains(
+            "The type '(String | Int)' cannot be assigned to 'Int'",
+            "Generic type expected 1 parameters, definition set 2",
+            "The type 'String' cannot be assigned to 'Int'",
+            "Pattern case returns 'String'; it cannot be assigned to 'Int'"
+        ));
   }
 }

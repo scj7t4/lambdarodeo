@@ -1,0 +1,11 @@
+type Value<T: Int> => {
+  value: T
+};
+
+def error1(arg: Value<String | Int>) => String | Int {
+  arg.value;
+}
+
+def error2(arg: Value<String, Int>) => Int {
+  arg.value;
+}

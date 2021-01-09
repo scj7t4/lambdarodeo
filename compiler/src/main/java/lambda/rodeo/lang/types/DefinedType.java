@@ -50,7 +50,7 @@ public class DefinedType implements LambdaRodeoType, AstNode {
     }
     TypeDef typeDef = maybeTypeDef.get();
     TypeResolver innerScope = typeDef
-        .bindGenerics(typeResolver, compileableGenerics, compileContext);
+        .bindGenerics(this, typeResolver, compileableGenerics, compileContext);
 
     return typeDef.getType()
         .toCompileableType(innerScope, compileContext);

@@ -22,7 +22,7 @@ public class CompileError {
   public static final String RETURN_TYPE_MISMATCH = "RETURN_TYPE_MISMATCH";
   public static final String CALLED_WITH_WRONG_ARGS = "CALLED_WITH_WRONG_ARGS";
   public static final String BAD_MODULE_IMPORT = "BAD_MODULE_IMPORT";
-  public static final String INCORRECT_NUM_TYPE_PARAMS = "NOT_ENOUGH_TYPE_PARAMS";
+  public static final String INCORRECT_NUM_TYPE_PARAMS = "INCORRECT_NUM_TYPE_PARAMS";
   public static final String INCOMPATIBLE_TYPE_SUBSTITUTION = "INCOMPATIBLE_TYPE_SUBSTITUTION";
 
   private final int startLine;
@@ -171,7 +171,7 @@ public class CompileError {
   public static CompileError incorrectNumberOfTypeParams(AstNode astNode, int desiredNum, int actualNum) {
     return CompileError.builder()
         .errorType(INCORRECT_NUM_TYPE_PARAMS)
-        .errorMsg("Generic type expected " + desiredNum + " parameters, definition only set "
+        .errorMsg("Generic type expected " + desiredNum + " parameters, definition set "
           + actualNum)
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())
@@ -179,11 +179,11 @@ public class CompileError {
         .build();
   }
 
-  public static CompileError incompatibleTypeSubstitution(AstNode astNode, CompileableType target,
-      CompileableType typeThatCannotBeAssigned) {
+  public static CompileError incompatibleTypeSubstitution(AstNode astNode, CompileableType typeThatCannotBeAssigned,
+      CompileableType target) {
     return CompileError.builder()
         .errorType(INCOMPATIBLE_TYPE_SUBSTITUTION)
-        .errorMsg("The type '" + target + "' cannot be assigned to '" + typeThatCannotBeAssigned
+        .errorMsg("The type '" + typeThatCannotBeAssigned + "' cannot be assigned to '" + target
             + "'")
         .startLine(astNode.getStartLine())
         .endLine(astNode.getEndLine())

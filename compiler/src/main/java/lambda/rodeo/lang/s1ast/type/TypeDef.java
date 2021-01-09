@@ -40,7 +40,7 @@ public class TypeDef implements AstNode {
         .map(type -> type.toCompileableType(typeResolver, compileContext))
         .collect(Collectors.toList());
 
-    TypeResolver boundGenerics = bindGenerics(typeResolver, defaultBindings, compileContext);
+    TypeResolver boundGenerics = bindGenerics(this, typeResolver, defaultBindings, compileContext);
 
     return TypedTypeDef.builder()
         .from(this)
@@ -49,12 +49,13 @@ public class TypeDef implements AstNode {
   }
 
   public TypeResolver bindGenerics(
+      AstNode bindPoint,
       TypeResolver typeResolver,
       List<CompileableType> bindings,
       CollectsErrors compileContext) {
     if (bindings.size() != generics.size()) {
       compileContext.getCompileErrorCollector()
-          .collect(CompileError.incorrectNumberOfTypeParams(this,
+          .collect(CompileError.incorrectNumberOfTypeParams(bindPoint,
               generics.size(), bindings.size()));
     }
     // If bindings is too short, we will plug in the minimum typings in order to continue...
@@ -63,15 +64,15 @@ public class TypeDef implements AstNode {
       bindings.add(generics.get(i).getType().toCompileableType(typeResolver, compileContext));
     }
     Map<String, TypeDef> subs = new HashMap<>();
-    for (int i = 0; i < bindings.size(); i++) {
+    for (int i = 0; i < generics.size(); i++) {
       TypedVar param = generics.get(i);
       CompileableType sub = bindings.get(i);
       CompileableType minType = param.getType()
           .toCompileableType(typeResolver, compileContext);
       if (!minType.assignableFrom(sub)) {
         compileContext.getCompileErrorCollector()
-            .collect(CompileError.incompatibleTypeSubstitution(this,
-                minType, sub));
+            .collect(CompileError.incompatibleTypeSubstitution(bindPoint,
+                sub, minType));
       }
 
       TypeDef typeDef = TypeDef.builder()

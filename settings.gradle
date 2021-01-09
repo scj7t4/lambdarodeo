@@ -1,4 +1,5 @@
 rootProject.name = 'lambdarodeo'
 include 'compiler'
 include 'runtime'
+include 'languageserver'
 

@@ -103,31 +103,6 @@ public class CompileUtils {
     classReader.accept(traceClassVisitor, 0);
   }
 
-  // TODO: Replace me
-  public static Map<String, Class<?>> createClassesSimple(List<CompileUnit> units) throws IOException {
-    CompilerChain chain = CompilerChain.builder()
-        .compileUnits(units)
-        .build();
-    CompileResult compile = chain.compile();
-
-    assertThat(compile.getErrorCollector().getCompileErrors(), empty());
-    assertThat(compile.isSuccess(), equalTo(true));
-    TestClassLoader classLoader = new TestClassLoader(CompileUtils.class.getClassLoader());
-
-    assertThat(compile.getCompiledUnits().isPresent(), equalTo(true));
-    List<CompiledUnit> compiledUnits = compile.getCompiledUnits().orElse(Collections.emptyList());
-
-    Map<String, Class<?>> compiledClasses = new HashMap<>();
-
-    for(CompiledUnit compiledUnit : compiledUnits) {
-      Class<?> aClass = classLoader
-          .defineClass(compiledUnit.getModuleName(), compiledUnit.getByteCode());
-      compiledClasses.put(compiledUnit.getModuleName(), aClass);
-    }
-
-    return compiledClasses;
-  }
-
   public static Map<String, CompiledClass> createClasses(List<CompileUnit> units) throws IOException {
     CompilerChain chain = CompilerChain.builder()
         .compileUnits(units)

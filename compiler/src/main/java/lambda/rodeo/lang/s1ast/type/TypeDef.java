@@ -1,11 +1,14 @@
 package lambda.rodeo.lang.s1ast.type;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lambda.rodeo.lang.AstNode;
 import lambda.rodeo.lang.compilation.CollectsErrors;
+import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.exceptions.CriticalLanguageException;
 import lambda.rodeo.lang.s2typed.type.TypedTypeDef;
@@ -18,12 +21,15 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class TypeDef {
+public class TypeDef implements AstNode {
 
   private final String identifier;
   private final LambdaRodeoType type;
   @Builder.Default
   private final List<TypedVar> generics = Collections.emptyList();
+  private final int startLine;
+  private final int endLine;
+  private final int characterStart;
 
   public TypedTypeDef toTypedTypeDef(
       TypeResolver typeResolver,
@@ -47,8 +53,14 @@ public class TypeDef {
       List<CompileableType> bindings,
       CollectsErrors compileContext) {
     if (bindings.size() != generics.size()) {
-      // TODO
-      throw new CriticalLanguageException("TODO: make this a compiler error");
+      compileContext.getCompileErrorCollector()
+          .collect(CompileError.incorrectNumberOfTypeParams(this,
+              generics.size(), bindings.size()));
+    }
+    // If bindings is too short, we will plug in the minimum typings in order to continue...
+    bindings = new ArrayList<>(bindings);
+    for (int i = bindings.size(); i < generics.size(); i++) {
+      bindings.add(generics.get(i).getType().toCompileableType(typeResolver, compileContext));
     }
     Map<String, TypeDef> subs = new HashMap<>();
     for (int i = 0; i < bindings.size(); i++) {
@@ -57,8 +69,9 @@ public class TypeDef {
       CompileableType minType = param.getType()
           .toCompileableType(typeResolver, compileContext);
       if (!minType.assignableFrom(sub)) {
-        // TODO
-        throw new CriticalLanguageException("TODO: make this a compiler error");
+        compileContext.getCompileErrorCollector()
+            .collect(CompileError.incompatibleTypeSubstitution(this,
+                minType, sub));
       }
 
       TypeDef typeDef = TypeDef.builder()

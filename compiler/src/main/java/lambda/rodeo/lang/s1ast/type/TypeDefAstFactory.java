@@ -57,6 +57,9 @@ public class TypeDefAstFactory extends LambdaRodeoBaseVisitor<TypeDef> {
     }
 
     return TypeDef.builder()
+        .startLine(ctx.getStart().getLine())
+        .characterStart(ctx.getStart().getCharPositionInLine())
+        .endLine(ctx.getStop().getLine())
         .identifier(identifier)
         .type(type)
         .generics(generics)

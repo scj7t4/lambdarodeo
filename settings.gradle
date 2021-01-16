@@ -2,4 +2,4 @@ rootProject.name = 'lambdarodeo'
 include 'compiler'
 include 'runtime'
 include 'languageserver'
-
+include 'lambda-rodeo-gradle-plugin'

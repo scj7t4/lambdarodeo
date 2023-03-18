@@ -1,4 +1,3 @@
-// Define a grammar called Hello
 grammar LambdaRodeo;
 @header {
     package lambda.rodeo.lang.antlr;

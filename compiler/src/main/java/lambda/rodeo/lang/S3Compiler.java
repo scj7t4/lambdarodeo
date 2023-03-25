@@ -30,7 +30,7 @@ public class S3Compiler {
       TypedModule module = result.getModule();
       S2CompileContext context = S2CompileContextImpl.builder()
           .modules(s2CompilerResult.getModules())
-          .source(result.getSource())
+          .sourcePath(result.getSourcePath())
           .build();
 
       CompileableModule compileableModule = module.toCompileableModule(context);
@@ -39,7 +39,7 @@ public class S3Compiler {
       compiledUnits.add(CompiledUnit.builder()
           .byteCode(compiled)
           .moduleName(module.getName())
-          .source(result.getSource())
+          .sourcePath(result.getSourcePath())
           .success(context.getCompileErrorCollector().getCompileErrors().isEmpty())
           .build());
       errorCollector.collectAll(context.getCompileErrorCollector());
@@ -73,7 +73,7 @@ public class S3Compiler {
     private final String moduleName;
 
     @NonNull
-    private final String source;
+    private final String sourcePath;
 
     @NonNull
     private final byte[] byteCode;

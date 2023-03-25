@@ -9,6 +9,7 @@ import lambda.rodeo.lang.antlr.LambdaRodeoLexer;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.FunctionDefContext;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
+import lambda.rodeo.lang.util.IoSupplier;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -49,7 +50,7 @@ public class TestUtils {
     return CharStreams.fromStream(is);
   }
 
-  public static Supplier<InputStream> supplyResource(String resource) {
+  public static IoSupplier<InputStream> supplyResource(String resource) {
     return () -> TestUtils.class.getResourceAsStream(resource);
   }
 

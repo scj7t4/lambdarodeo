@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.util.IoSupplier;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.ExpectedLocation;
 import lambda.rodeo.lang.utils.TestUtils;
@@ -22,7 +23,7 @@ public class ImportTest {
   @SneakyThrows
   public void testMisingModuleImport() {
     String importResource = "/test_cases/modules/AliasModuleFunctionCall.rdo";
-    Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
     CompileUnit importUnit = CompileUnit.builder()
         .contents(importSource)

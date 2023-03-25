@@ -57,12 +57,12 @@ public class S1Compiler {
       LambdaRodeoParser lambdaRodeoParser = new LambdaRodeoParser(cst);
       ModuleContext module = lambdaRodeoParser.module();
       S1CompileContext compileContext = S1CompileContextImpl.builder()
-          .source(unit.getSourcePath())
+          .sourcePath(unit.getSourcePath())
           .build();
       ModuleAstFactory factory = new ModuleAstFactory(module, compileContext);
       errorCollector.collectAll(compileContext.getCompileErrorCollector());
       return ModuleResult.builder()
-          .source(unit.getSourcePath())
+          .sourcePath(unit.getSourcePath())
           .moduleAst(factory.toAst())
           .errorCollector(compileContext.getCompileErrorCollector())
           .success(compileContext.getCompileErrorCollector().getCompileErrors().isEmpty())
@@ -76,7 +76,7 @@ public class S1Compiler {
 
     private final boolean success;
     @NonNull
-    private final String source;
+    private final String sourcePath;
     @NonNull
     private final ModuleAst moduleAst;
     @NonNull

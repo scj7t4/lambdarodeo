@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import lambda.rodeo.lang.CompileUnit;
+import lambda.rodeo.lang.util.IoSupplier;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.TestUtils;
@@ -27,7 +28,7 @@ public class UnionTests {
   @SneakyThrows
   public void testBasicUnionFunction() {
     String importResource = "/test_cases/advanced_types/BasicUnion.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -49,7 +50,7 @@ public class UnionTests {
   @SneakyThrows
   public void testBasicUnionFunction2() {
     String importResource = "/test_cases/advanced_types/BasicUnion2.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -79,7 +80,7 @@ public class UnionTests {
   @SneakyThrows
   public void testMaybeInterface() {
     String importResource = "/test_cases/advanced_types/Maybe.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)

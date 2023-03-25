@@ -2,7 +2,6 @@ package lambda.rodeo.lang.s1ast.functions;
 
 import java.util.Map;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
-import lambda.rodeo.lang.compilation.CompiledModules;
 import lambda.rodeo.lang.compilation.S2CompileContext;
 import lambda.rodeo.lang.s1ast.ModuleAst;
 import lombok.Builder;
@@ -19,7 +18,7 @@ public class ToTypedFunctionContext {
   private int lambdaCounter = -1;
 
   public String getSource() {
-    return compileContext.getSource();
+    return compileContext.getSourcePath();
   }
 
   public CompileErrorCollector getCompileErrorCollector() {

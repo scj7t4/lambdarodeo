@@ -1,0 +1,3 @@
+def nillify(inp: @null) => @null {
+  inp;
+}

@@ -41,7 +41,7 @@ public class S2Compiler {
 
     for (S1Compiler.ModuleResult s1Module : s1CompileResult.getModules()) {
       S2CompileContextImpl context = S2CompileContextImpl.builder()
-          .source(s1Module.getSource())
+          .sourcePath(s1Module.getSourcePath())
           .modules(modules)
           .build();
 
@@ -67,7 +67,7 @@ public class S2Compiler {
       TypedModule typedModule = moduleAst.toTypedModule(context, typedModuleScope);
       typedModules.add(TypedModuleResult.builder()
           .module(typedModule)
-          .source(s1Module.getSource())
+          .sourcePath(s1Module.getSourcePath())
           .success(context.getCompileErrorCollector().getCompileErrors().isEmpty())
           .build());
       errorCollector.collectAll(context.getCompileErrorCollector());
@@ -86,7 +86,7 @@ public class S2Compiler {
   public static class TypedModuleResult {
 
     @NonNull
-    private final String source;
+    private final String sourcePath;
     @NonNull
     private final TypedModule module;
 

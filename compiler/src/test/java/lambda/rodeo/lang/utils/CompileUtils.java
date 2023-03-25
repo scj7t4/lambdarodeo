@@ -44,7 +44,7 @@ public class CompileUtils {
 
   public static CompileErrorCollector expectCompileErrors(ModuleAst moduleAst) {
     S2CompileContextImpl compileContext = S2CompileContextImpl.builder()
-        .source("test")
+        .sourcePath("test")
         .build();
     CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
     compileableModule.compile(compileContext);
@@ -65,7 +65,7 @@ public class CompileUtils {
 
   public static Class<?> createClass(ModuleAst moduleAst) {
     S2CompileContextImpl compileContext = S2CompileContextImpl.builder()
-        .source("test")
+        .sourcePath("test")
         .build();
     CompileableModule compileableModule = convertToCompileableModule(moduleAst, compileContext);
 

@@ -19,13 +19,13 @@ public class CompileContextUtils {
 
   public static S1CompileContext testS1CompileContext(String source) {
     return S1CompileContextImpl.builder()
-        .source(source)
+        .sourcePath(source)
         .build();
   }
 
   public static S2CompileContextImpl testS2CompileContext() {
     return S2CompileContextImpl.builder()
-        .source("test")
+        .sourcePath("test")
         .build();
   }
 

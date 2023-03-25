@@ -24,6 +24,7 @@ import lambda.rodeo.lang.s1ast.type.TypedVar;
 import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.DefinedType;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.util.IoSupplier;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
@@ -106,7 +107,7 @@ public class InterfaceTest {
   @SneakyThrows
   public void testInterfaceReturn() {
     String importResource = "/test_cases/interfaces/InterfaceReturn.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -129,7 +130,7 @@ public class InterfaceTest {
   @SneakyThrows
   public void testInterfaceReturn2() {
     String importResource = "/test_cases/interfaces/InterfaceReturn.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -154,7 +155,7 @@ public class InterfaceTest {
   @SneakyThrows
   public void testInterfaceReturn3() {
     String importResource = "/test_cases/interfaces/InterfaceReturn.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -179,7 +180,7 @@ public class InterfaceTest {
   @SneakyThrows
   public void testInterfaceReturn4() {
     String importResource = "/test_cases/interfaces/InterfaceReturn2.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -206,7 +207,7 @@ public class InterfaceTest {
   @SneakyThrows
   public void testInterfaceDuplicatedMember() {
     String importResource = "/test_cases/interfaces/DuplicateMember.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -233,7 +234,7 @@ public class InterfaceTest {
   @SneakyThrows
   public void testMemberAccess() {
     String importResource = "/test_cases/interfaces/MemberAccess.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)

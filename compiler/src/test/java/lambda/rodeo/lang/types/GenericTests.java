@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.compilation.CompileError;
 import lambda.rodeo.lang.compilation.CompileErrorCollector;
+import lambda.rodeo.lang.util.IoSupplier;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
 import lambda.rodeo.lang.utils.TestUtils;
@@ -30,7 +31,7 @@ public class GenericTests {
   @SneakyThrows
   public void testMaybe() {
     String importResource = "/test_cases/generics/GenericMaybe.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -57,7 +58,7 @@ public class GenericTests {
   @SneakyThrows
   public void testInterface() {
     String importResource = "/test_cases/generics/GenericInterface.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -91,7 +92,7 @@ public class GenericTests {
   @SneakyThrows
   public void testGenericErrors() {
     String importResource = "/test_cases/generics/GenericCompilerErrors.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(importResource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)

@@ -16,6 +16,7 @@ import lambda.rodeo.lang.compilation.S1CompileContext;
 import lambda.rodeo.lang.s1ast.functions.FunctionAst;
 import lambda.rodeo.lang.s1ast.functions.FunctionAstFactory;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.util.IoSupplier;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.TestUtils;
@@ -51,7 +52,7 @@ public class FunctionSignatureTest {
   @SneakyThrows
   public void testCallsRightArityWrongType() {
     String resource = "/test_cases/functions/CallRightArityWrongSignature.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -73,7 +74,7 @@ public class FunctionSignatureTest {
   @SneakyThrows
   public void testCallsRightArityWrongType2() {
     String resource = "/test_cases/functions/CallRightArityWrongSignature2.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)
@@ -95,7 +96,7 @@ public class FunctionSignatureTest {
   @SneakyThrows
   public void testCallsRightArityWrongType3() {
     String resource = "/test_cases/functions/CallRightArityWrongSignature3.rdo";
-    Supplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
+    IoSupplier<InputStream> interfaceSource = TestUtils.supplyResource(resource);
 
     CompileUnit interfaceUnit = CompileUnit.builder()
         .contents(interfaceSource)

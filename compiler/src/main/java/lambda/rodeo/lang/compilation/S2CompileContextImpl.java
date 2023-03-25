@@ -12,7 +12,7 @@ import lombok.NonNull;
 public class S2CompileContextImpl implements S2CompileContext {
 
   @NonNull
-  private final String source;
+  private final String sourcePath;
 
   @NonNull
   @Builder.Default

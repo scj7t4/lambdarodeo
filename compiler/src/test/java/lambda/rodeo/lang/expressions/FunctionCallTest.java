@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+
 import lambda.rodeo.lang.CompileUnit;
 import lambda.rodeo.lang.antlr.LambdaRodeoParser.ModuleContext;
 import lambda.rodeo.lang.compilation.CompileError;
@@ -35,6 +35,7 @@ import lambda.rodeo.lang.scope.TypeScope;
 import lambda.rodeo.lang.scope.TypedModuleScope;
 import lambda.rodeo.lang.types.CompileableAtom;
 import lambda.rodeo.lang.types.IntType;
+import lambda.rodeo.lang.util.IoSupplier;
 import lambda.rodeo.lang.utils.CompileContextUtils;
 import lambda.rodeo.lang.utils.CompileUtils;
 import lambda.rodeo.lang.utils.CompileUtils.CompiledClass;
@@ -175,7 +176,7 @@ class FunctionCallTest {
     ModuleAstFactory factory = new ModuleAstFactory(module,
         S1CompileContextImpl.builder()
             .compileErrorCollector(new CompileErrorCollector())
-            .source("testcase/BasicFunctionCall.rdo")
+            .sourcePath("testcase/BasicFunctionCall.rdo")
             .build()
     );
 
@@ -197,7 +198,7 @@ class FunctionCallTest {
   @SneakyThrows
   public void testFunctionCallCompilation2() {
     String resource = "/test_cases/modules/BasicFunctionCall.rdo";
-    Supplier<InputStream> inputStreamSupplier = TestUtils.supplyResource(resource);
+    IoSupplier<InputStream> inputStreamSupplier = TestUtils.supplyResource(resource);
     CompileUnit unit = CompileUnit.builder()
         .contents(inputStreamSupplier)
         .sourcePath("testcase/BasicFunctionCall.rdo")
@@ -220,9 +221,9 @@ class FunctionCallTest {
   @SneakyThrows
   public void testFunctionCallCompilation3() {
     String basicResource = "/test_cases/modules/BasicFunctionCall.rdo";
-    Supplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
+    IoSupplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
     String importResource = "/test_cases/modules/ImportModuleFunctionCall.rdo";
-    Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
     CompileUnit basicUnit = CompileUnit.builder()
         .contents(basicSource)
@@ -252,9 +253,9 @@ class FunctionCallTest {
   @SneakyThrows
   public void testFunctionCallCompilation4() {
     String basicResource = "/test_cases/modules/BasicFunctionCall.rdo";
-    Supplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
+    IoSupplier<InputStream> basicSource = TestUtils.supplyResource(basicResource);
     String importResource = "/test_cases/modules/AliasModuleFunctionCall.rdo";
-    Supplier<InputStream> importSource = TestUtils.supplyResource(importResource);
+    IoSupplier<InputStream> importSource = TestUtils.supplyResource(importResource);
 
     CompileUnit basicUnit = CompileUnit.builder()
         .contents(basicSource)

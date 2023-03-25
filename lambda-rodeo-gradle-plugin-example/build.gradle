@@ -1,6 +1,6 @@
 buildscript {
   dependencies {
-    classpath files('../lambda-rodeo-gradle-plugin/build/libs/lambda-rodeo-gradle-plugin.jar')
+    classpath files('../lambda-rodeo-gradle-plugin/build/libs/lambda-rodeo-gradle-plugin-all.jar')
   }
 }
 
